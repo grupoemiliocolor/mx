@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Conversión de Unidades</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #292A2D;
+            color: #e0e0e0;
+        }
+        h2 {
+            color: #4d6aff;
+            margin-bottom: 25px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+        .calculator {
+            background-color: #212327;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgb(61, 61, 61);
+        }
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo {
+            width: 300px;
+            height: auto;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .logo:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+        .logo-divider {
+            height: 2px;
+            background: linear-gradient(to right, transparent, #4166d5, transparent);
+            margin: 0 auto 25px auto;
+            width: 90%;
+            box-shadow: 0 2px 5px rgba(65, 102, 213, 0.3);
+        }
+        .config-selector {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #444;
+        }
+        .conversion-type {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .conversion-type label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ffffff;
+            font-size: 15px;
+        }
+        input, select {
+            padding: 12px;
+            width: 100%;
+            border: 1px solid #444;
+            border-radius: 6px;
+            background-color: #2d2d2d;
+            color: #fff;
+            font-size: 16px;
+            transition: border 0.3s;
+            box-sizing: border-box;
+        }
+        input:focus, select:focus {
+            border-color: #4166d5;
+            outline: none;
+        }
+        button {
+            background: linear-gradient(to bottom, #243fc8, #2f51ff);
+            color: #ffffff;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 20px;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        button:hover {
+            background: linear-gradient(to bottom, #4166d5, #4166d5);
+            transform: translateY(-2px);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #252525;
+            border-radius: 8px;
+            display: none;
+            border-left: 4px solid #4166d5;
+        }
+        .error {
+            color: #ffcdd2;
+            margin-top: 20px;
+            padding: 12px;
+            background-color: #c62828;
+            border-radius: 6px;
+            display: none;
+            font-size: 15px;
+        }
+        .conversion-value {
+            font-size: 22px;
+            color: #4166d5;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        hr {
+            border: 0;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #4166d5, transparent);
+            margin: 18px 0;
+        }
+        .conversion-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #444;
+        }
+        .conversion-item:last-child {
+            border-bottom: none;
+        }
+        .unit-abbr {
+            color: #9e9e9e;
+            font-size: 14px;
+        }
+        .formula {
+            font-family: 'Courier New', monospace;
+            background-color: #2d2d2d;
+            padding: 8px 12px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="logo-container">
+            <img src="img/logo.png" alt="Emilio Color Logo" class="logo" title="Emilio Color">
+            <div class="logo-divider"></div>
+        </div>
+        
+        <h2>Calculadora de Conversión de Unidades</h2>
+        
+        <div class="config-selector">
+            <label>Seleccione el tipo de conversión:</label>
+            <div class="conversion-type">
+                <label>
+                    <input type="radio" name="conversion-type" value="length" checked> Longitud
+                </label>
+                <label>
+                    <input type="radio" name="conversion-type" value="prefix"> Prefijos Métricos
+                </label>
+            </div>
+        </div>
+        
+        <!-- Conversión de Longitud -->
+        <div class="input-group" id="length-group">
+            <label for="value">Valor a convertir:</label>
+            <input type="number" id="value" placeholder="Ingrese el valor" step="any">
+            
+            <div class="input-group">
+                <label for="fromUnit">De:</label>
+                <select id="fromUnit">
+                    <option value="meter">Metros (m)</option>
+                    <option value="millimeter">Milímetros (mm)</option>
+                    <option value="centimeter">Centímetros (cm)</option>
+                    <option value="kilometer">Kilómetros (km)</option>
+                    <option value="yard">Yardas (yd)</option>
+                    <option value="foot">Pies (ft)</option>
+                    <option value="mile">Millas (mi)</option>
+                    <option value="inch">Pulgadas (in)</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="toUnit">A:</label>
+                <select id="toUnit">
+                    <option value="meter">Metros (m)</option>
+                    <option value="millimeter">Milímetros (mm)</option>
+                    <option value="centimeter">Centímetros (cm)</option>
+                    <option value="kilometer">Kilómetros (km)</option>
+                    <option value="yard" selected>Yardas (yd)</option>
+                    <option value="foot">Pies (ft)</option>
+                    <option value="mile">Millas (mi)</option>
+                    <option value="inch">Pulgadas (in)</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Conversión de Prefijos Métricos -->
+        <div class="input-group" id="prefix-group" style="display: none;">
+            <label for="prefix-value">Valor a convertir:</label>
+            <input type="number" id="prefix-value" placeholder="Ingrese el valor" step="any">
+            
+            <div class="input-group">
+                <label for="fromPrefix">De:</label>
+                <select id="fromPrefix">
+                    <option value="1">Unidad (1)</option>
+                    <option value="0.001">Mili (m) 10⁻³</option>
+                    <option value="0.000001">Micro (μ) 10⁻⁶</option>
+                    <option value="1000">Kilo (k) 10³</option>
+                    <option value="1000000">Mega (M) 10⁶</option>
+                    <option value="1000000000">Giga (G) 10⁹</option>
+                    <option value="1000000000000">Tera (T) 10¹²</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="toPrefix">A:</label>
+                <select id="toPrefix">
+                    <option value="1">Unidad (1)</option>
+                    <option value="0.001">Mili (m) 10⁻³</option>
+                    <option value="0.000001">Micro (μ) 10⁻⁶</option>
+                    <option value="1000" selected>Kilo (k) 10³</option>
+                    <option value="1000000">Mega (M) 10⁶</option>
+                    <option value="1000000000">Giga (G) 10⁹</option>
+                    <option value="1000000000000">Tera (T) 10¹²</option>
+                </select>
+            </div>
+        </div>
+        
+        <button id="convert-btn">Convertir</button>
+        
+        <div class="error" id="error"></div>
+        
+        <div class="result" id="result">
+            <h3>RESULTADO:</h3>
+            <hr>
+            <div class="conversion-item">
+                <span id="original-value"></span> <span id="original-unit"></span> =
+                <span class="conversion-value" id="converted-value"></span> <span id="converted-unit"></span>
+            </div>
+            
+            <div id="prefix-results" style="display: none;">
+                <h4>Fórmula de conversión:</h4>
+                <div class="formula" id="prefix-formula"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Factores de conversión de longitud CORREGIDOS
+        const lengthFactors = {
+            meter: {
+                meter: 1,
+                millimeter: 1000,
+                centimeter: 100,
+                kilometer: 0.001,
+                yard: 1.09361,
+                foot: 3.28084,
+                mile: 0.000621371,
+                inch: 39.3701
+            },
+            millimeter: {
+                meter: 0.001,
+                millimeter: 1,
+                centimeter: 0.1,
+                kilometer: 0.000001,
+                yard: 0.00109361,
+                foot: 0.00328084,
+                mile: 0.000000621371,
+                inch: 0.0393701
+            },
+            centimeter: {
+                meter: 0.01,
+                millimeter: 10,
+                centimeter: 1,
+                kilometer: 0.00001,
+                yard: 0.0109361,
+                foot: 0.0328084,
+                mile: 0.00000621371,
+                inch: 0.393701
+            },
+            kilometer: {
+                meter: 1000,
+                millimeter: 1000000,
+                centimeter: 100000,
+                kilometer: 1,
+                yard: 1093.61,
+                foot: 3280.84,
+                mile: 0.621371,
+                inch: 39370.1
+            },
+            yard: {
+                meter: 0.9144, // 1 yarda = 0.9144 metros (CORRECTO)
+                millimeter: 914.4,
+                centimeter: 91.44,
+                kilometer: 0.0009144,
+                yard: 1,
+                foot: 3,
+                mile: 0.000568182,
+                inch: 36
+            },
+            foot: {
+                meter: 0.3048, // 1 pie = 0.3048 metros (CORRECTO)
+                millimeter: 304.8,
+                centimeter: 30.48,
+                kilometer: 0.0003048,
+                yard: 0.333333,
+                foot: 1,
+                mile: 0.000189394,
+                inch: 12
+            },
+            mile: {
+                meter: 1609.344, // 1 milla = 1609.344 metros (CORRECTO)
+                millimeter: 1609344,
+                centimeter: 160934.4,
+                kilometer: 1.609344,
+                yard: 1760,
+                foot: 5280,
+                mile: 1,
+                inch: 63360
+            },
+            inch: {
+                meter: 0.0254, // 1 pulgada = 0.0254 metros (CORRECTO)
+                millimeter: 25.4,
+                centimeter: 2.54,
+                kilometer: 0.0000254,
+                yard: 0.0277778,
+                foot: 0.0833333,
+                mile: 0.0000157828,
+                inch: 1
+            }
+        };
+
+        // Nombres de unidades abreviados
+        const unitAbbr = {
+            meter: "m",
+            millimeter: "mm",
+            centimeter: "cm",
+            kilometer: "km",
+            yard: "yd",
+            foot: "ft",
+            mile: "mi",
+            inch: "in"
+        };
+
+        // Prefijos métricos
+        const prefixSymbols = {
+            "1": "",
+            "0.001": "m",
+            "0.000001": "μ",
+            "1000": "k",
+            "1000000": "M",
+            "1000000000": "G",
+            "1000000000000": "T"
+        };
+
+        // Configurar eventos para los radio buttons
+        document.querySelectorAll('input[name="conversion-type"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'length') {
+                    document.getElementById('length-group').style.display = 'block';
+                    document.getElementById('prefix-group').style.display = 'none';
+                    document.getElementById('prefix-results').style.display = 'none';
+                } else {
+                    document.getElementById('length-group').style.display = 'none';
+                    document.getElementById('prefix-group').style.display = 'block';
+                    document.getElementById('prefix-results').style.display = 'block';
+                }
+            });
+        });
+
+        // Configurar evento para el botón de conversión
+        document.getElementById('convert-btn').addEventListener('click', convertUnits);
+
+        function convertUnits() {
+            const conversionType = document.querySelector('input[name="conversion-type"]:checked').value;
+            const errorElement = document.getElementById("error");
+            const resultElement = document.getElementById("result");
+            
+            errorElement.style.display = "none";
+            resultElement.style.display = "none";
+            
+            if (conversionType === 'length') {
+                convertLength();
+            } else {
+                convertPrefix();
+            }
+        }
+
+        function convertLength() {
+            const value = parseFloat(document.getElementById("value").value);
+            const fromUnit = document.getElementById("fromUnit").value;
+            const toUnit = document.getElementById("toUnit").value;
+            const errorElement = document.getElementById("error");
+            const resultElement = document.getElementById("result");
+            
+            if (isNaN(value)) {
+                showError("Por favor ingrese un valor numérico válido");
+                return;
+            }
+            
+            // Convertir directamente de una unidad a otra usando los factores corregidos
+            const convertedValue = value * lengthFactors[fromUnit][toUnit];
+            
+            // Mostrar resultado principal
+            document.getElementById("original-value").textContent = formatNumber(value);
+            document.getElementById("original-unit").textContent = unitAbbr[fromUnit];
+            document.getElementById("converted-value").textContent = formatNumber(convertedValue);
+            document.getElementById("converted-unit").textContent = unitAbbr[toUnit];
+            
+            // Mostrar el resultado
+            resultElement.style.display = "block";
+        }
+
+        function convertPrefix() {
+            const value = parseFloat(document.getElementById("prefix-value").value);
+            const fromPrefix = document.getElementById("fromPrefix").value;
+            const toPrefix = document.getElementById("toPrefix").value;
+            const errorElement = document.getElementById("error");
+            const resultElement = document.getElementById("result");
+            
+            if (isNaN(value)) {
+                showError("Por favor ingrese un valor numérico válido");
+                return;
+            }
+            
+            // Convertir primero a unidades base
+            const inBase = value * parseFloat(fromPrefix);
+            
+            // Convertir al prefijo deseado
+            const convertedValue = inBase / parseFloat(toPrefix);
+            
+            // Mostrar resultado principal
+            document.getElementById("original-value").textContent = formatNumber(value);
+            document.getElementById("original-unit").textContent = prefixSymbols[fromPrefix];
+            document.getElementById("converted-value").textContent = formatNumber(convertedValue);
+            document.getElementById("converted-unit").textContent = prefixSymbols[toPrefix];
+            
+            // Mostrar fórmula de conversión
+            const formula = `${value} × ${fromPrefix} / ${toPrefix} = ${formatNumber(convertedValue)}`;
+            document.getElementById("prefix-formula").textContent = formula;
+            
+            // Mostrar el resultado
+            resultElement.style.display = "block";
+        }
+
+        function formatNumber(num) {
+            // Para números enteros, mostrar sin decimales
+            if (Number.isInteger(num)) {
+                return num.toString();
+            }
+            // Para números con decimales, mostrar hasta 4 decimales
+            return parseFloat(num.toFixed(4)).toString();
+        }
+
+        function showError(message) {
+            const errorElement = document.getElementById("error");
+            errorElement.textContent = message;
+            errorElement.style.display = "block";
+        }
+
+        // Estilo dinámico al texto del select
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', function () {
+                this.style.color = '#4166d5';
+            });
+        });
+    </script>
+</body>
+</html>
