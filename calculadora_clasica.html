@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora Clásica</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #292A2D;
+      color: #e0e0e0;
+    }
+
+    h2 {
+      color: #4d6aff;
+      margin-bottom: 25px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-align: center;
+    }
+
+    .calculator {
+      background-color: #212327;
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+      margin: 0 auto;
+      box-shadow: 0 5px 15px rgb(61, 61, 61);
+    }
+
+    .calculator-header {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .calculator-logo {
+      width: 100px;
+      height: auto;
+    }
+
+    .display {
+      background-color: #2a2c30;
+      color: #ffffff;
+      font-size: 2em;
+      padding: 15px;
+      text-align: right;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      min-height: 50px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1.2em;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn.number {
+      background: linear-gradient(to bottom, #243fc8, #2f51ff);
+    }
+
+    .btn.number:hover {
+      background: linear-gradient(to bottom, #4166d5, #4166d5);
+    }
+
+    .btn.operator {
+      background: linear-gradient(to bottom, #1e90ff, #3399ff);
+    }
+
+    .btn.operator:hover {
+      background: linear-gradient(to bottom, #3399ff, #5badff);
+    }
+
+    .btn.equal {
+      grid-column: span 2;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Calculadora Clásica</h2>
+
+  <div class="calculator">
+    <div class="calculator-header">
+      <a href="https://grupoemiliocolor.github.io/MX/" target="_blank">
+        <img src="img/logo.png" alt="Logo" class="calculator-logo" />
+      </a>
+    </div>
+
+    <div class="display" id="display">0</div>
+
+    <div class="buttons">
+      <button class="btn number" onclick="appendNumber('7')">7</button>
+      <button class="btn number" onclick="appendNumber('8')">8</button>
+      <button class="btn number" onclick="appendNumber('9')">9</button>
+      <button class="btn operator" onclick="appendOperator('/')">/</button>
+
+      <button class="btn number" onclick="appendNumber('4')">4</button>
+      <button class="btn number" onclick="appendNumber('5')">5</button>
+      <button class="btn number" onclick="appendNumber('6')">6</button>
+      <button class="btn operator" onclick="appendOperator('*')">*</button>
+
+      <button class="btn number" onclick="appendNumber('1')">1</button>
+      <button class="btn number" onclick="appendNumber('2')">2</button>
+      <button class="btn number" onclick="appendNumber('3')">3</button>
+      <button class="btn operator" onclick="appendOperator('-')">-</button>
+
+      <button class="btn number" onclick="appendNumber('0')">0</button>
+      <button class="btn number" onclick="appendNumber('.')">.</button>
+      <button class="btn operator equal" onclick="calculate()">=</button>
+      <button class="btn operator" onclick="appendOperator('+')">+</button>
+
+      <button class="btn operator" onclick="clearDisplay()">C</button>
+      <button class="btn operator" onclick="deleteLast()">←</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+
+    function appendNumber(number) {
+      if (display.textContent === '0') {
+        display.textContent = number;
+      } else {
+        display.textContent += number;
+      }
+    }
+
+    function appendOperator(operator) {
+      display.textContent += operator;
+    }
+
+    function clearDisplay() {
+      display.textContent = '0';
+    }
+
+    function deleteLast() {
+      if (display.textContent.length > 1) {
+        display.textContent = display.textContent.slice(0, -1);
+      } else {
+        display.textContent = '0';
+      }
+    }
+
+    function calculate() {
+      try {
+        display.textContent = eval(display.textContent);
+      } catch (error) {
+        display.textContent = 'Error';
+      }
+    }
+  </script>
+</body>
+</html>
