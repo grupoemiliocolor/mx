@@ -415,6 +415,13 @@
     margin-top: -5px;
 }
 
+.inkspire-logo {
+    width: 250px;
+    height: auto;
+    margin: 0 auto 20px;
+    display: block;
+}
+
     </style>
 </head>
 <body>
@@ -476,7 +483,7 @@
         </p>
 
         <p>
-            Comenzamos ofreciendo estilógrafos a precios que desafiaban al mercado, convencidos de que ningún estudiante debería elegir entre calidad y economía. Lo que inició con tinta y papel pronto se transformó en algo más grande: colores vibrantes, hojas que guardaban ideas, materiales didácticos que inspiraban curiosidad hasta convertirse en EmilioColor Inkspire, un ecosistema en desarrollo para acompañar cada desafío académico.
+            Comenzamos ofreciendo estilógrafos a precios que desafiaban al mercado, convencidos de que ningún estudiante debería elegir entre calidad y economía. Lo que inició con tinta y papel pronto se transformó en algo más grande: colores vibrantes, hojas que guardaban ideas, materiales didácticos que inspiraban curiosidad hasta convertirse en EmilioColor® Inkspire, un ecosistema en desarrollo para acompañar cada desafío académico.
         </p>
 
         <p>
@@ -649,14 +656,18 @@
         };
 
         function showDownloads(start, end) {
-            // Ocultar todos los contenedores de información
-            document.getElementById('default-content').style.display = 'none';
+            // Ocultar contenedores de información pero mantener el mensaje y contadores
             document.querySelectorAll('.info-container, .tools-container').forEach(el => {
                 el.style.display = 'none';
             });
 
             const grid = document.getElementById('downloads-grid');
             grid.innerHTML = ''; // Limpiar grid antes de añadir nuevos elementos
+
+            // Agregar logo de Inkspire si es la sección de productos
+            if (start === 1 && end === 6) {
+                grid.innerHTML += `<img src="img/inkspire_logo.png" alt="EmilioColor Inkspire" class="inkspire-logo">`;
+            }
 
             let downloadCards = '';
             for (let i = start; i <= end; i++) {
@@ -688,19 +699,19 @@
                             <div class="product-card">
                                 <h3>${fileName}</h3>
                                 <p>${fileDescription}</p>
-                                ${downloadLink ? `<a href="${downloadLink}" class="download-btn" target="_blank">Descargar / Ver</a>` : '<p>Enlace no disponible</p>'}
+                                ${downloadLink ? `<a href="${downloadLink}" class="download-btn" target="_blank">Abrir</a>` : '<p>Enlace no disponible</p>'}
                             </div>
                         `;
                     }
                 }
             }
 
-            grid.innerHTML = downloadCards;
+            grid.innerHTML += downloadCards;
             grid.style.display = 'grid';
         }
 
         function showInfo(infoId) {
-            document.getElementById('default-content').style.display = 'none';
+            // Ocultar solo los contenedores que no sean el mensaje por defecto
             document.getElementById('downloads-grid').style.display = 'none';
             document.querySelectorAll('.info-container, .tools-container').forEach(el => {
                 el.style.display = 'none';
@@ -715,9 +726,6 @@
                      const wrapper = targetElement.querySelector('.tools-wrapper');
                      if(wrapper) wrapper.style.display = 'flex';
                  }
-            } else {
-                // Mostrar contenido por defecto si no se especifica infoId o no se encuentra
-                document.getElementById('default-content').style.display = 'block';
             }
         }
 
@@ -748,7 +756,9 @@
 
         // Iniciar la página
         window.onload = function() {
-            showInfo(null); // Muestra el contenido por defecto inicial
+            // Mostrar el contenido por defecto inicialmente
+            document.getElementById('default-content').style.display = 'block';
+            document.getElementById('downloads-grid').style.display = 'none';
 
             // Inicia la animación de los contadores
             animateCounter('count-clientes', 700, 2000);
