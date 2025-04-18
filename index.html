@@ -58,8 +58,6 @@
             overflow: hidden;
         }
 
-        
-
         h1 {
             color: var(--text-white);
             margin: 10px 0;
@@ -221,14 +219,6 @@
             flex-direction: column;
             gap: 15px;
             background-color: transparent;
-        }
-
-        .product-image {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 10px;
         }
 
         .product-buttons {
@@ -593,7 +583,17 @@
             file20: "https://ejemplo.com/descarga20"
         };
 
-        // ENLACES DE IMÁGENES EDITABLES
+        // ENLACES DE WHATSAPP PARA CADA PRODUCTO
+        const whatsappLinks = {
+            file1: "https://api.whatsapp.com/send/?phone=5625377747&text=Hola%2C+estoy+interesado+en+tu+Estilografo+EmilioColor+de+tinta+autom%C3%A1tica+color+negro&type=phone_number&app_absent=0",
+            file2: "https://api.whatsapp.com/send/?phone=5625377747&text=Hola%2C+estoy+interesado+en+tu+Paquete+de+estilografos+de+colores+EmilioColor+Inkspire&type=phone_number&app_absent=0",
+            file3: "https://api.whatsapp.com/send/?phone=5625377747&text=Hola%2C+estoy+interesado+en+tu+Block+de+notas+de+oficina+EmilioColor+Inkspire&type=phone_number&app_absent=0",
+            file4: "https://api.whatsapp.com/send/?phone=5625377747&text=Hola%2C+estoy+interesado+en+tu+Paquete+de+hojas+cuadriculadas+EmilioColor+Inkspire&type=phone_number&app_absent=0",
+            file5: "https://api.whatsapp.com/send/?phone=5625377747&text=Hola%2C+estoy+interesado+en+tu+Paquete+de+hojas+cuadriculadas+para+carpeta+EmilioColor+Inkspire&type=phone_number&app_absent=0",
+            file6: "https://api.whatsapp.com/send/?phone=5625377747&text=Hola%2C+estoy+interesado+en+tu+Paquete+de+Plantillas+Isom%C3%A9tricas+EmilioColor+Inkspire&type=phone_number&app_absent=0"
+        };
+
+        // ENLACES DE IMÁGENES PARA CADA PRODUCTO
         const imageLinks = {
             file1: "https://ejemplo.com/imagenes-producto1",
             file2: "https://ejemplo.com/imagenes-producto2",
@@ -601,16 +601,6 @@
             file4: "https://ejemplo.com/imagenes-producto4",
             file5: "https://ejemplo.com/imagenes-producto5",
             file6: "https://ejemplo.com/imagenes-producto6"
-        };
-
-        // NÚMEROS DE TELÉFONO EDITABLES
-        const phoneNumbers = {
-            file1: "tel:+525512345678",
-            file2: "tel:+525512345678",
-            file3: "tel:+525512345678",
-            file4: "tel:+525512345678",
-            file5: "tel:+525512345678",
-            file6: "tel:+525512345678"
         };
 
         // NOMBRES EDITABLES
@@ -656,16 +646,6 @@
             file6: "$30.00 MXN"
         };
 
-        // IMÁGENES DE PRODUCTOS EDITABLES
-        const productImages = {
-            file1: "img/producto1.jpg",
-            file2: "img/producto2.jpg",
-            file3: "img/producto3.jpg",
-            file4: "img/producto4.jpg",
-            file5: "img/producto5.jpg",
-            file6: "img/producto6.jpg"
-        };
-
         function showDownloads(start, end) {
             // Ocultar todos los contenedores de información
             document.getElementById('default-content').style.display = 'none';
@@ -684,23 +664,20 @@
                     const fileName = fileNames[fileKey] || `Archivo ${i}`;
                     const fileDescription = fileDescriptions[fileKey] || "Descripción no disponible";
                     const filePrice = filePrices[fileKey]; // Puede ser undefined
-                    const productImage = productImages[fileKey]; // Puede ser undefined
+                    const whatsappLink = whatsappLinks[fileKey]; // Puede ser undefined
                     const imageLink = imageLinks[fileKey]; // Puede ser undefined
-                    const phoneLink = phoneNumbers[fileKey]; // Puede ser undefined
                     const downloadLink = fileLinks[fileKey]; // Puede ser undefined
-
 
                     if (start === 1 && end === 6) { // Asumimos que 1-6 son Productos
                          downloadCards += `
                             <div class="product-card">
-                                ${productImage ? `<img src="${productImage}" alt="${fileName}" class="product-image">` : ''}
                                 <h3>${fileName}</h3>
                                 <p>${fileDescription}</p>
                                 ${filePrice ? `<div class="product-price">${filePrice}</div>` : ''}
                                 <div class="product-buttons">
-                                    ${imageLink ? `<a href="${imageLink}" class="images-btn" target="_blank">Ver Imágenes</a>` : ''}
-                                    ${phoneLink ? `<a href="${phoneLink}" class="buy-btn">Comprar</a>` : ''}
-                                    ${!imageLink && !phoneLink && downloadLink ? `<a href="${downloadLink}" class="download-btn" target="_blank">Ver Detalles</a>` : ''}
+                                    ${imageLink ? `<a href="${imageLink}" class="images-btn" target="_blank">Ver imágenes</a>` : ''}
+                                    ${whatsappLink ? `<a href="${whatsappLink}" class="buy-btn">Comprar</a>` : ''}
+                                    ${!imageLink && !whatsappLink && downloadLink ? `<a href="${downloadLink}" class="download-btn" target="_blank">Ver Detalles</a>` : ''}
                                 </div>
                             </div>
                         `;
