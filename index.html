@@ -58,6 +58,8 @@
             overflow: hidden;
         }
 
+        
+
         h1 {
             color: var(--text-white);
             margin: 10px 0;
@@ -383,41 +385,46 @@
                 flex-direction: row;
                 justify-content: space-around;
                 flex-wrap: wrap;
+                text-align: center;
+
             }
             .counter-item {
                flex-basis: calc(50% - 20px);
                min-width: 100px;
+               text-align: center;
+
             }
             .counter-number {
                 font-size: 1.5rem;
+                text-align: center;
+
             }
              .counter-label {
                 font-size: 0.8rem;
+                text-align: center;
+
             }
         }
 
-        /* Mejoras para dispositivos muy pequeños */
-        @media only screen and (max-width: 360px) {
-            h1 {
-                font-size: 1.3rem;
-            }
+        .custom-hr {
+    border: none;
+    height: 1px;
+    background-color: #212327;
+    width: 100%;
+    max-width: 600px; /* Opcional: para limitar su tamaño */
+    margin: 0 auto; /* Centrado horizontal */
+}
 
-            h2 {
-                font-size: 1.1rem;
-            }
+.counter-footer {
+    text-align: center;
+    margin-top: 20px;
+}
 
-            .option-btn {
-                font-size: 14px;
-                padding: 12px 8px;
-            }
+.counter-note {
+    font-size: 0.8rem;
+    margin-top: -5px;
+}
 
-             .counter-item {
-               flex-basis: calc(50% - 15px);
-            }
-             .counter-note {
-                font-size: 0.8rem;
-             }
-        }
     </style>
 </head>
 <body>
@@ -459,8 +466,12 @@
             <p class="counter-label">Sub-Marcas</p>
         </div>
     </div>
-
-    <p class="counter-note">*Las ventas realizadas y los clientes satisfechos reflejan la suma total de todas las submarcas.</p>
+    <div class="counter-footer">
+        <p class="counter-note">
+            Las ventas realizadas y los clientes satisfechos reflejan la suma total de todas las submarcas.
+        </p>
+    </div>
+    
 
     <div class="content">
         <div id="downloads-container">
