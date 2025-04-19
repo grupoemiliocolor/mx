@@ -422,7 +422,13 @@
     display: block;
 }
 
+.fig-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
     </style>
+<link rel="icon" type="image/png" href="img/EC.png">
 </head>
 <body>
     <div class="topbar">
@@ -440,6 +446,7 @@
             <button class="option-btn" onclick="showDownloads(1, 6)">EmilioColor Inkspire</button>
             <button class="option-btn" onclick="showDownloads(11, 20)">Documentación y Recursos</button>
             <button class="option-btn" onclick="showInfo('herramientas')">Herramientas</button>
+            <button class="option-btn" onclick="showFigs()">Buscador Fig</button>
             <button class="option-btn" onclick="showInfo('info2')">Soporte Técnico</button>
         </div>
     </div>
@@ -553,6 +560,21 @@
                         <h3>EmilioColor Trabajadores</h3>
                         <p>Herramienta NO abierta al público (solo trabajadores) Requiere Usuario y Contraseña</p>
                         <a href="https://grupoemiliocolor.github.io/outside/" class="info-link">Entrar al sitio</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="fig-container" class="info-container">
+                <div class="fig-container">
+                    <div>
+                        <h3>Fig Web</h3>
+                        <p>Interfaz gráfica de búsqueda en línea mediante Google</p>
+                        <a href="https://grupoemiliocolor.github.io/mx/fig_web.html" class="info-link">Usar interfaz</a>
+                    </div>
+                    <div>
+                        <h3>Fig Web Académico</h3>
+                        <p>Interfaz gráfica de búsqueda en línea mediante Google scholar</p>
+                        <a href="https://grupoemiliocolor.github.io/mx/fig_web_academico.html" class="info-link">Usar interfaz</a>
                     </div>
                 </div>
             </div>
@@ -720,6 +742,14 @@
                     if (wrapper) wrapper.style.display = 'flex';
                 }
             }
+        }
+        
+        function showFigs() {
+            document.getElementById('downloads-grid').style.display = 'none';
+            document.querySelectorAll('.info-container, .tools-container').forEach(el => {
+                el.style.display = 'none';
+            });
+            document.getElementById('fig-container').style.display = 'block';
         }
     
         function animateCounter(id, finalValue, duration = 2000) {
