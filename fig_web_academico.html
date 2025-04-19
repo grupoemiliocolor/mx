@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Fig Web Académico</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding-top: 100px;
+      background-color: #f9f9f9;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      transition: background-image 0.5s ease;
+    }
+
+    .settings-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      cursor: pointer;
+    }
+
+    .settings-btn img {
+      width: 30px;
+      height: 30px;
+    }
+
+    .settings-menu {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100vh;
+      width: 250px;
+      background: #eeeeee;
+      box-shadow: -4px 0 10px rgba(0,0,0,0.2);
+      padding: 20px;
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .settings-menu button {
+      background-color: #E84442;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin: 10px 0;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .close-settings {
+      background-color: #a53c5f !important;
+      color: white;
+      margin-top: 30px;
+    }
+
+    .titulo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 10px;
+    }
+
+    .titulo-container img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+    }
+
+    h1 {
+      font-size: 64px;
+      color: #E84442;
+      margin: 0;
+    }
+
+    .subtitulo {
+      color: #777;
+      margin-bottom: 40px;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+
+    form {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    input {
+      padding: 0 15px;
+      width: 500px;
+      height: 50px;
+      font-size: 16px;
+      border: 1px solid #cccccc96;
+      border-radius: 22px;
+      box-sizing: border-box;
+      background-color: rgba(255, 255, 255, 0.67);
+      color: #000;
+    }
+
+    #sugerencias {
+      position: absolute;
+      top: 55px;
+      left: 0;
+      right: 60px;
+      width: 500px;
+      background-color: rgba(255, 255, 255, 0.7) !important;
+      backdrop-filter: blur(8px);
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      text-align: left;
+      max-height: 150px;
+      overflow-y: auto;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: none;
+    }
+
+    .sugerencia {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .sugerencia:hover {
+      background-color: #f0f0f0;
+    }
+
+    button[type="submit"] {
+      background-color: #E84442;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    button[type="submit"] img {
+      width: 24px;
+      height: 24px;
+    }
+
+    .google-label {
+      font-size: 12px;
+      color: #555;
+      margin-top: 10px;
+    }
+
+    .fixed-footer {
+      position: fixed;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      color: #989898;
+      font-size: 12px;
+    }
+
+    /* Estilos para el modal de créditos */
+    .modal {
+      position: fixed;
+      z-index: 1001;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      padding: 20px 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      position: relative;
+    }
+
+    .modal-content h2 {
+      margin-top: 0;
+      color: #E84442;
+    }
+
+    .modal-content .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      color: #aaa;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .modal-content ul {
+      text-align: left;
+      font-size: 14px;
+      padding-left: 20px;
+    }
+
+    .modal-content a {
+      color: #E84442;
+      text-decoration: none;
+    }
+
+    .modal-content a:hover {
+      text-decoration: underline;
+    }
+  </style>
+  <link rel="icon" type="image/png" href="img_higo/fig_academico.png">
+</head>
+<body>
+
+<!-- Barra superior: botón de ajustes y botón de académico -->
+<div style="position: absolute; top: 20px; right: 20px; display: flex; align-items: center;">
+  <a href="fig_web.html" title="Ir a Fig Web" style="margin-right: 50px;">
+    <img src="img_higo/fig_logo.png" alt="Fig Web" style="width: 30px; height: 30px;">
+  </a>
+  <div class="settings-btn" id="settingsToggle">
+    <img src="https://img.icons8.com/ios-filled/50/000000/settings.png" alt="Ajustes">
+  </div>
+</div>
+
+<!-- Panel lateral de configuración -->
+<div class="settings-menu" id="settingsMenu">
+    <button class="close-settings" onclick="cerrarAjustes()">Cerrar panel</button>
+    <button id="borrarHistorial">Borrar historial de búsquedas</button>
+    <button id="mostrarCreditos">Créditos de imágenes</button>
+    <button onclick="restaurarFondo()">Fondo Blanco (Default)</button>
+  <button onclick="cambiarFondo('img_higo/HIGO1.jpg')">Fondo 1</button>
+  <button onclick="cambiarFondo('img_higo/HIGO2.jpg')">Fondo 2</button>
+  <button onclick="cambiarFondo('img_higo/HIGO3.jpg')">Fondo 3</button>
+  <button onclick="cambiarFondo('img_higo/HIGO5.jpg')">Fondo 4</button>
+</div>
+
+<!-- Título y logo -->
+<div class="titulo-container">
+  <a href="https://grupoemiliocolor.github.io/mx/index.html" target="_blank">
+    <img src="img_higo/fig_academico.png" alt="Logo">
+  </a>
+  <h1>Fig Web Académico</h1>
+</div>
+
+<div class="subtitulo" id="subtituloColor">Interfaz impulsada por Grupo EmilioColor®</div>
+
+<!-- Formulario -->
+<form id="buscadorForm" autocomplete="off">
+  <div style="position: relative;">
+    <input type="text" id="busqueda" placeholder="Buscar en Fig Web..." autocomplete="off">
+    <div id="sugerencias"></div>
+  </div>
+  <button type="submit">
+    <img src="https://img.icons8.com/ios-filled/50/ffffff/search--v1.png" alt="Buscar">
+  </button>
+</form>
+
+<div class="google-label fixed-footer">búsqueda mediante Google scholar</div>
+
+<!-- Modal de créditos -->
+<div id="creditosModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Créditos de Imágenes</h2>
+    <ul>
+      <li>Foto de <strong>Ella Olsson</strong>: <a href="https://www.pexels.com/es-es/foto/frutas-surtidas-en-un-tazon-1458695/" target="_blank">ver imagen</a></li>
+      <li>Foto de <strong>Lum3n</strong>: <a href="https://www.pexels.com/es-es/foto/frutas-de-guayaba-en-rodajas-en-la-mesa-1410237/" target="_blank">ver imagen</a></li>
+      <li>Foto de <strong>Pixabay</strong>: <a href="https://www.pexels.com/es-es/foto/fruta-roja-y-amarilla-33791/" target="_blank">ver imagen</a></li>
+      <li>Foto de <strong>Tijana Drndarski</strong>: <a href="https://www.pexels.com/es-es/foto/variedad-de-frutas-3252136/" target="_blank">ver imagen</a></li>
+      <li>Foto de <strong>Vanessa Loring</strong>: <a href="https://www.pexels.com/es-es/foto/nueces-moradas-y-marrones-en-plato-redondo-marron-5965953/" target="_blank">ver imagen</a></li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('buscadorForm');
+  const input = document.getElementById('busqueda');
+  const sugerenciasDiv = document.getElementById('sugerencias');
+  const borrarHistorialBtn = document.getElementById('borrarHistorial');
+  const settingsToggle = document.getElementById('settingsToggle');
+  const settingsMenu = document.getElementById('settingsMenu');
+  const subtitulo = document.getElementById('subtituloColor');
+  const creditosBtn = document.getElementById('mostrarCreditos');
+  const creditosModal = document.getElementById('creditosModal');
+  const closeCreditos = creditosModal.querySelector('.close');
+
+  // Mostrar/Ocultar panel de ajustes
+  settingsToggle.addEventListener('click', () => {
+    settingsMenu.style.display = settingsMenu.style.display === 'flex' ? 'none' : 'flex';
+    settingsMenu.style.flexDirection = 'column';
+  });
+
+  // Cierra panel de configuración
+  function cerrarAjustes() {
+    settingsMenu.style.display = 'none';
+  }
+
+  // Cierra el menú si haces clic fuera
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.settings-btn') && !e.target.closest('.settings-menu')) {
+      settingsMenu.style.display = 'none';
+    }
+  });
+
+  // Cambiar fondo
+  function cambiarFondo(imagen) {
+    document.body.style.backgroundImage = `url('${imagen}')`;
+    subtitulo.style.color = '#eeeeee';
+  }
+
+  function restaurarFondo() {
+    document.body.style.backgroundImage = '';
+    subtitulo.style.color = '#777';
+  }
+
+  // Historial de búsquedas
+  function guardarBusqueda(busqueda) {
+    let historial = JSON.parse(localStorage.getItem('historialBusquedas')) || [];
+    if (!historial.includes(busqueda)) {
+      historial.unshift(busqueda);
+      if (historial.length > 10) historial = historial.slice(0, 10);
+      localStorage.setItem('historialBusquedas', JSON.stringify(historial));
+    }
+  }
+
+  function mostrarSugerencias(texto) {
+    const historial = JSON.parse(localStorage.getItem('historialBusquedas')) || [];
+    const sugerencias = historial.filter(item => item.toLowerCase().includes(texto.toLowerCase()));
+    sugerenciasDiv.innerHTML = '';
+
+    if (sugerencias.length === 0) {
+      sugerenciasDiv.style.display = 'none';
+      return;
+    }
+
+    sugerencias.forEach(item => {
+      const div = document.createElement('div');
+      div.classList.add('sugerencia');
+      div.textContent = item;
+      div.onclick = () => {
+        input.value = item;
+        sugerenciasDiv.style.display = 'none';
+      };
+      sugerenciasDiv.appendChild(div);
+    });
+
+    sugerenciasDiv.style.display = 'block';
+  }
+
+  input.addEventListener('input', () => {
+    mostrarSugerencias(input.value);
+  });
+
+  input.addEventListener('focus', () => {
+    mostrarSugerencias(input.value);
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#busqueda') && !e.target.closest('#sugerencias')) {
+      sugerenciasDiv.style.display = 'none';
+    }
+  });
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const query = input.value.trim();
+    if (query) {
+      guardarBusqueda(query);
+      const url = `https://scholar.google.com/scholar?q=${encodeURIComponent(query)}`;
+      window.open(url, '_blank');
+      input.value = '';
+      sugerenciasDiv.style.display = 'none';
+    }
+  });
+
+  borrarHistorialBtn.addEventListener('click', () => {
+    localStorage.removeItem('historialBusquedas');
+    sugerenciasDiv.innerHTML = '';
+    alert("Historial eliminado correctamente.");
+    settingsMenu.style.display = 'none';
+  });
+
+  // Control del modal de créditos
+  creditosBtn.addEventListener('click', () => {
+    creditosModal.style.display = 'flex';
+    settingsMenu.style.display = 'none';
+  });
+
+  closeCreditos.addEventListener('click', () => {
+    creditosModal.style.display = 'none';
+  });
+
+  window.addEventListener('click', (event) => {
+    if (event.target === creditosModal) {
+      creditosModal.style.display = 'none';
+    }
+  });
+</script>
+</body>
+</html>
