@@ -14,7 +14,25 @@
     Esta plantilla y todo su contenido son propiedad exclusiva de Grupo EmilioColor® y están protegidos por las leyes de derechos de autor.
     Queda prohibida la reproducción total o parcial sin la autorización expresa del titular de los derechos.
     -->
+<style>
+    .send-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 
+.send-btn:hover {
+  background-color: #0056b3;
+}
+
+</style>
 </head>
 <body>
     <!-- Encabezado Estandarizado -->
@@ -116,7 +134,7 @@
                     El reporte deberá ser enviado al correo <strong>emiliocolormexico@gmail.com</strong>, con el fin de registrar, clasificar y organizar adecuadamente la información.
                   </li>
                 </ol>
-                <button id="send-btn">Enviar archivos</button>
+                <a href="mailto:emiliocolor@gmail.com" id="send-btn" class="send-btn">Enviar archivos</a>
             </div>
         </div>
     </div>
