@@ -84,6 +84,10 @@ h2 {
     text-align: center;
 }
 
+.input-group {
+    margin-bottom: 20px;
+}
+
 label {
     display: block;
     margin-bottom: 8px;
@@ -302,5 +306,35 @@ button:active {
 
     .footer-bottom {
         text-align: center;
+    }
+}
+   /* Estilos responsive para celulares */
+   @media (max-width: 768px) {
+    .main-content {
+        padding: 10px;
+        margin: 0 auto;
+        width: 95%;
+    }
+    
+    .main-content > div {
+        padding: 15px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    table {
+        font-size: 14px;
+    }
+    
+    td {
+        padding: 6px !important;
+    }
+    
+    h2, h3 {
+        font-size: 1.2rem;
+    }
+    
+    .header, .footer-container {
+        width: 100%;
     }
 }
