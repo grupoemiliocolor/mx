@@ -2,823 +2,204 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EmilioColor México</title>
-    <style>
-        :root {
-            --primary-color: #2d6df6;
-            --primary-dark: #1a56d4;
-            --primary-light: #e8f0fe;
-            --background-light: #ffffff;
-            --card-light: #f8f9fa;
-            --card-hover: #f0f2f5;
-            --text-dark: #333333;
-            --text-gray: #666666;
-            --text-light-gray: #888888;
-            --border-color: #e0e0e0;
-            --success-color: #28a745;
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-            --radius-sm: 4px;
-            --radius-md: 8px;
-            --radius-lg: 12px;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: var(--background-light);
-            color: var(--text-dark);
-            line-height: 1.6;
-            -webkit-text-size-adjust: 100%;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .topbar {
-            width: 100%;
-            padding: 20px;
-            background-color: var(--background-light);
-            border-radius: var(--radius-md);
-            margin-bottom: 20px;
-            box-shadow: var(--shadow-sm);
-            display: flex;
-            flex-direction: column;
-            border: none
-        }
-
-        .content {
-            padding: 20px;
-            background-color: var(--background-light);
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-sm);
-            border: none
-        }
-
-        .logo-container {
-            width: 100%;
-            height: auto;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: var(--radius-sm);
-            overflow: hidden;
-        }
-
-        h1 {
-            color: var(--text-dark);
-            margin: 15px 0;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-align: center;
-            font-size: 1.8rem;
-        }
-
-        h2 {
-            color: var(--primary-color);
-            margin: 15px 0;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-align: center;
-            font-size: 1.4rem;
-        }
-
-        h3 {
-            color: var(--primary-color);
-            margin: 15px 0;
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-
-        .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .option-btn {
-            padding: 14px 12px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            width: 100%;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .option-btn:hover, .option-btn:focus {
-            background-color: var(--primary-dark);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .download-btn, .images-btn, .buy-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px 14px;
-            margin: 0;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 14px;
-            transition: all 0.2s ease;
-            width: 100%;
-            height: auto;
-            flex: 1;
-            font-weight: 500;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .download-btn:hover, .images-btn:hover, .buy-btn:hover,
-        .download-btn:focus, .images-btn:focus, .buy-btn:focus {
-            background-color: var(--primary-dark);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .images-btn {
-            background-color: var(--primary-dark);
-        }
-
-        .images-btn:hover, .images-btn:focus {
-            background-color: #1542b0;
-        }
-
-        .downloads-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-
-        .info-container {
-            display: none;
-            padding: 20px;
-            background-color: var(--card-light);
-            border-radius: var(--radius-md);
-            margin-bottom: 20px;
-            border-left: 4px solid var(--primary-color);
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-color);
-        }
-
-        .tools-container {
-            display: none;
-            background-color: transparent;
-            padding: 0;
-            margin-bottom: 0;
-        }
-
-        .tool-container {
-            padding: 20px;
-            background-color: var(--card-light);
-            border-radius: var(--radius-md);
-            margin-bottom: 20px;
-            border-left: 4px solid var(--primary-color);
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-color);
-        }
-
-        .info-link {
-            display: inline-block;
-            padding: 10px 14px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            text-decoration: none;
-            margin-top: 12px;
-            width: 100%;
-            text-align: center;
-            font-weight: 500;
-            box-shadow: var(--shadow-sm);
-            transition: all 0.2s ease;
-        }
-
-        .info-link:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .product-card {
-            background-color: var(--card-light);
-            padding: 20px;
-            border-radius: var(--radius-md);
-            transition: all 0.2s ease;
-            border-left: 4px solid var(--primary-color);
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-color);
-        }
-
-        .product-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
-            background-color: var(--card-hover);
-        }
-
-        .emiliocolor-image {
-            width: 100%;
-            height: auto;
-            border-radius: var(--radius-sm);
-            transition: all 0.2s ease;
-            cursor: pointer;
-            max-width: 300px;
-        }
-
-        .emiliocolor-image:hover {
-            transform: scale(1.02);
-            opacity: 0.9;
-        }
-
-        .tools-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            background-color: transparent;
-        }
-
-        .product-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .product-price {
-            font-weight: bold;
-            color: var(--success-color);
-            margin: 15px 0;
-            font-size: 1.2rem;
-        }
-
-        .mission-vision-container {
-            background-color: var(--card-light);
-            padding: 20px;
-            border-radius: var(--radius-md);
-            margin-bottom: 20px;
-            border-left: 4px solid var(--primary-color);
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-color);
-        }
-
-        .mission-vision-item {
-            margin-bottom: 20px;
-        }
-
-        .mission-vision-item h3 {
-            color: var(--primary-color);
-            margin-bottom: 12px;
-        }
-
-        .mission-vision-item p {
-            font-style: italic;
-            margin-left: 15px;
-            border-left: 2px solid var(--primary-color);
-            padding-left: 15px;
-            color: var(--text-gray);
-        }
-
-        .value-statement {
-            font-weight: 500;
-            text-align: center;
-            padding: 15px;
-            background-color: var(--primary-light);
-            border-radius: var(--radius-md);
-            border: 1px dashed var(--primary-color);
-            color: var(--text-dark);
-        }
-
-        .welcome-message {
-            font-size: 1rem;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            padding: 15px;
-            background-color: var(--primary-light);
-            border-radius: var(--radius-md);
-            border-left: 3px solid var(--primary-color);
-            color: var(--text-dark);
-        }
-
-        #default-content {
-            display: block;
-        }
-
-        /* Estilos para la sección de contadores */
-        .counter-section {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            flex-wrap: wrap;
-            background-color: var(--background-light);
-            padding: 25px 15px;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-sm);
-            text-align: center;
-            gap: 20px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 20px;
-        }
-
-        .counter-item {
-            flex: 1;
-            min-width: 120px;
-            padding: 10px;
-        }
-
-        .counter-number {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            display: inline-block;
-            margin-right: 2px;
-        }
-
-        .counter-label {
-            font-size: 0.95rem;
-            color: var(--text-gray);
-            margin-top: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 500;
-        }
-
-        .counter-note {
-            font-size: 0.85rem;
-            color: var(--text-gray);
-            text-align: center;
-            margin: -5px auto 20px;
-            padding: 10px 20px;
-            font-style: italic;
-            line-height: 1.4;
-            background-color: var(--card-light);
-            border-radius: var(--radius-md);
-            display: inline-block;
-            border: 1px solid var(--border-color);
-            max-width: 90%;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .custom-hr {
-            border: none;
-            height: 1px;
-            background-color: var(--border-color);
-            width: 100%;
-            max-width: 600px;
-            margin: 20px auto;
-        }
-
-        .counter-footer {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .inkspire-logo {
-            width: 250px;
-            height: auto;
-            margin: 0 auto 25px;
-            display: block;
-        }
-
-        .fig-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        p {
-            color: var(--text-gray);
-            margin-bottom: 15px;
-            line-height: 1.6;
-        }
-
-        /* Estilos para pantallas más grandes */
-        @media only screen and (min-width: 768px) {
-            body {
-                padding: 30px;
-            }
-
-            .options-container {
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .option-btn {
-                min-width: 220px;
-                width: auto;
-                flex: 1 1 calc(50% - 12px);
-                max-width: 300px;
-            }
-
-            .downloads-grid {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            }
-
-            .product-buttons {
-                flex-direction: row;
-            }
-
-            .download-btn, .images-btn, .buy-btn {
-                width: auto;
-            }
-        }
-
-        /* Ajustes responsivos para los contadores */
-        @media only screen and (max-width: 600px) {
-            .counter-section {
-                flex-direction: row;
-                justify-content: space-around;
-                flex-wrap: wrap;
-                text-align: center;
-            }
-            .counter-item {
-                flex-basis: calc(50% - 20px);
-                min-width: 100px;
-                text-align: center;
-            }
-            .counter-number {
-                font-size: 1.8rem;
-                text-align: center;
-            }
-            .counter-label {
-                font-size: 0.85rem;
-                text-align: center;
-            }
-        }
-
-        /* Animaciones suaves */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .info-container, .tool-container, .product-card {
-            animation: fadeIn 0.3s ease-out forwards;
-        }
-        .submarca-link {
-    font-size: 14px;
-    color: var(--text-light-gray); /* Mismo color que el texto normal */
-    cursor: pointer;
-    font-weight: 500;
-    padding: 0 10px;
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-
-.submarca-link:hover {
-    color: var(--primary-color); /* Solo cambia al pasar el mouse */
-    text-decoration: underline;
-}
-
-
-    </style>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" type="image/png" href="img/EC.png">
+    <link rel="stylesheet" href="styles/style_pages_generals.css">
+    
+    <!--
+    Copyright © 2025 Grupo EmilioColor®. 
+    Todos los derechos reservados. 
+    Esta plantilla y todo su contenido son propiedad exclusiva de Grupo EmilioColor® y están protegidos por las leyes de derechos de autor.
+    Queda prohibida la reproducción total o parcial sin la autorización expresa del titular de los derechos.
+    -->
+    
 </head>
 <body>
-    <div class="container">
-        <div class="topbar">
-
-            <div class="submarcas-links" style="text-align: center; margin-bottom: 40px; margin-top: -5px;">
-                <span class="submarca-link" onclick="showDownloads(1, 6)">EmilioColor Inkspire</span> |
-                <span class="submarca-link" onclick="showDownloads(21, 25)">ASEC Académico</span>
-                <!--<span class="submarca-link" onclick="showDownloads(26, 30)">Mecánica Especializada</span>-->
+    <!-- Encabezado -->
+    <div class="header">
+        <img src="img/grupo_logo.png" alt="Logo EmilioColor" class="header-logo">
+        <div class="header-options">
+            <a href="https://grupoemiliocolor.github.io/outside/" target="_blank">Trabajadores</a>
+        </div>
+    </div>
+    
+    <div class="subheader">
+        <div class="submarcas-links">
+            <a href="https://grupoemiliocolor.github.io/mx/inkspire.html" class="submarca-link">EmilioColor® Inkspire</a>
+            <a href="https://grupoemiliocolor.github.io/mx/asec.html" class="submarca-link">EmilioColor® Education</a>
+        </div>
+        
+        <h1>Bienvenido a EmilioColor México</h1>
+        <h2>Seleccione una categoría:</h2>
+    </div>
+    
+    <!-- Contenido principal -->
+    <div class="main-content">
+        
+        <div class="options-container">
+            <a href="https://grupoemiliocolor.github.io/mx/quienes-somos.html" class="option-btn">Blog</a>
+            <a href="https://grupoemiliocolor.github.io/mx/recursos-educativos.html" class="option-btn">Documentación</a>
+            <a href="https://grupoemiliocolor.github.io/mx/herramientas.html" class="option-btn">Herramientas</a>
+            <a href="mailto:emiliocolormexico@gmail.com" class="option-btn">Educativo</a>
+        </div>
+        
+        <!-- Sección de contadores -->
+        <div class="counter-section">
+            <div class="counter-item">
+                <span class="counter-number" id="count-clientes">0</span>+
+                <p class="counter-label">Clientes Satisfechos</p>
+            </div>
+            <div class="counter-item">
+                <span class="counter-number" id="count-ventas">0</span>+
+                <p class="counter-label">Ventas Realizadas</p>
+            </div>
+            <div class="counter-item">
+                <span class="counter-number" id="count-ciudades">0</span>+
+                <p class="counter-label">Ciudades Alcanzadas</p>
+            </div>
+            <div class="counter-item">
+                <span class="counter-number" id="count-submarcas">0</span>+
+                <p class="counter-label">Sub-Marcas</p>
+            </div>
+        </div>
+        <div class="counter-footer">
+            <p class="counter-note">
+                Las ventas realizadas y los clientes satisfechos reflejan la suma total de todas las submarcas.
+            </p>
+        </div>
+        
+        <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: var(--shadow-sm); margin-top: 20px;">
+            <div class="subheader">
+            <h1 style="text-align: center;"> Acerca de </h1>
             </div>
             
-            <!-- LOGO -->
-            <div class="logo-container" style="pointer-events: none;">
-                <img src="img/grupo_logo.png"
-                     alt="Imagen EmilioColor"
-                     class="emiliocolor-image"
-                     style="cursor: default; pointer-events: none;" />
+            <h3>Nuestra Historia</h3>
+            <p>
+                El Lunes 09 de septiembre de 2024, EmilioColor® nació con un lápiz en la mano y un sueño en el corazón: derribar las barreras económicas que limitan el acceso a una educación digna.
+            </p>
+
+            <p>
+                Comenzamos ofreciendo estilógrafos a precios que desafiaban al mercado, convencidos de que ningún estudiante debería elegir entre calidad y economía. Lo que inició con tinta y papel pronto se transformó en algo más grande: colores vibrantes, hojas que guardaban ideas, materiales didácticos que inspiraban curiosidad hasta convertirse en EmilioColor® Inkspire, un ecosistema en desarrollo para acompañar cada desafío académico.
+            </p>
+
+            <p>
+                El Lunes 14 de Abril de 2025, EmilioColor® celebró el acuerdo de cooperación entre la empresa MECÁNICA AUTOMOTRIZ ESPECIALIZADA EN VEHICULOS PESADOS SAS DE CV para la Transformación digital y formación de personal.
+            </p>
+
+            <p>
+                Pero nuestro compromiso iba más allá. Creamos Grupo EmilioColor® un conglomerado de 3 submarcas donde posteriormente se incluiria Programa Académico ASEC; la rama académica de Grupo EmilioColor® para formar a las nuevas generaciones en las disciplinas que mueven al mundo: ciencia, tecnología, ingeniería, arte y matemáticas (STEAM). Porque el futuro no se espera, se construye.
+            </p>
+
+            <p>
+                Y porque creemos que el conocimiento sólo cobra valor cuando se comparte, complementamos cada producto con recursos virtuales, porque creemos que la educacion es el arma mas poderosa para cambiar el mundo.
+            </p>
+
+            <p>
+                Hoy, cada artículo que llevamos a tus manos contiene algo más que materiales: lleva la promesa de que, con las herramientas correctas, cualquier mente puede cambiar su destino.
+            </p>
+            
+            <h3 style="margin-top: 20px;">Misión</h3>
+            <p>Derribar las barreras económicas del aprendizaje, facilitando el acceso a materiales educativos de calidad, herramientas tecnológicas y formación integral, para empoderar a estudiantes y profesionales en su desarrollo académico, técnico y empresarial.</p>
+            
+            <h3 style="margin-top: 20px;">Visión</h3>
+            <p>Ser un referente en educación accesible y transformación digital, liderando un ecosistema que une productos, servicios y formación para generar igualdad de oportunidades y un modelo empresarial sostenible con impacto económico y social.</p>
+            
+            <h3>Valor</h3>
+            <div class="value-statement">
+                En Grupo EmilioColor® no vendemos productos: abrimos caminos. Porque creemos que el talento no debería frenarse por falta de recursos, sino impulsarse por el deseo de crecer. Cada herramienta que brindamos es una oportunidad para transformar un presente difícil en un futuro posible.            </div>
+        </div>
+        <!-- Sección de Contactos Mejorada -->
+        <div class="contact-section">
+            <div class="subheader">
+                <h1 style="text-align: center;">Contactos</h1>
             </div>
         
-            
-            <h1>Bienvenido a la página principal</h1>
-            <h2>Seleccione una categoría:</h2>
-            <div class="options-container">
-                <button class="option-btn" onclick="showInfo('antecedentes')">¿Quiénes somos?</button>
-                <button class="option-btn" onclick="showDownloads(11, 20)">Recursos educativos</button>
-                <button class="option-btn" onclick="showInfo('herramientas')">Herramientas digitales</button>
-                <button class="option-btn" onclick="showInfo('info2')">Soporte Técnico</button>
-            </div>        
-        </div>
-
-        <div class="content">
-            <div id="downloads-container">
-                <div id="default-content">
-                    <p class="welcome-message">
-                        Lo que comenzó como una idea simple en 2024 hoy es una realidad: <strong>Grupo EmilioColor®</strong>
-                    </p>
+            <div class="contact-grid">
+                <!-- Ventas -->
+                <div class="contact-card">
+                    <img src="#" alt="Ventas" class="contact-icon">
+                    <div class="contact-title">Ventas</div>
+                    <div class="contact-detail">Para consultas comerciales</div>
+                    <a href="mailto:ventas@emiliocolor.com" class="contact-email">ventas@emiliocolor.com</a>
                 </div>
-
-                <div class="counter-section">
-                    <div class="counter-item">
-                        <span class="counter-number" id="count-clientes">0</span>+
-                        <p class="counter-label">Clientes Satisfechos</p>
-                    </div>
-                    <div class="counter-item">
-                        <span class="counter-number" id="count-ventas">0</span>+
-                        <p class="counter-label">Ventas Realizadas</p>
-                    </div>
-                    <div class="counter-item">
-                        <span class="counter-number" id="count-ciudades">0</span>+
-                        <p class="counter-label">Ciudades Alcanzadas</p>
-                    </div>
-                    <div class="counter-item">
-                        <span class="counter-number" id="count-submarcas">0</span>+
-                        <p class="counter-label">Sub-Marcas</p>
-                    </div>
+        
+                <!-- Soporte Técnico -->
+                <div class="contact-card">
+                    <img src="#" alt="Soporte Técnico" class="contact-icon">
+                    <div class="contact-title">Soporte Técnico</div>
+                    <div class="contact-detail">Asistencia y soporte</div>
+                    <a href="mailto:soporte@emiliocolor.com" class="contact-email">soporte@emiliocolor.com</a>
                 </div>
-                <div class="counter-footer">
-                    <p class="counter-note">
-                        Las ventas realizadas y los clientes satisfechos reflejan la suma total de todas las submarcas.
-                    </p>
+        
+                <!-- ASEC Educativo -->
+                <div class="contact-card">
+                    <img src="#" alt="EmilioColor EDU" class="contact-icon">
+                    <div class="contact-title">EmilioColor® Education</div>
+                    <div class="contact-detail">Consultas académicas</div>
+                    <a href="mailto:academico@emiliocolor.com" class="contact-email">academico@emiliocolor.com</a>
                 </div>
-                <div id="trabajadores-bloque" style="width: 100%; max-width: 600px; margin: 20px 0 0 0;">
-                    <div class="tool-container" style="margin-left: 0;">
-                        <h3>EmilioColor Trabajadores</h3>
-                        <p>Herramienta NO abierta al público (solo trabajadores). Requiere Usuario y Contraseña.</p>
-                        <a href="https://grupoemiliocolor.github.io/outside/" class="info-link" target="_blank">Entrar al sitio</a>
-                    </div>
-                </div>                
-
-                <div id="antecedentes" class="info-container">
-                    <h3>Historia</h3>
-                    <p>
-                        El Lunes 09 de septiembre de 2024, EmilioColor® nació con un lápiz en la mano y un sueño en el corazón: derribar las barreras económicas que limitan el acceso a una educación digna.
-                    </p>
-
-                    <p>
-                        Comenzamos ofreciendo estilógrafos a precios que desafiaban al mercado, convencidos de que ningún estudiante debería elegir entre calidad y economía. Lo que inició con tinta y papel pronto se transformó en algo más grande: colores vibrantes, hojas que guardaban ideas, materiales didácticos que inspiraban curiosidad hasta convertirse en EmilioColor® Inkspire, un ecosistema en desarrollo para acompañar cada desafío académico.
-                    </p>
-
-                    <p>
-                        El Lunes 14 de Abril de 2025, EmilioColor® celebró el acuerdo de cooperación entre la empresa MECÁNICA AUTOMOTRIZ ESPECIALIZADA EN VEHICULOS PESADOS SAS DE CV para la Transformación digital y formación de personal.
-                    </p>
-
-                    <p>
-                        Pero nuestro compromiso iba más allá. Creamos Grupo EmilioColor® un conglomerado de 3 submarcas donde posteriormente se incluiria Programa Académico ASEC; la rama académica de Grupo EmilioColor® para formar a las nuevas generaciones en las disciplinas que mueven al mundo: ciencia, tecnología, ingeniería, arte y matemáticas (STEAM). Porque el futuro no se espera, se construye.
-                    </p>
-
-                    <p>
-                        Y porque creemos que el conocimiento sólo cobra valor cuando se comparte, complementamos cada producto con recursos virtuales, porque creemos que la educacion es el arma mas poderosa para cambiar el mundo.
-                    </p>
-
-                    <p>
-                        Hoy, cada artículo que llevamos a tus manos contiene algo más que materiales: lleva la promesa de que, con las herramientas correctas, cualquier mente puede cambiar su destino.
-                    </p>
-
-                    <div class="mission-vision-container">
-                        <div class="mission-vision-item">
-                            <h3>Misión</h3>
-                            <p>Derribar las barreras económicas del aprendizaje, facilitando el acceso a materiales educativos de calidad, herramientas tecnológicas y formación integral, para empoderar a estudiantes y profesionales en su desarrollo académico, técnico y empresarial.</p>
-                        </div>
-
-                        <div class="mission-vision-item">
-                            <h3>Visión</h3>
-                            <p>Convertirnos en un referente en educación accesible y transformación digital, liderando un ecosistema innovador que conecta productos, servicios, formación y tecnología para construir un futuro con igualdad de oportunidades.</p>
-                        </div>
-
-                        <div class="mission-vision-item">
-                            <h3>Valor</h3>
-                            <div class="value-statement">
-                                En Grupo EmilioColor® no vendemos productos: vendemos oportunidades. Porque cuando el conocimiento deja de ser un lujo, el futuro se escribe con tinta permanente.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="herramientas" class="tools-container">
-                    <div class="tools-wrapper">
-                        <div class="tool-container">
-                            <h3>PLATAFORMA HORAS 2025-2</h3>
-                            <p>El objetivo de esta página es facilitar a los estudiantes, maestros y personal administrativo del CECyT 9 "Juan de Dios Bátiz" el acceso a los horarios de asesorías de la unidad académica de manera rápida y organizada. Con esta herramienta, se busca mejorar la comunicación y optimizar el tiempo de todos los miembros de la comunidad educativa.</p>
-                            <a href="https://grupoemiliocolor.github.io/plataforma_horas-asesorias_cecyt9/" class="info-link">Acceder a la plataforma</a>
-                        </div>
-
-                        <div class="tool-container">
-                            <h3>Calculadora de código de colores de resistencias</h3>
-                            <p>Esta herramienta práctica permite determinar el valor de una resistencia a partir de sus bandas de colores, siguiendo los códigos estándar internacionales. Funciona en ambos sentidos: tanto para calcular el valor cuando se introducen los colores, como para mostrar el código de colores correspondiente cuando se ingresa un valor numérico específico.</p>
-                            <a href="https://grupoemiliocolor.github.io/mx/calculadora_de_codigo_de_colores_de_resistencias.html" class="info-link">Usar calculadora</a>
-                        </div>
-                        <div class="tool-container">
-                            <h3>Calculadora de Conversión de Unidades</h3>
-                            <p>Herramienta versátil para convertir entre diferentes sistemas de medida. Incluye conversiones de longitud (metros, pies, pulgadas, etc.) y prefijos métricos (nano, micro, mili, kilo, mega, etc.). Ideal para ingenieros, estudiantes y profesionales que necesitan realizar conversiones precisas entre diferentes unidades de medida en sus proyectos y trabajos técnicos.</p>
-                            <a href="https://grupoemiliocolor.github.io/mx/calculadora_de_conversion_de_unidades.html" class="info-link">Usar calculadora</a>
-                        </div>
-                        <div class="tool-container">
-                            <h3>Calendario de Eventos 2025</h3>
-                            <p>Herramienta digital que organiza visualmente todos los eventos del año por meses. Con diseño intuitivo, permite navegar entre meses con botones, resalta el día actual y muestra los eventos como etiquetas de colores. Al hacer doble clic en cualquier día, se abre una ventana emergente con los detalles completos de el evento de ese día.</p>
-                            <a href="https://grupoemiliocolor.github.io/mx/calendario_de_eventos.html" class="info-link">Ver calendario</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="info2" class="info-container">
-                    <h3>Soporte Técnico</h3>
-                    <p>Si necesitas ayuda con las descargas o tienes algún problema técnico, por favor contáctanos a través del siguiente enlace.</p>
-                    <a href="mailto:emiliocolormexico@gmail.com" class="info-link">Contactar Soporte</a>
-                </div>
-
-                <div class="downloads-grid" id="downloads-grid">
+        
+                <!-- EmilioColor -->
+                <div class="contact-card">
+                    <img src="#" alt="EmilioColor INK" class="contact-icon">
+                    <div class="contact-title">EmilioColor® Inkspire</div>
+                    <div class="contact-detail">Información general</div>
+                    <a href="mailto:info@emiliocolor.com" class="contact-email">info@emiliocolor.com</a>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        // ENLACES EDITABLES
-        const fileLinks = {
-            // Productos (Archivos 1-6)
-            file1: "https://ejemplo.com/descarga1",
-            file2: "https://ejemplo.com/descarga2",
-            file3: "https://ejemplo.com/descarga3",
-            file4: "https://ejemplo.com/descarga4",
-            file5: "https://ejemplo.com/descarga5",
-            file6: "https://ejemplo.com/descarga6",
+        </div>
     
-            // Documentación (Archivos 11-20)
-            file11: "https://drive.google.com/file/d/1CbMQDGozJqgLOt9poV6_qTtdHwbFQJbF/view?usp=sharing",
-            file12: "https://ejemplo.com/descarga12",
-            file13: "https://ejemplo.com/descarga13",
-            file14: "https://ejemplo.com/descarga14",
-            file15: "https://ejemplo.com/descarga15",
-            file16: "https://ejemplo.com/descarga16",
-            file17: "https://ejemplo.com/descarga17",
-            file18: "https://ejemplo.com/descarga18",
-            file19: "https://ejemplo.com/descarga19",
-            file20: "https://ejemplo.com/descarga20"
-        };
-    
-        // ENLACES DE WHATSAPP PARA CADA PRODUCTO
-        const whatsappLinks = {
-            file1: "https://api.whatsapp.com/send/?phone=5625377747&text=Hola%2C+estoy+interesado...",
-            file2: "https://api.whatsapp.com/send/?phone=5625377747&text=Hola%2C+estoy+interesado...",
-            file3: "https://api.whatsapp.com/send/?phone=5625377747&text=Hola%2C+estoy+interesado...",
-            file4: "https://api.whatsapp.com/send/?phone=5625377747&text=Hola%2C+estoy+interesado...",
-            file5: "https://api.whatsapp.com/send/?phone=5625377747&text=Hola%2C+estoy+interesado...",
-            file6: "https://api.whatsapp.com/send/?phone=5625377747&text=Hola%2C+estoy+interesado..."
-        };
-    
-        // ENLACES DE IMÁGENES PARA CADA PRODUCTO
-        const imageLinks = {
-            file1: "https://ejemplo.com/imagenes-producto1",
-            file2: "https://ejemplo.com/imagenes-producto2",
-            file3: "https://ejemplo.com/imagenes-producto3",
-            file4: "https://ejemplo.com/imagenes-producto4",
-            file5: "https://ejemplo.com/imagenes-producto5",
-            file6: "https://ejemplo.com/imagenes-producto6"
-        };
-    
-        // NOMBRES EDITABLES
-        const fileNames = {
-            file1: "Estilografo EmilioColor Inkspire de tinta automática color negro",
-            file2: "Paquete de estilografos de colores EmilioColor Inkspire",
-            file3: "Block de notas de oficina EmilioColor Inkspire",
-            file4: "Paquete de hojas cuadriculadas EmilioColor Inkspire",
-            file5: "Paquete de hojas cuadriculadas para carpeta EmilioColor Inkspire",
-            file6: "Paquete de Plantillas Isométricas EmilioColor Inkspire",
-            file11: "MANUAL de apoyo integral para las REDES DE GÉNERO 3ER EDICION 2025",
-            file12: "Documentación 12",
-            file13: "Documentación 13",
-            file14: "Documentación 14",
-            file15: "Documentación 15",
-            file16: "Documentación 16",
-            file17: "Documentación 17",
-            file18: "Documentación 18",
-            file19: "Documentación 19",
-            file20: "Documentación 20"
-        };
-    
-        // DESCRIPCIONES EDITABLES
-        const fileDescriptions = {
-            file1: "Grosor 0.5 mm, distancia de escritura de hasta 500 metros, secado rápido. Estándares de implementación: CR-908 , GB 21079",
-            file2: "Contiene 8 estilógrafos de colores. Grosor 0.5 mm. Estándares: CR-908 , GB 21079 (no incluye color negro)",
-            file3: "Contiene 300 hojas tamaño 8.5 x 8.5 cm con marca EmilioColor Inkspire.",
-            file4: "Contiene 100 hojas tamaño carta, cuadro mediano de alta calidad.",
-            file5: "Contiene 100 hojas tamaño carta, cuadro mediano de alta calidad.",
-            file6: "Contiene 50 hojas tamaño carta de alta calidad.",
-            file11: "Herramienta institucional para las Redes de Género del IPN, enfocada en prevenir y atender la violencia de género con base en protocolos vigentes, promoviendo una cultura de igualdad, sensibilización y acompañamiento integral."
-        };
-    
-        // PRECIOS EDITABLES
-        const filePrices = {
-            file1: "$10.00 MXN",
-            file2: "$100.00 MXN",
-            file3: "$100.00 MXN",
-            file4: "$60.00 MXN",
-            file5: "$60.00 MXN",
-            file6: "$30.00 MXN"
-        };
-    
-        function showDownloads(start, end) {
-            document.querySelectorAll('.info-container, .tools-container').forEach(el => {
-                el.style.display = 'none';
-            });
-            document.getElementById('trabajadores-bloque').style.display = 'none';
-    
-            const grid = document.getElementById('downloads-grid');
-            grid.innerHTML = '';
-    
-            if (start === 1 && end === 6) {
-                grid.innerHTML += `<img src="img/inkspire_logo.png" alt="EmilioColor Inkspire" class="inkspire-logo">`;
-            }
-    
-            let downloadCards = '';
-            for (let i = start; i <= end; i++) {
-                const fileKey = `file${i}`;
-                if (fileLinks[fileKey] || fileNames[fileKey]) {
-                    const fileName = fileNames[fileKey] || `Archivo ${i}`;
-                    const fileDescription = fileDescriptions[fileKey] || "Descripción no disponible";
-                    const filePrice = filePrices[fileKey];
-                    const whatsappLink = whatsappLinks[fileKey];
-                    const imageLink = imageLinks[fileKey];
-                    const downloadLink = fileLinks[fileKey];
-    
-                    if (start === 1 && end === 6) {
-                        downloadCards += `
-                            <div class="product-card">
-                                <h3>${fileName}</h3>
-                                <p>${fileDescription}</p>
-                                ${filePrice ? `<div class="product-price">${filePrice}</div>` : ''}
-                                <div class="product-buttons">
-                                    ${imageLink ? `<a href="${imageLink}" class="images-btn" target="_blank">Ver imágenes</a>` : ''}
-                                    ${whatsappLink ? `<a href="${whatsappLink}" class="buy-btn">Comprar</a>` : ''}
-                                    ${!imageLink && !whatsappLink && downloadLink ? `<a href="${downloadLink}" class="download-btn" target="_blank">Ver Detalles</a>` : ''}
-                                </div>
-                            </div>
-                        `;
-                    } else {
-                        downloadCards += `
-                            <div class="product-card">
-                                <h3>${fileName}</h3>
-                                <p>${fileDescription}</p>
-                                ${downloadLink ? `<a href="${downloadLink}" class="download-btn" target="_blank">Abrir</a>` : '<p>Enlace no disponible</p>'}
-                            </div>
-                        `;
-                    }
-                }
-            }
-    
-            grid.innerHTML += downloadCards;
-            grid.style.display = 'grid';
-        }
-    
-        function showInfo(infoId) {
-            document.getElementById('downloads-grid').style.display = 'none';
-            document.querySelectorAll('.info-container, .tools-container').forEach(el => {
-                el.style.display = 'none';
-            });
-            document.getElementById('trabajadores-bloque').style.display = 'none';
-    
-            const targetElement = infoId ? document.getElementById(infoId) : null;
-    
-            if (targetElement) {
-                targetElement.style.display = 'block';
-                if (infoId === 'herramientas') {
-                    const wrapper = targetElement.querySelector('.tools-wrapper');
-                    if (wrapper) wrapper.style.display = 'flex';
-                }
-            }
-        }
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a href="https://grupoemiliocolor.github.io/mx/" target="_blank">
+                    <img src="img/EC.png" alt="EmilioColor Logo" class="footer-logo">
+                </a>
+                <p class="footer-description">Soluciones integrales en papelería, desarrollo web y capacitación para mentes que transformen el mundo.
+                </p>
+                <div class="social-links">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <div class="link-group">
+                    <h4>Productos</h4>
+                    <a href="#">EmilioColor® Inkspire</a>
+                </div>
+                
+                <div class="link-group">
+                    <h4>Recursos</h4>
+                    <a href="#">Blog</a>
+                    <a href="#">Documentación</a>
+                    <a href="#">Herramientas</a>
+                    <a href="#">Educativo</a>
+                </div>
+                
+                <div class="link-group">
+                    <h4>Empresa</h4>
+                    <a href="#">Acerca de</a>
+                    <a href="#">Contacto</a>
+                    <a href="#">Términos</a>
+                    <a href="#">Privacidad</a>
+                </div>
+            </div>
+        </div>
         
-        function showFigs() {
-            document.getElementById('downloads-grid').style.display = 'none';
-            document.querySelectorAll('.info-container, .tools-container').forEach(el => {
-                el.style.display = 'none';
-            });
-            document.getElementById('trabajadores-bloque').style.display = 'none';
-
-        }
+        <div class="footer-bottom">
+            <p>&copy; <span id="current-year"></span> EmilioColor®. Todos los derechos reservados.</p>
+        </div>
+    </footer>
     
+    <script>
         function animateCounter(id, finalValue, duration = 2000) {
             const element = document.getElementById(id);
             if (!element) return;
@@ -844,12 +225,11 @@
         }
     
         window.onload = function () {
-            document.getElementById('default-content').style.display = 'block';
-            document.getElementById('downloads-grid').style.display = 'none';
             animateCounter('count-clientes', 200, 2000);
             animateCounter('count-ventas', 400, 2200);
             animateCounter('count-ciudades', 2, 1500);
             animateCounter('count-submarcas', 2, 1000);
+            document.getElementById('current-year').textContent = new Date().getFullYear();
         };
     </script>
 </body>
