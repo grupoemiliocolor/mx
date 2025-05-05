@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Conversión de Unidades | EmilioColor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+
+    /* 
+    Copyright © 2025 Grupo EmilioColor®. 
+    Todos los derechos reservados. 
+    Esta plantilla y todo su contenido son propiedad exclusiva de Grupo EmilioColor® y están protegidos por las leyes de derechos de autor.
+    Queda prohibida la reproducción total o parcial sin la autorización expresa del titular de los derechos. 
+    */
+    
+        body {
+            font-family: 'Candara', Calibri, 'Trebuchet MS', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 100%;
+            grid-template-areas:
+                "header"
+                "subheader"
+                "main"
+                "footer";
+            background-color: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4, .sidebar a {
+            font-family: 'Candara', Calibri, 'Trebuchet MS', sans-serif;
+            font-weight: 600;
+        }
+
+        .header {
+            grid-area: header;
+            background-color: #ffffff;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-logo {
+            height: 40px;
+            width: auto;
+            max-height: 100%;
+        }
+
+        .header-options {
+            position: absolute;
+            right: 20px;
+        }
+
+        .header-options a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .header-options a:hover {
+            background-color: rgba(26, 115, 232, 0.1);
+        }
+
+        .subheader {
+            grid-area: subheader;
+            background-color: #e8f0fe;
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #dadce0;
+        }
+
+        .main-content {
+            grid-area: main;
+            padding: 25px;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .calculator {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #1a73e8;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .config-selector {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #dadce0;
+        }
+
+        .conversion-type {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .conversion-type label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 15px;
+        }
+
+        input, select {
+            padding: 12px;
+            width: 100%;
+            border: 1px solid #dadce0;
+            border-radius: 6px;
+            background-color: #ffffff;
+            color: #333;
+            font-size: 16px;
+            transition: border 0.3s;
+            box-sizing: border-box;
+        }
+
+        input:focus, select:focus {
+            border-color: #1a73e8;
+            outline: none;
+        }
+
+        button {
+            background: linear-gradient(to bottom, #1a73e8, #2f51ff);
+            color: #ffffff;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 20px;
+            font-weight: bold;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            background: #1a73e8;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #f1f3f4;
+            border-radius: 8px;
+            display: none;
+            border-left: 4px solid #1a73e8;
+        }
+
+        .error {
+            color: #c62828;
+            margin-top: 20px;
+            padding: 12px;
+            background-color: #ffcdd2;
+            border-radius: 6px;
+            display: none;
+            font-size: 15px;
+        }
+
+        .conversion-value {
+            font-size: 22px;
+            color: #1a73e8;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        hr {
+            border: 0;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #1a73e8, transparent);
+            margin: 18px 0;
+        }
+
+        .site-footer {
+            grid-area: footer;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 40px 0 0;
+            margin-top: 50px;
+            text-align: left;
+        }
+
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-brand {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 30px;
+            padding-right: 20px;
+        }
+
+        .footer-logo {
+            height: 70px;
+            margin-bottom: 12px;
+        }
+
+        .footer-description {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            flex: 2;
+        }
+
+        .link-group {
+            flex: 1;
+            min-width: 150px;
+            margin-bottom: 30px;
+            padding: 0 15px;
+            text-align: left;
+        }
+
+        .link-group h4 {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .link-group h4:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background: #3498db;
+        }
+
+        .link-group a {
+            display: block;
+            color: #bdc3c7;
+            text-decoration: none;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .link-group a:hover {
+            color: #3498db;
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            background-color: #1a252f;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icon {
+            color: #fff;
+            background: rgba(255,255,255,0.1);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .social-icon:hover {
+            background: #3498db;
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+                text-align: center;
+            }
+
+            .header-options {
+                position: static;
+                margin-top: 10px;
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+
+            .footer-brand {
+                text-align: center;
+                padding-right: 0;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .link-group {
+                text-align: center;
+            }
+
+            .link-group h4:after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .footer-bottom {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="img/EmilioColor.jpg" alt="Logo" class="header-logo">
+        <div class="header-options">
+            <a href="https://grupoemiliocolor.github.io/mx/">Inicio</a>
+        </div>
+    </div>
+    
+    <div class="subheader">
+        <h2>Calculadora de Conversión de Unidades</h2>
+    </div>
+    
+    <div class="main-content">
+        <div class="calculator">
+            <div class="config-selector">
+                <label>Seleccione el tipo de conversión:</label>
+                <div class="conversion-type">
+                    <label>
+                        <input type="radio" name="conversion-type" value="length" checked> Longitud
+                    </label>
+                    <label>
+                        <input type="radio" name="conversion-type" value="prefix"> Prefijos Métricos
+                    </label>
+                </div>
+            </div>
+            <div class="input-group" id="length-group">
+                <label for="value">Valor a convertir:</label>
+                <input type="number" id="value" placeholder="Ingrese el valor" step="any">
+                <div class="input-group">
+                    <label for="fromUnit">De:</label>
+                    <select id="fromUnit">
+                        <option value="meter">Metros (m)</option>
+                        <option value="millimeter">Milímetros (mm)</option>
+                        <option value="centimeter">Centímetros (cm)</option>
+                        <option value="kilometer">Kilómetros (km)</option>
+                        <option value="yard">Yardas (yd)</option>
+                        <option value="foot">Pies (ft)</option>
+                        <option value="mile">Millas (mi)</option>
+                        <option value="inch">Pulgadas (in)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="toUnit">A:</label>
+                    <select id="toUnit">
+                        <option value="meter">Metros (m)</option>
+                        <option value="millimeter">Milímetros (mm)</option>
+                        <option value="centimeter">Centímetros (cm)</option>
+                        <option value="kilometer">Kilómetros (km)</option>
+                        <option value="yard" selected>Yardas (yd)</option>
+                        <option value="foot">Pies (ft)</option>
+                        <option value="mile">Millas (mi)</option>
+                        <option value="inch">Pulgadas (in)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="input-group" id="prefix-group" style="display: none;">
+                <label for="prefix-value">Valor a convertir:</label>
+                <input type="number" id="prefix-value" placeholder="Ingrese el valor" step="any">
+                <div class="input-group">
+                    <label for="fromPrefix">De:</label>
+                    <select id="fromPrefix">
+                        <option value="1">Unidad base</option>
+                        <option value="0.001">mili (m)</option>
+                        <option value="0.000001">micro (μ)</option>
+                        <option value="0.000000001">nano (n)</option>
+                        <option value="0.000000000001">pico (p)</option>
+                        <option value="1000">kilo (k)</option>
+                        <option value="1000000">mega (M)</option>
+                        <option value="1000000000">giga (G)</option>
+                        <option value="1000000000000">tera (T)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="toPrefix">A:</label>
+                    <select id="toPrefix">
+                        <option value="1" selected>Unidad base</option>
+                        <option value="0.001">mili (m)</option>
+                        <option value="0.000001">micro (μ)</option>
+                        <option value="0.000000001">nano (n)</option>
+                        <option value="0.000000000001">pico (p)</option>
+                        <option value="1000">kilo (k)</option>
+                        <option value="1000000">mega (M)</option>
+                        <option value="1000000000">giga (G)</option>
+                        <option value="1000000000000">tera (T)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button id="convert-btn">Convertir</button>
+            <div class="error" id="error"></div>
+            <div class="result" id="result">
+                <h3>RESULTADO:</h3>
+                <hr>
+                <div class="conversion-item">
+                    <span id="original-value"></span> <span id="original-unit"></span> =
+                    <span class="conversion-value" id="converted-value"></span> <span id="converted-unit"></span>
+                </div>
+                <div id="prefix-results" style="margin-top: 15px; display: none;">
+                    <p><strong>Fórmula:</strong> <span id="prefix-formula"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a href="https://grupoemiliocolor.github.io/mx/" target="_blank">
+                    <img src="img/EC.png" alt="EmilioColor Logo" class="footer-logo">
+                </a>
+                <p class="footer-description">Soluciones integrales en papelería, desarrollo web y capacitación para mentes que transformen el mundo.
+                </p>
+                <div class="social-links">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <div class="link-group">
+                    <h4>Productos</h4>
+                    <a href="#">EmilioColor® Inkspire</a>
+                </div>
+                
+                <div class="link-group">
+                    <h4>Recursos</h4>
+                    <a href="#">Blog</a>
+                    <a href="#">Documentación</a>
+                    <a href="#">Herramientas digitales</a>
+                </div>
+                
+                <div class="link-group">
+                    <h4>Empresa</h4>
+                    <a href="#">Acerca de</a>
+                    <a href="#">Contacto</a>
+                    <a href="#">Términos</a>
+                    <a href="#">Privacidad</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; <span id="current-year"></span> EmilioColor®. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+       
+        const lengthFactors = {
+            meter: {
+                meter: 1,
+                millimeter: 1000,
+                centimeter: 100,
+                kilometer: 0.001,
+                yard: 1.0936133,
+                foot: 3.2808399,
+                mile: 0.0006213712,
+                inch: 39.3700787
+            },
+            millimeter: {
+                meter: 0.001,
+                millimeter: 1,
+                centimeter: 0.1,
+                kilometer: 0.000001,
+                yard: 0.0010936133,
+                foot: 0.0032808399,
+                mile: 0.0000006213712,
+                inch: 0.0393700787
+            },
+            centimeter: {
+                meter: 0.01,
+                millimeter: 10,
+                centimeter: 1,
+                kilometer: 0.00001,
+                yard: 0.010936133,
+                foot: 0.032808399,
+                mile: 0.000006213712,
+                inch: 0.393700787
+            },
+            kilometer: {
+                meter: 1000,
+                millimeter: 1000000,
+                centimeter: 100000,
+                kilometer: 1,
+                yard: 1093.6133,
+                foot: 3280.8399,
+                mile: 0.6213712,
+                inch: 39370.0787
+            },
+            yard: {
+                meter: 0.9144,
+                millimeter: 914.4,
+                centimeter: 91.44,
+                kilometer: 0.0009144,
+                yard: 1,
+                foot: 3,
+                mile: 0.0005681818,
+                inch: 36
+            },
+            foot: {
+                meter: 0.3048,
+                millimeter: 304.8,
+                centimeter: 30.48,
+                kilometer: 0.0003048,
+                yard: 0.3333333,
+                foot: 1,
+                mile: 0.0001893939,
+                inch: 12
+            },
+            mile: {
+                meter: 1609.344,
+                millimeter: 1609344,
+                centimeter: 160934.4,
+                kilometer: 1.609344,
+                yard: 1760,
+                foot: 5280,
+                mile: 1,
+                inch: 63360
+            },
+            inch: {
+                meter: 0.0254,
+                millimeter: 25.4,
+                centimeter: 2.54,
+                kilometer: 0.0000254,
+                yard: 0.0277778,
+                foot: 0.0833333,
+                mile: 0.0000157828,
+                inch: 1
+            }
+        };
+
+        const unitAbbr = {
+            meter: "m",
+            millimeter: "mm",
+            centimeter: "cm",
+            kilometer: "km",
+            yard: "yd",
+            foot: "ft",
+            mile: "mi",
+            inch: "in"
+        };
+
+        const prefixSymbols = {
+            "1": "",
+            "0.001": "m",
+            "0.000001": "μ",
+            "0.000000001": "n",
+            "0.000000000001": "p",
+            "1000": "k",
+            "1000000": "M",
+            "1000000000": "G",
+            "1000000000000": "T"
+        };
+
+        document.querySelectorAll('input[name="conversion-type"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'length') {
+                    document.getElementById('length-group').style.display = 'block';
+                    document.getElementById('prefix-group').style.display = 'none';
+                    document.getElementById('prefix-results').style.display = 'none';
+                } else {
+                    document.getElementById('length-group').style.display = 'none';
+                    document.getElementById('prefix-group').style.display = 'block';
+                    document.getElementById('prefix-results').style.display = 'block';
+                }
+            });
+        });
+
+        document.getElementById('convert-btn').addEventListener('click', convertUnits);
+
+        function convertUnits() {
+            const conversionType = document.querySelector('input[name="conversion-type"]:checked').value;
+            const errorElement = document.getElementById("error");
+            const resultElement = document.getElementById("result");
+            
+            errorElement.style.display = "none";
+            resultElement.style.display = "none";
+            
+            if (conversionType === 'length') {
+                convertLength();
+            } else {
+                convertPrefix();
+            }
+        }
+
+        function convertLength() {
+            const value = parseFloat(document.getElementById("value").value);
+            const fromUnit = document.getElementById("fromUnit").value;
+            const toUnit = document.getElementById("toUnit").value;
+            const errorElement = document.getElementById("error");
+            const resultElement = document.getElementById("result");
+            
+            if (isNaN(value)) {
+                showError("Por favor ingrese un valor numérico válido");
+                return;
+            }
+            
+            const valueInMeters = value / lengthFactors[fromUnit].meter;
+            const convertedValue = valueInMeters * lengthFactors.meter[toUnit];
+            
+            document.getElementById("original-value").textContent = formatNumber(value);
+            document.getElementById("original-unit").textContent = unitAbbr[fromUnit];
+            document.getElementById("converted-value").textContent = formatNumber(convertedValue);
+            document.getElementById("converted-unit").textContent = unitAbbr[toUnit];
+            document.getElementById('prefix-results').style.display = 'none';
+            
+            resultElement.style.display = "block";
+        }
+
+        function convertPrefix() {
+            const value = parseFloat(document.getElementById("prefix-value").value);
+            const fromPrefix = document.getElementById("fromPrefix").value;
+            const toPrefix = document.getElementById("toPrefix").value;
+            const errorElement = document.getElementById("error");
+            const resultElement = document.getElementById("result");
+            
+            if (isNaN(value)) {
+                showError("Por favor ingrese un valor numérico válido");
+                return;
+            }
+            
+            const inBase = value * parseFloat(fromPrefix);
+            const convertedValue = inBase / parseFloat(toPrefix);
+            
+            document.getElementById("original-value").textContent = formatNumber(value);
+            document.getElementById("original-unit").textContent = prefixSymbols[fromPrefix];
+            document.getElementById("converted-value").textContent = formatNumber(convertedValue);
+            document.getElementById("converted-unit").textContent = prefixSymbols[toPrefix];
+            
+            const formula = `${value} × ${fromPrefix} / ${toPrefix} = ${formatNumber(convertedValue)}`;
+            document.getElementById("prefix-formula").textContent = formula;
+            
+            document.getElementById('prefix-results').style.display = 'block';
+            
+            resultElement.style.display = "block";
+        }
+
+        function formatNumber(num) {
+            if (Number.isInteger(num)) {
+                return num.toString();
+            }
+            return parseFloat(num.toFixed(4)).toString();
+        }
+
+        function showError(message) {
+            const errorElement = document.getElementById("error");
+            errorElement.textContent = message;
+            errorElement.style.display = "block";
+        }
+
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', function () {
+                this.style.color = '#1a73e8';
+            });
+        });
+    </script>
+</body>
+</html>
