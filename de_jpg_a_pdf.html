@@ -440,7 +440,7 @@
         </div>
     </div>
     
-    <!-- Footer Profesional -->
+        <!-- Footer -->
     <footer class="site-footer">
         <div class="footer-container">
             <div class="footer-brand">
@@ -460,22 +460,23 @@
             <div class="footer-links">
                 <div class="link-group">
                     <h4>Productos</h4>
-                    <a href="#">EmilioColor® Inkspire</a>
+                    <a href="https://grupoemiliocolor.github.io/mx/ECinkspire.html">EmilioColor® Inkspire</a>
                 </div>
                 
                 <div class="link-group">
                     <h4>Recursos</h4>
-                    <a href="#">Blog</a>
-                    <a href="#">Documentación</a>
-                    <a href="#">Herramientas digitales</a>
+                    <a href="https://grupoemiliocolor.github.io/mx/blog.html">Blog</a>
+                    <a href="https://grupoemiliocolor.github.io/mx/documentacion.html">Documentación</a>
+                    <a href="https://grupoemiliocolor.github.io/mx/herramientas.html">Herramientas</a>
+                    <a href="https://grupoemiliocolor.github.io/mx/educativo.html">Educativo</a>
                 </div>
                 
                 <div class="link-group">
                     <h4>Empresa</h4>
-                    <a href="#">Acerca de</a>
-                    <a href="#">Contacto</a>
-                    <a href="#">Términos</a>
-                    <a href="#">Privacidad</a>
+                    <a href="https://grupoemiliocolor.github.io/mx/index.html">Acerca de</a>
+                    <a href="https://grupoemiliocolor.github.io/mx/index.html">Contacto</a>
+                    <a href="https://grupoemiliocolor.github.io/mx/terminos_y_condiciones.html">Términos</a>
+                    <a href="https://grupoemiliocolor.github.io/mx/privacidad.html">Privacidad</a>
                 </div>
             </div>
         </div>
@@ -486,7 +487,6 @@
     </footer>
     
     <script>
-        // Actualizar el año automáticamente
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
         const { jsPDF } = window.jspdf;
@@ -497,12 +497,10 @@
         const clearBtn = document.getElementById('clear-btn');
         let images = [];
 
-        // Manejar selección de archivos
         fileInput.addEventListener('change', (e) => {
             handleFiles(e.target.files);
         });
 
-        // Manejar arrastrar y soltar
         dropArea.addEventListener('dragover', (e) => {
             e.preventDefault();
             dropArea.style.backgroundColor = '#e8f0fe';
@@ -521,7 +519,6 @@
             handleFiles(e.dataTransfer.files);
         });
 
-        // Procesar imágenes
         function handleFiles(files) {
             const newImages = [];
             
@@ -541,7 +538,6 @@
             });
         }
 
-        // Actualizar la vista previa
         function updatePreview() {
             preview.innerHTML = '';
             
@@ -588,7 +584,6 @@
             clearBtn.disabled = images.length === 0;
         }
 
-        // Mover imagen hacia arriba
         function moveImageUp(index) {
             if (index > 0) {
                 [images[index], images[index - 1]] = [images[index - 1], images[index]];
@@ -596,7 +591,6 @@
             }
         }
 
-        // Mover imagen hacia abajo
         function moveImageDown(index) {
             if (index < images.length - 1) {
                 [images[index], images[index + 1]] = [images[index + 1], images[index]];
@@ -604,13 +598,11 @@
             }
         }
 
-        // Eliminar imagen
         function removeImage(index) {
             images.splice(index, 1);
             updatePreview();
         }
 
-        // Convertir a PDF
         convertBtn.addEventListener('click', () => {
             if (images.length === 0) {
                 alert('Por favor, sube al menos una imagen.');
@@ -657,7 +649,6 @@
             pdf.save('emiliocolor_converted.pdf');
         });
 
-        // Limpiar todo
         clearBtn.addEventListener('click', () => {
             images = [];
             updatePreview();
