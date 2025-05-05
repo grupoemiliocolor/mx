@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EC - Calendario de Eventos</title>
+    <link rel="icon" type="image/png" href="img/EC.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+
+    /* 
+    Copyright © 2025 Grupo EmilioColor®. 
+    Todos los derechos reservados. 
+    Esta plantilla y todo su contenido son propiedad exclusiva de Grupo EmilioColor® y están protegidos por las leyes de derechos de autor.
+    Queda prohibida la reproducción total o parcial sin la autorización expresa del titular de los derechos. 
+    */
+
+        body {
+            font-family: 'Candara', Calibri, 'Trebuchet MS', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 100%;
+            grid-template-areas:
+                "header"
+                "subheader"
+                "main"
+                "footer";
+            background-color: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4, .sidebar a {
+            font-family: 'Candara', Calibri, 'Trebuchet MS', sans-serif;
+            font-weight: 600;
+        }
+        h2 {
+        color: #1a73e8;
+        margin-bottom: 25px;
+        font-weight: 600;
+        text-align: center;
+        }
+        
+        .header {
+            grid-area: header;
+            background-color: #ffffff;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-logo {
+            height: 40px;
+            width: auto;
+            max-height: 100%;
+        }
+        
+        .header-options {
+            position: absolute;
+            right: 20px;
+        }
+        
+        .header-options a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        .header-options a:hover {
+            background-color: rgba(26, 115, 232, 0.1);
+        }
+        
+        .subheader {
+            grid-area: subheader;
+            background-color: #e8f0fe;
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #dadce0;
+        }
+        
+        .main-content {
+            grid-area: main;
+            padding: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Estilos del calendario */
+        .calendar-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+        }
+        
+        .month-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .month-year {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .event-count {
+            font-size: 16px;
+            color: #2d6df6;
+            margin-left: 10px;
+        }
+        
+        .nav-button {
+            background-color: #2d6df6;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 6px;
+        }
+        
+        .nav-button:hover {
+            background-color: #1a5ad0;
+        }
+        
+        .nav-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background-color: #ddd;
+            padding: 10px 0;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        
+        .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-auto-rows: 1fr;
+            gap: 5px;
+            padding: 5px 0;
+        }
+        
+        .day {
+            border: 1px solid #ccc;
+            padding: 5px;
+            background-color: white;
+            position: relative;
+            overflow: hidden;
+            border-radius: 5px;
+            min-height: 80px;
+        }
+        
+        .day-number {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            font-weight: bold;
+        }
+        
+        .event {
+            margin-top: 25px;
+            margin-bottom: 2px;
+            padding: 5px;
+            font-size: 12px;
+            color: white;
+            background-color: #2d6df6;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            border-radius: 3px;
+        }
+        
+        .other-month {
+            background-color: #f0f0f0;
+            color: #aaa;
+        }
+        
+        .today {
+            background-color: #e6f7ff;
+            border: 2px solid #2d6df6;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 5px;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: black;
+        }
+        
+        .event-list {
+            margin-top: 20px;
+        }
+        
+        .event-item {
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f8f8f8;
+            border-left: 4px solid #2d6df6;
+            border-radius: 4px;
+        }
+        
+        .event-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .event-description {
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .no-events {
+            text-align: center;
+            color: #777;
+            padding: 20px;
+        }
+        
+        .modal-title {
+            color: #2d6df6;
+            margin-bottom: 15px;
+        }
+        
+        .year-notice {
+            text-align: center;
+            color: #2d6df6;
+            font-weight: bold;
+            padding: 15px;
+            background-color: #e8f0fe;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        /* Footer Estandarizado */
+        .site-footer {
+    grid-area: footer;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    padding: 40px 0 0;
+    margin-top: 50px;
+    text-align: left;
+}
+        
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-brand {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 30px;
+            padding-right: 20px;
+        }
+        
+        .footer-logo {
+            height: 70px;
+            margin-bottom: 12px;
+        }
+        
+        .footer-description {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            flex: 2;
+        }
+        
+        .link-group {
+            flex: 1;
+            min-width: 150px;
+            margin-bottom: 30px;
+            padding: 0 15px;
+        }
+        
+        .link-group h4 {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .link-group h4:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background: #3498db;
+        }
+        
+        .link-group a {
+            display: block;
+            color: #bdc3c7;
+            text-decoration: none;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .link-group a:hover {
+            color: #3498db;
+            padding-left: 5px;
+        }
+        
+        .footer-bottom {
+            background-color: #1a252f;
+            padding: 20px 0;
+            text-align: center;
+        }
+        
+        .footer-bottom p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icon {
+            color: #fff;
+            background: rgba(255,255,255,0.1);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .social-icon:hover {
+            background: #3498db;
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+                text-align: center;
+            }
+            
+            .header-options {
+                position: static;
+                margin-top: 10px;
+            }
+            
+            .main-content {
+                padding: 15px;
+            }
+            
+            .calendar-header {
+                flex-direction: column;
+                gap: 10px;
+                padding: 10px 0;
+            }
+            
+            .month-logo-container {
+                flex-direction: column;
+                gap: 5px;
+                text-align: center;
+            }
+            
+            .month-year {
+                font-size: 18px;
+            }
+            
+            .event-count {
+                font-size: 14px;
+                margin-left: 0;
+                margin-top: 5px;
+            }
+            
+            .nav-button {
+                padding: 8px 12px;
+                font-size: 14px;
+                margin: 0 5px;
+            }
+            
+            .weekdays div {
+                font-size: 12px;
+                padding: 5px 0;
+            }
+            
+            .day {
+                min-height: 60px;
+            }
+            
+            .event {
+                font-size: 10px;
+                padding: 3px;
+                margin-top: 20px;
+            }
+            
+            .footer-container {
+                flex-direction: column;
+            }
+            
+            .footer-brand {
+                text-align: center;
+                padding-right: 0;
+            }
+            
+            .social-links {
+                justify-content: center;
+            }
+            
+            .link-group {
+                text-align: center;
+            }
+            
+            .link-group h4:after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .month-year {
+                font-size: 16px;
+            }
+            
+            .nav-button {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+            
+            .day-number {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado -->
+    <div class="header">
+        <img src="img/EmilioColor.jpg" alt="Logo" class="header-logo">
+        <div class="header-options">
+            <a href="https://grupoemiliocolor.github.io/mx/">Inicio</a>
+        </div>
+    </div>
+    
+    <div class="subheader">
+        <h2>Calendario de Eventos 2025</h2>
+    </div>
+    
+    <!-- Contenido principal -->
+    <div class="main-content">
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <button class="nav-button" id="prev-month">Anterior</button>
+                <div class="month-logo-container">
+                    <div class="month-year" id="month-year"></div>
+                    <div class="event-count" id="event-count"></div>
+                </div>
+                <button class="nav-button" id="next-month">Siguiente</button>
+            </div>
+            
+            <div class="weekdays">
+                <div>Lun</div>
+                <div>Mar</div>
+                <div>Mié</div>
+                <div>Jue</div>
+                <div>Vie</div>
+                <div>Sáb</div>
+                <div>Dom</div>
+            </div>
+            
+            <div class="days" id="days-container"></div>
+        </div>
+    </div>
+    
+    <div id="events-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-modal">&times;</span>
+            <h2 class="modal-title" id="modal-date-title"></h2>
+            <div class="event-list" id="event-list-container">
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer Estandarizado -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a href="https://grupoemiliocolor.github.io/mx/" target="_blank">
+                    <img src="img/EC.png" alt="EmilioColor Logo" class="footer-logo">
+                </a>
+                <p class="footer-description">Soluciones integrales en papelería, desarrollo web y capacitación para mentes que transformen el mundo.
+                </p>
+                <div class="social-links">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <div class="link-group">
+                    <h4>Productos</h4>
+                    <a href="#">EmilioColor® Inkspire</a>
+                </div>
+                
+                <div class="link-group">
+                    <h4>Recursos</h4>
+                    <a href="#">Blog</a>
+                    <a href="#">Documentación</a>
+                    <a href="#">Herramientas digitales</a>
+                </div>
+                
+                <div class="link-group">
+                    <h4>Empresa</h4>
+                    <a href="#">Acerca de</a>
+                    <a href="#">Contacto</a>
+                    <a href="#">Términos</a>
+                    <a href="#">Privacidad</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; <span id="current-year"></span> EmilioColor®. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+
+        let events = [
+
+//MES DE ENERO
+{ date: '2025-01-01', title: 'Año Nuevo', description: 'Celebración del inicio del año nuevo' },
+{ date: '2025-01-01', title: 'Día Mundial de la Paz', description: 'Promoción de la paz mundial' },
+{ date: '2025-01-01', title: 'Día Internacional del Hijo', description: 'Reconocimiento a los hijos en la familia' },
+{ date: '2025-01-01', title: 'Día del Dominio Público', description: 'Celebración de las obras que pasan al dominio público' },
+{ date: '2025-01-02', title: 'Día Internacional del Policía', description: 'Reconocimiento a la labor policial' },
+{ date: '2025-01-02', title: 'Día Mundial del Introvertido', description: 'Celebración de las personas introvertidas' },
+{ date: '2025-01-03', title: 'Día de las Cerezas Cubiertas de Chocolate', description: 'Celebración de este dulce' },
+{ date: '2025-01-04', title: 'Día Mundial del Braille', description: 'Promoción del sistema de lectura y escritura para personas ciegas' },
+{ date: '2025-01-04', title: 'Día Mundial de la Hipnosis', description: 'Concienciación sobre la hipnosis' },
+{ date: '2025-01-05', title: 'Día de la Crema Batida o Nata Montada', description: 'Celebración de este ingrediente culinario' },
+{ date: '2025-01-06', title: 'Día de Reyes', description: 'Celebración de la Epifanía del Señor' },
+{ date: '2025-01-06', title: 'Día Mundial de los Huérfanos de la Guerra', description: 'Concienciación sobre los niños huérfanos debido a conflictos bélicos' },
+{ date: '2025-01-06', title: 'Día Mundial de la Astrología', description: 'Celebración de la astrología' },
+{ date: '2025-01-07', title: 'Día Internacional de la Cebra', description: 'Concienciación sobre la conservación de las cebras' },
+{ date: '2025-01-07', title: 'Día del Sello Postal', description: 'Celebración del sello postal y la filatelia' },
+{ date: '2025-01-07', title: 'Navidad Ortodoxa', description: 'Celebración de la Navidad según el calendario ortodoxo' },
+{ date: '2025-01-09', title: 'Día Mundial de la Electricidad Estática', description: 'Concienciación sobre la electricidad estática' },
+{ date: '2025-01-10', title: 'Día de la Apreciación de las Plantas de Interior', description: 'Celebración de las plantas de interior' },
+{ date: '2025-01-11', title: 'Día Internacional del Agradecimiento', description: 'Fomento de la gratitud y el agradecimiento' },
+{ date: '2025-01-13', title: 'Día Mundial de la Lucha contra la Depresión', description: 'Concienciación sobre la depresión y su tratamiento' },
+{ date: '2025-01-14', title: 'Día Mundial de la Lógica', description: 'Promoción del pensamiento lógico y racional' },
+{ date: '2025-01-15', title: 'Día del Compositor', description: 'Celebración de los compositores musicales' },
+{ date: '2025-01-18', title: 'Día Internacional del Síndrome de la Fatiga Crónica', description: 'Concienciación sobre esta enfermedad' },
+{ date: '2025-01-19', title: 'Día Mundial de la Nieve', description: 'Celebración de la nieve y los deportes de invierno' },
+{ date: '2025-01-20', title: 'Día de Martin Luther King Jr.', description: 'Conmemoración del líder del movimiento por los derechos civiles en EE.UU.' },
+{ date: '2025-01-21', title: 'Día Internacional del Abrazo', description: 'Fomento del afecto y la cercanía entre personas' },
+{ date: '2025-01-21', title: 'Día Mundial del Perro de Trabajo', description: 'Reconocimiento a los perros que realizan labores de asistencia y trabajo' },
+{ date: '2025-01-21', title: 'Día Europeo de la Meditación', description: 'Promoción de la meditación en Europa' },
+{ date: '2025-01-21', title: 'Día Mundial de la Ardilla', description: 'Concienciación sobre la conservación de las ardillas' },
+{ date: '2025-01-21', title: 'Día Europeo de la Mediación', description: 'Promoción de la mediación como método de resolución de conflictos' },
+{ date: '2025-01-23', title: 'Día Mundial de la Escritura a Mano', description: 'Celebración de la escritura manual' },
+{ date: '2025-01-24', title: 'Día Internacional de la Educación', description: 'Promoción de la educación como derecho humano' },
+{ date: '2025-01-24', title: 'Día Mundial de la Cultura Africana y Afrodescendiente', description: 'Celebración de la cultura africana y afrodescendiente' },
+{ date: '2025-01-24', title: 'Día Internacional del Deporte Femenino', description: 'Promoción del deporte femenino' },
+{ date: '2025-01-26', title: 'Día Internacional de la Energía Limpia', description: 'Fomento del uso de energías limpias y sostenibles' },
+{ date: '2025-01-27', title: 'Día Internacional en Memoria de las Víctimas del Holocausto', description: 'Conmemoración de las víctimas del Holocausto' },
+{ date: '2025-01-28', title: 'Día Europeo de la Protección de Datos', description: 'Concienciación sobre la protección de datos personales' },
+{ date: '2025-01-29', title: 'Año Nuevo Chino', description: 'Inicio del Año Nuevo según el calendario lunar chino' },
+{ date: '2025-01-29', title: 'Día del Rompecabezas', description: 'Celebración de los rompecabezas y su impacto en el desarrollo cognitivo' },
+
+//MES DE FEBRERO
+{ date: '2025-02-01', title: 'Día Mundial del Galgo', description: 'Concienciación sobre la situación de los galgos en el mundo' },
+{ date: '2025-02-01', title: 'Día Nacional del Ajolote (México)', description: 'Celebración del ajolote, especie endémica de México' },
+{ date: '2025-02-02', title: 'Día Mundial de los Humedales', description: 'Promoción de la conservación y uso racional de los humedales' },
+{ date: '2025-02-02', title: 'Día de la Candelaria', description: 'Celebración religiosa que marca el fin de las festividades navideñas' },
+{ date: '2025-02-02', title: 'Día de la Marmota', description: 'Tradición popular que predice la duración del invierno' },
+{ date: '2025-02-03', title: 'Día Internacional del Abogado', description: 'Reconocimiento a la labor de los profesionales del derecho' },
+{ date: '2025-02-04', title: 'Día Mundial contra el Cáncer', description: 'Concienciación y prevención del cáncer a nivel mundial' },
+{ date: '2025-02-04', title: 'Día Internacional de la Fraternidad Humana', description: 'Promoción de la fraternidad entre culturas y religiones' },
+{ date: '2025-02-05', title: 'Día de la Constitución Mexicana', description: 'Conmemoración de la promulgación de la Constitución de 1917 en México' },
+{ date: '2025-02-05', title: 'Día Mundial del Hombre del Tiempo', description: 'Reconocimiento a los profesionales de la meteorología' },
+{ date: '2025-02-05', title: 'Día Mundial de la Nutella', description: 'Celebración del popular producto de crema de avellanas' },
+{ date: '2025-02-05', title: 'Día Mundial de la Lectura en Voz Alta', description: 'Fomento de la lectura compartida y la alfabetización' },
+{ date: '2025-02-06', title: 'Día Mundial de Tolerancia Cero a la Mutilación Genital Femenina', description: 'Lucha contra la práctica de la mutilación genital femenina' },
+{ date: '2025-02-06', title: 'Día Mundial de las Elecciones', description: 'Promoción de elecciones libres y justas en todo el mundo' },
+{ date: '2025-02-06', title: 'Día de Bob Marley', description: 'Conmemoración del nacimiento del músico jamaicano Bob Marley' },
+{ date: '2025-02-07', title: 'Día de mandar una carta a un amigo', description: 'Fomento de la comunicación escrita entre amigos' },
+{ date: '2025-02-08', title: 'Día Mundial del Cine', description: 'Celebración del arte cinematográfico y su impacto cultural' },
+{ date: '2025-02-08', title: 'Día del Nirvana', description: 'Conmemoración del fallecimiento del líder espiritual Buda' },
+{ date: '2025-02-09', title: 'Día Mundial de la Pizza', description: 'Celebración de uno de los platillos más populares del mundo' },
+{ date: '2025-02-09', title: 'Día Internacional de la Lengua Griega', description: 'Reconocimiento a la lengua griega y su contribución cultural' },
+{ date: '2025-02-10', title: 'Día Mundial de las Legumbres', description: 'Promoción del consumo de legumbres por sus beneficios nutricionales' },
+{ date: '2025-02-10', title: 'Día Internacional del Leopardo Árabe', description: 'Concienciación sobre la conservación del leopardo árabe' },
+{ date: '2025-02-10', title: 'Día Internacional de la Epilepsia', description: 'Sensibilización sobre la epilepsia y su tratamiento' },
+{ date: '2025-02-11', title: 'Día Internacional de la Mujer y la Niña en la Ciencia', description: 'Promoción de la participación femenina en la ciencia' },
+{ date: '2025-02-11', title: 'Día Internacional de Internet Seguro', description: 'Fomento de un uso seguro y responsable de Internet' },
+{ date: '2025-02-11', title: 'Día Mundial de la Mujer Médica', description: 'Reconocimiento a las mujeres en la medicina' },
+{ date: '2025-02-11', title: 'Jornada Mundial del Enfermo', description: 'Concienciación sobre la atención a los enfermos' },
+{ date: '2025-02-11', title: 'Día de los Servicios de Emergencia 112', description: 'Reconocimiento al número de emergencia europeo 112' },
+{ date: '2025-02-12', title: 'Día Internacional para la Prevención del Extremismo Violento cuando Conduzca al Terrorismo', description: 'Prevención del extremismo violento y el terrorismo' },
+{ date: '2025-02-12', title: 'Día Mundial contra el Uso de Niños Soldado', description: 'Lucha contra la utilización de niños en conflictos armados' },
+{ date: '2025-02-12', title: 'Día de Darwin', description: 'Conmemoración del nacimiento de Charles Darwin' },
+{ date: '2025-02-13', title: 'Día Mundial de la Radio', description: 'Celebración del medio de comunicación radiofónico' },
+{ date: '2025-02-13', title: 'Día Mundial del Soltero', description: 'Celebración de la soltería y la independencia personal' },
+{ date: '2025-02-13', title: 'Día Internacional del Condón', description: 'Promoción del uso del condón como método de prevención' },
+{ date: '2025-02-13', title: 'Día Mundial del Infiel o Día Mundial del Amante', description: 'Celebración alternativa relacionada con las relaciones amorosas' },
+{ date: '2025-02-13', title: 'Día de los Amigos de Internet', description: 'Celebración de las amistades surgidas en línea' },
+
+//MES DE MARZO
+{ date: '2025-03-01', title: 'Día de la Cero Discriminación', description: 'Promueve la igualdad y la inclusión sin discriminación.' },
+{ date: '2025-03-01', title: 'Día Mundial de la Protección Civil', description: 'Reconoce la labor de los servicios de protección civil en la prevención y respuesta a emergencias.' },
+{ date: '2025-03-01', title: 'Día Mundial de los Pastos Marinos', description: 'Concienciación sobre la importancia de los ecosistemas de pastos marinos.' },
+{ date: '2025-03-01', title: 'Día Mundial de la Concienciación sobre la Autolesión', description: 'Sensibiliza sobre la autolesión y promueve la salud mental.' },
+{ date: '2025-03-01', title: 'Día de los Datos Abiertos', description: 'Fomenta el acceso libre a los datos públicos y la transparencia.' },
+{ date: '2025-03-01', title: 'Día Internacional de la Silla de Ruedas', description: 'Reconoce la importancia de la movilidad y la accesibilidad para las personas con discapacidad.' },
+{ date: '2025-03-01', title: 'Día Mundial del Cumplido', description: 'Incentiva la práctica de dar cumplidos para mejorar las relaciones interpersonales.' },
+{ date: '2025-03-02', title: 'Día Mundial del Bienestar Mental para Adolescentes', description: 'Promueve la salud mental y el bienestar entre los jóvenes.' },
+{ date: '2025-03-03', title: 'Día Mundial de la Vida Silvestre', description: 'Concienciación sobre la fauna y flora silvestres y su conservación.' },
+{ date: '2025-03-03', title: 'Día Mundial de la Audición', description: 'Promueve la prevención y tratamiento de la pérdida auditiva.' },
+{ date: '2025-03-03', title: 'Día Mundial de los Defectos Congénitos', description: 'Sensibiliza sobre los defectos congénitos y su prevención.' },
+{ date: '2025-03-03', title: 'Día Internacional de los Escritores', description: 'Celebra la contribución de los escritores a la cultura y la sociedad.' },
+{ date: '2025-03-04', title: 'Día Mundial de la Ingeniería para el Desarrollo Sostenible', description: 'Reconoce la labor de los ingenieros en la promoción del desarrollo sostenible.' },
+{ date: '2025-03-04', title: 'Día Mundial de la Obesidad', description: 'Concienciación sobre la obesidad y promoción de hábitos saludables.' },
+{ date: '2025-03-04', title: 'Día Internacional de Concienciación sobre el Virus del Papiloma Humano', description: 'Promueve la prevención y tratamiento del VPH.' },
+{ date: '2025-03-05', title: 'Día Mundial de la Eficiencia Energética', description: 'Fomenta el uso eficiente de la energía y la sostenibilidad.' },
+{ date: '2025-03-05', title: 'Día Internacional para Concienciar sobre el Desarme y la No Proliferación', description: 'Promueve la paz y la seguridad mediante el desarme.' },
+{ date: '2025-03-06', title: 'Día Internacional del Escultor', description: 'Celebra el arte de la escultura y sus creadores.' },
+{ date: '2025-03-06', title: 'Día Internacional del Linfedema', description: 'Concienciación sobre el linfedema y su tratamiento.' },
+{ date: '2025-03-06', title: 'Día Europeo de la Logopedia', description: 'Promueve la logopedia y la atención a los trastornos del lenguaje.' },
+{ date: '2025-03-07', title: 'Día Mundial de los Cereales', description: 'Reconoce la importancia de los cereales en la alimentación global.' },
+{ date: '2025-03-07', title: 'Día Internacional en Recuerdo de los Oficiales de Policía Caídos', description: 'Honra a los oficiales de policía que han perdido la vida en servicio.' },
+{ date: '2025-03-08', title: 'Día Internacional de la Mujer', description: 'Conmemora la lucha por los derechos de las mujeres y la igualdad de género.' },
+{ date: '2025-03-10', title: 'Día Internacional de las Juezas', description: 'Reconoce la labor de las juezas en la promoción de la justicia y la igualdad.' },
+{ date: '2025-03-11', title: 'Día Europeo de las Víctimas del Terrorismo', description: 'Recuerda a las víctimas del terrorismo en Europa.' },
+{ date: '2025-03-11', title: 'Día Mundial de la Fontanería', description: 'Destaca la importancia de la fontanería en la salud pública.' },
+{ date: '2025-03-12', title: 'Día Mundial del Glaucoma', description: 'Concienciación sobre el glaucoma y su prevención.' },
+{ date: '2025-03-12', title: 'Día Mundial contra la Censura en Internet', description: 'Promueve la libertad de expresión en línea.' },
+{ date: '2025-03-13', title: 'Día Mundial del Riñón', description: 'Fomenta la salud renal y la prevención de enfermedades renales.' },
+{ date: '2025-03-14', title: 'Día Internacional de las Matemáticas', description: 'Celebra la importancia de las matemáticas en la vida cotidiana.' },
+{ date: '2025-03-14', title: 'Día Mundial del Sueño', description: 'Promueve la importancia del sueño para la salud.' },
+{ date: '2025-03-14', title: 'Día del Número Pi', description: 'Conmemora la constante matemática π (pi).' },
+{ date: '2025-03-14', title: 'Día Internacional de Acción por los Ríos', description: 'Defiende la protección y restauración de los ríos del mundo.' },
+{ date: '2025-03-14', title: 'Día Mundial de la Endometriosis', description: 'Concienciación sobre la endometriosis y su impacto en la salud femenina.' },
+
+//MES DE ABRIL
+{ date: '2025-04-01', title: 'Día Internacional de la Diversión en el Trabajo', description: 'Día Internacional de la Diversión en el Trabajo' },
+{ date: '2025-04-02', title: 'Día Mundial de Concienciación sobre el Autismo', description: 'Día Mundial de Concienciación sobre el Autismo' },
+{ date: '2025-04-04', title: 'Día Internacional de información sobre minas', description: 'Día Internacional de información sobre minas' },
+{ date: '2025-04-05', title: 'Día Internacional de la Conciencia', description: 'Día Internacional de la Conciencia' },
+{ date: '2025-04-06', title: 'Día del Deporte para el Desarrollo y la Paz', description: 'Día del Deporte para el Desarrollo y la Paz' },
+{ date: '2025-04-07', title: 'Día Mundial de la Salud', description: 'Día Mundial de la Salud' },
+{ date: '2025-04-10', title: 'Día Internacional del Imperdible', description: 'Día Internacional del Imperdible' },
+{ date: '2025-04-11', title: 'Día Mundial del Parkinson', description: 'Día Mundial del Parkinson' },
+{ date: '2025-04-12', title: 'Día de los Vuelos Espaciales Tripulados', description: 'Día de los Vuelos Espaciales Tripulados' },
+{ date: '2025-04-13', title: 'Día Internacional del Beso', description: 'Día Internacional del Beso' },
+{ date: '2025-04-14', title: 'Día Mundial de la Enfermedad de Chagas', description: 'Día Mundial de la Enfermedad de Chagas' },
+{ date: '2025-04-18', title: 'Día de Monumentos y Sitios', description: 'Día de Monumentos y Sitios' },
+{ date: '2025-04-19', title: 'Día Mundial de la Bicicleta', description: 'Día Mundial de la Bicicleta' },
+{ date: '2025-04-19', title: 'Día Mundial de los Simpson', description: 'Día Mundial de los Simpson' },
+{ date: '2025-04-20', title: 'Día Mundial de la Marihuana', description: 'Día Mundial de la Marihuana' },
+{ date: '2025-04-21', title: 'Día de la Creatividad e Innovación', description: 'Día de la Creatividad e Innovación' },
+{ date: '2025-04-22', title: 'Día de la Madre Tierra', description: 'Día de la Madre Tierra' },
+{ date: '2025-04-23', title: 'Día del Libro y del Derecho de Autor', description: 'Día del Libro y del Derecho de Autor' },
+{ date: '2025-04-23', title: 'Día de la Lengua Española en la ONU', description: 'Día de la Lengua Española en la ONU' },
+{ date: '2025-04-23', title: 'Día de la Lengua Inglesa en la ONU', description: 'Día de la Lengua Inglesa en la ONU' },
+{ date: '2025-04-23', title: 'Diada de Sant Jordi', description: 'Diada de Sant Jordi' },
+{ date: '2025-04-24', title: 'Día de las Niñas en las TIC', description: 'Día de las Niñas en las TIC' },
+{ date: '2025-04-24', title: 'Día del Multilateralismo y Diplomacia para la Paz', description: 'Día del Multilateralismo y Diplomacia para la Paz' },
+{ date: '2025-04-25', title: 'Día Mundial del Paludismo', description: 'Día Mundial del Paludismo' },
+{ date: '2025-04-25', title: 'Día Internacional del Delegado', description: 'Día Internacional del Delegado' },
+{ date: '2025-04-26', title: 'Día de la Propiedad Intelectual', description: 'Día de la Propiedad Intelectual' },
+{ date: '2025-04-26', title: 'Recordación del Desastre de Chernóbyl', description: 'Recordación del Desastre de Chernóbyl' },
+{ date: '2025-04-27', title: 'Día del Diseño Gráfico', description: 'Día del Diseño Gráfico' },
+{ date: '2025-04-28', title: 'Día de la Seguridad y Salud en el Trabajo', description: 'Día de la Seguridad y Salud en el Trabajo' },
+{ date: '2025-04-29', title: 'Día Internacional de la Danza', description: 'Día Internacional de la Danza' },
+{ date: '2025-04-30', title: 'Día Internacional del Jazz', description: 'Día Internacional del Jazz' },
+{ date: '2025-04-30', title: 'Día del Perro Guía', description: 'Día del Perro Guía' },
+
+//MES DE MAYO
+{ date: '2025-05-01', title: 'Día Internacional de los Trabajadores', description: 'Día Internacional de los Trabajadores (México y mundial)' },
+{ date: '2025-05-02', title: 'Día Mundial del Atún', description: 'Día Mundial del Atún' },
+{ date: '2025-05-02', title: 'Día Internacional contra el Bullying', description: 'Día Internacional contra el Bullying o el Acoso Escolar' },
+{ date: '2025-05-03', title: 'Día Mundial de la Libertad de Prensa', description: 'Día Mundial de la Libertad de Prensa' },
+{ date: '2025-05-03', title: 'Día Nacional del Arqueólogo (México)', description: 'Día Nacional del Arqueólogo en México' },
+{ date: '2025-05-04', title: 'Día Internacional del Respeto por las Gallinas', description: 'Día Internacional del Respeto por las Gallinas' },
+{ date: '2025-05-04', title: 'Día de Star Wars', description: 'Día de Star Wars (May the 4th be with you)' },
+{ date: '2025-05-04', title: 'Día Mundial de la Risa', description: 'Día Mundial de la Risa' },
+{ date: '2025-05-05', title: 'Cinco de Mayo', description: 'Conmemoración de la Batalla de Puebla (México)' },
+{ date: '2025-05-05', title: 'Día Internacional de la Matrona', description: 'Día Internacional de la Matrona' },
+{ date: '2025-05-05', title: 'Día del Patrimonio Mundial Africano', description: 'Día del Patrimonio Mundial Africano' },
+{ date: '2025-05-10', title: 'Día de las Madres', description: 'Día de las Madres en México' },
+{ date: '2025-05-12', title: 'Día Escolar de las Matemáticas', description: 'Día Escolar de las Matemáticas' },
+{ date: '2025-05-15', title: 'Día Internacional de la Familia', description: 'Día Internacional de la Familia' },
+{ date: '2025-05-15', title: 'Día del Maestro (México)', description: 'Día del Maestro en México' },
+{ date: '2025-05-17', title: 'Día Mundial del Reciclaje', description: 'Día Mundial del Reciclaje' },
+{ date: '2025-05-18', title: 'Día Internacional de los Museos', description: 'Día Internacional de los Museos' },
+{ date: '2025-05-20', title: 'Día Mundial de la Metrología', description: 'Día Mundial de la Metrología' },
+{ date: '2025-05-23', title: 'Día del Estudiante (México)', description: 'Día del Estudiante en México' },
+{ date: '2025-05-25', title: 'Día de África', description: 'Día de África' },
+{ date: '2025-05-25', title: 'Día Mundial del Fútbol', description: 'Día Mundial del Fútbol' },
+{ date: '2025-05-25', title: 'Día Mundial de la Tiroides', description: 'Día Mundial de la Tiroides' },
+{ date: '2025-05-25', title: 'Día del Orgullo Friki', description: 'Día del Orgullo Friki' },
+{ date: '2025-05-31', title: 'Día Mundial sin Tabaco', description: 'Día Mundial sin Tabaco' },
+
+//MES DE JUNIO
+{ date: '2025-06-01', title: 'Día Mundial de las Madres y los Padres', description: 'Reconoce la importancia de las madres y los padres en la crianza y protección de los hijos.' },
+{ date: '2025-06-01', title: 'Día Mundial de la Leche', description: 'Promueve los beneficios del consumo de leche y productos lácteos.' },
+{ date: '2025-06-01', title: 'Día Mundial de los Arrecifes', description: 'Concienciación sobre la importancia de los arrecifes de coral y su conservación.' },
+{ date: '2025-06-02', title: 'Día Internacional de la Trabajadora Sexual', description: 'Defiende los derechos de las trabajadoras sexuales y su reconocimiento legal.' },
+{ date: '2025-06-02', title: 'Día Mundial de Lucha contra la Miastenia Gravis', description: 'Sensibiliza sobre esta enfermedad neuromuscular y promueve la investigación.' },
+{ date: '2025-06-03', title: 'Día Mundial de la Bicicleta', description: 'Fomenta el uso de la bicicleta como medio de transporte sostenible.' },
+{ date: '2025-06-04', title: 'Día Internacional de los Niños Víctimas Inocentes de Agresión', description: 'Reconoce el sufrimiento de los niños víctimas de abusos y violencia.' },
+{ date: '2025-06-05', title: 'Día Mundial del Medio Ambiente', description: 'Promueve la conciencia y acción global por el medio ambiente.' },
+{ date: '2025-06-06', title: 'Día Mundial de los Pacientes Trasplantados', description: 'Concienciación sobre la importancia de la donación de órganos y tejidos.' },
+{ date: '2025-06-06', title: 'Día de la Lengua Rusa', description: 'Celebra la lengua rusa y su contribución cultural.' },
+{ date: '2025-06-06', title: 'Día Mundial del Yo-Yo', description: 'Conmemora este juguete clásico y su historia.' },
+{ date: '2025-06-07', title: 'Día Mundial de la Inocuidad de los Alimentos', description: 'Promueve prácticas que garantizan la seguridad alimentaria.' },
+{ date: '2025-06-08', title: 'Día Mundial de los Océanos', description: 'Concienciación sobre la importancia de los océanos y su conservación.' },
+{ date: '2025-06-09', title: 'Día Internacional de los Archivos', description: 'Destaca la importancia de los archivos en la preservación de la memoria histórica.' },
+{ date: '2025-06-09', title: 'Día del Pato Donald', description: 'Celebra la creación del personaje de Disney, el Pato Donald.' },
+{ date: '2025-06-10', title: 'Día Internacional para el Diálogo entre Civilizaciones', description: 'Fomenta el entendimiento y respeto entre diferentes culturas.' },
+{ date: '2025-06-11', title: 'Día Internacional del Juego', description: 'Promueve el juego como actividad esencial para el desarrollo infantil.' },
+{ date: '2025-06-12', title: 'Día Mundial contra el Trabajo Infantil', description: 'Lucha contra la explotación laboral infantil y promueve la educación.' },
+{ date: '2025-06-13', title: 'Día Internacional de Sensibilización sobre el Albinismo', description: 'Concienciación sobre el albinismo y la lucha contra la discriminación.' },
+{ date: '2025-06-14', title: 'Día Mundial del Donante de Sangre', description: 'Agradece a los donantes de sangre y promueve la donación voluntaria.' },
+{ date: '2025-06-15', title: 'Día Mundial de Toma de Conciencia del Abuso y Maltrato en la Vejez', description: 'Sensibiliza sobre el abuso y maltrato que sufren las personas mayores.' },
+{ date: '2025-06-15', title: 'Día del Árbol (Costa Rica)', description: 'Promueve la conciencia sobre la importancia de los árboles y la conservación de los bosques en Costa Rica.' },
+{ date: '2025-06-16', title: 'Día Internacional para Contrarrestar el Discurso de Odio', description: 'Promueve acciones para combatir el discurso de odio en todas sus formas.' },
+{ date: '2025-06-17', title: 'Día Mundial de Lucha contra la Desertificación y la Sequía', description: 'Concienciación sobre los efectos de la desertificación y la sequía.' },
+{ date: '2025-06-18', title: 'Día de la Gastronomía Sostenible', description: 'Promueve prácticas culinarias que respetan el medio ambiente y las tradiciones locales.' },
+{ date: '2025-06-19', title: 'Día Internacional para la Eliminación de la Violencia Sexual en los Conflictos', description: 'Lucha contra la violencia sexual en situaciones de conflicto armado.' },
+{ date: '2025-06-20', title: 'Día Mundial de los Refugiados', description: 'Reconoce la situación de los refugiados y promueve su protección.' },
+{ date: '2025-06-21', title: 'Día Internacional del Yoga', description: 'Fomenta la práctica del yoga y sus beneficios para la salud.' },
+{ date: '2025-06-21', title: 'Día Mundial de la Música', description: 'Celebra la música en todas sus formas y promueve su difusión.' },
+{ date: '2025-06-23', title: 'Día Internacional de las Viudas', description: 'Concienciación sobre la situación de las viudas en el mundo.' },
+{ date: '2025-06-25', title: 'Día de la Gente de Mar', description: 'Reconoce la labor de los marinos y su contribución al comercio mundial.' },
+{ date: '2025-06-26', title: 'Día Internacional de Apoyo a las Víctimas de la Tortura', description: 'Apoya a las víctimas de la tortura y promueve su rehabilitación.' },
+{ date: '2025-06-26', title: 'Día Internacional contra el Tráfico Ilícito de Drogas', description: 'Concienciación sobre los problemas del uso indebido de drogas.' },
+{ date: '2025-06-27', title: 'Día Internacional de las Microempresas y las PYMES', description: 'Reconoce la importancia de las pequeñas empresas para el desarrollo económico.' },
+{ date: '2025-06-28', title: 'Cumpleaños del CEO de Grupo EmilioColor®', description: 'Celebración de Emilio Calep, CEO y Fundador de Grupo EmilioColor®.' },
+{ date: '2025-06-28', title: 'Día Mundial del Árbol', description: 'Concienciación sobre la importancia de los árboles en el equilibrio ecológico y la necesidad de su conservación.' },
+{ date: '2025-06-29', title: 'Día Internacional del Barro', description: 'Promueve el juego y contacto con la naturaleza entre los niños.' },
+{ date: '2025-06-30', title: 'Día Internacional de los Asteroides', description: 'Concienciación sobre los riesgos de los impactos de asteroides.' },
+
+//MES DE JULIO
+{ date: '2025-07-01', title: 'Día Internacional del Chiste', description: 'Celebra el humor y la risa como elementos esenciales de la vida cotidiana.' },
+{ date: '2025-07-01', title: 'Día Internacional del Reggae', description: 'Conmemora la influencia del reggae en la música y la cultura mundial.' },
+{ date: '2025-07-01', title: 'Día Nacional de Canadá', description: 'Celebra la formación de Canadá como país independiente.' },
+{ date: '2025-07-01', title: 'Día del Ingeniero (México)', description: 'Reconoce la labor de los ingenieros en el desarrollo de México.' },
+{ date: '2025-07-02', title: 'Día Mundial de los OVNIs', description: 'Fomenta el interés y la investigación sobre objetos voladores no identificados.' },
+{ date: '2025-07-02', title: 'Día Internacional del Periodista Deportivo', description: 'Reconoce la labor de los periodistas en el ámbito deportivo.' },
+{ date: '2025-07-03', title: 'Día Internacional Libre de Bolsas de Plástico', description: 'Promueve la reducción del uso de bolsas plásticas para proteger el medio ambiente.' },
+{ date: '2025-07-03', title: 'Día Internacional del Síndrome de Rubinstein-Taybi', description: 'Concientiza sobre este raro trastorno genético.' },
+{ date: '2025-07-04', title: 'Día de la Independencia de Estados Unidos', description: 'Conmemora la declaración de independencia de EE.UU. en 1776.' },
+{ date: '2025-07-04', title: 'Día Mundial del Ebook', description: 'Celebra la evolución de la lectura a través de los libros electrónicos.' },
+{ date: '2025-07-04', title: 'Día Mundial de los Delfines en Cautiverio', description: 'Aboga por la liberación de los delfines en cautiverio y su protección en el medio natural.' },
+{ date: '2025-07-04', title: 'Día Nacional del Cuequero y la Cuequera (Chile)', description: 'Rinde homenaje a los intérpretes de la cueca, danza nacional de Chile.' },
+{ date: '2025-07-04', title: 'Día del Congreso Nacional (Chile)', description: 'Conmemora la importancia del Congreso en la historia política de Chile.' },
+{ date: '2025-07-05', title: 'Día de la Independencia de Venezuela', description: 'Celebra la firma del Acta de Independencia en 1811.' },
+{ date: '2025-07-05', title: 'Día Mundial del Bikini', description: 'Conmemora la creación del bikini en 1946.' },
+{ date: '2025-07-05', title: 'Día Internacional de las Cooperativas', description: 'Reconoce el papel de las cooperativas en el desarrollo económico y social.' },
+{ date: '2025-07-06', title: 'Día Internacional del Beso Robado', description: 'Celebra el gesto romántico del beso robado.' },
+{ date: '2025-07-06', title: 'Día Mundial de las Zoonosis', description: 'Concientiza sobre las enfermedades que se transmiten de animales a humanos.' },
+{ date: '2025-07-07', title: 'Día Mundial de la Conservación del Suelo', description: 'Promueve prácticas para la conservación y uso sostenible del suelo.' },
+{ date: '2025-07-07', title: 'Día Mundial del Cacao', description: 'Celebra el cacao y su importancia en la gastronomía y economía.' },
+{ date: '2025-07-07', title: 'Día Mundial del Perdón', description: 'Fomenta el acto de perdonar como herramienta de sanación personal y social.' },
+{ date: '2025-07-08', title: 'Día Mundial de la Alergia', description: 'Concientiza sobre las alergias y su impacto en la salud.' },
+{ date: '2025-07-09', title: 'Día de la Independencia de Argentina', description: 'Conmemora la declaración de independencia en 1816.' },
+{ date: '2025-07-10', title: 'Día del Editor de Revistas', description: 'Reconoce la labor de los editores en la industria editorial.' },
+{ date: '2025-07-11', title: 'Día Mundial de la Población', description: 'Aborda temas relacionados con el crecimiento y desarrollo de la población mundial.' },
+{ date: '2025-07-11', title: 'Día de la Patata Frita', description: 'Celebra este popular alimento en la gastronomía mundial.' },
+{ date: '2025-07-13', title: 'Día Mundial del Rock', description: 'Conmemora el concierto Live Aid de 1985 y celebra el género musical del rock.' },
+{ date: '2025-07-13', title: 'Día Internacional del Sarcoma', description: 'Concientiza sobre este tipo de cáncer y promueve la investigación.' },
+{ date: '2025-07-14', title: 'Día de la Bastilla (Francia)', description: 'Conmemora la toma de la Bastilla en 1789, símbolo de la Revolución Francesa.' },
+{ date: '2025-07-15', title: 'Día Mundial de las Habilidades de la Juventud', description: 'Promueve el desarrollo de habilidades entre los jóvenes para su inserción laboral.' },
+{ date: '2025-07-15', title: 'Aniversario de Twitter/X', description: 'Celebra la creación de la plataforma de redes sociales Twitter, ahora conocida como X.' },
+{ date: '2025-07-16', title: 'Día de la Virgen del Carmen', description: 'Fiesta religiosa en honor a la Virgen del Carmen, patrona de los marineros.' },
+{ date: '2025-07-16', title: 'Día Mundial de la Serpiente', description: 'Promueve la conservación y el conocimiento sobre las serpientes.' },
+{ date: '2025-07-16', title: 'Aniversario del Aterrizaje en la Luna', description: 'Conmemora el alunizaje del Apolo 11 en 1969.' },
+{ date: '2025-07-17', title: 'Día Mundial del Emoji', description: 'Celebra los emojis y su impacto en la comunicación digital.' },
+
+//MES DE AGOSTO
+{ date: '2025-08-01', title: 'Día Mundial del ARN', description: 'Concienciación sobre el ácido ribonucleico y su importancia en la biología.' },
+{ date: '2025-08-01', title: 'Día Internacional de la Cerveza', description: 'Celebración de la cerveza y su cultura.' },
+{ date: '2025-08-01', title: 'Día Internacional de la Alegría', description: 'Promoción de la alegría como valor humano fundamental.' },
+{ date: '2025-08-01', title: 'Inicio de la Semana Mundial de la Lactancia Materna', description: 'Promoción de la lactancia materna y sus beneficios.' },
+{ date: '2025-08-03', title: 'Día Internacional de la Planificación Familiar', description: 'Concienciación sobre la importancia de la planificación familiar.' },
+{ date: '2025-08-06', title: 'Día del Ingeniero Agrónomo', description: 'Reconocimiento a los profesionales de la agronomía.' },
+{ date: '2025-08-06', title: 'Día del Médico Veterinario', description: 'Reconocimiento a los profesionales de la medicina veterinaria.' },
+{ date: '2025-08-07', title: 'Fin de la Semana Mundial de la Lactancia Materna', description: 'Cierre de la semana de promoción de la lactancia materna.' },
+{ date: '2025-08-08', title: 'Día Internacional del Gato', description: 'Celebración de los gatos como mascotas.' },
+{ date: '2025-08-09', title: 'Día Internacional de los Pueblos Indígenas', description: 'Reconocimiento a los derechos y culturas de los pueblos indígenas.' },
+{ date: '2025-08-09', title: 'Día Internacional del Coworking', description: 'Celebración de los espacios de trabajo colaborativo.' },
+{ date: '2025-08-10', title: 'Día Mundial del León', description: 'Concienciación sobre la conservación de los leones.' },
+{ date: '2025-08-10', title: 'Día Internacional del Biodiésel', description: 'Promoción del uso de biocombustibles.' },
+{ date: '2025-08-11', title: 'Día del Nutricionista', description: 'Reconocimiento a los profesionales de la nutrición.' },
+{ date: '2025-08-12', title: 'Día Internacional de la Juventud', description: 'Promoción de los derechos y participación de los jóvenes.' },
+{ date: '2025-08-12', title: 'Día Mundial del Elefante', description: 'Concienciación sobre la conservación de los elefantes.' },
+{ date: '2025-08-12', title: 'Día Mundial del Hijo de en Medio', description: 'Reconocimiento a los hijos medianos en las familias.' },
+{ date: '2025-08-12', title: 'Día Internacional del Disco de Vinilo', description: 'Celebración de los discos de vinilo y su cultura.' },
+{ date: '2025-08-12', title: 'Inicio del pico de la lluvia de meteoros Perseidas', description: 'Observación de la lluvia de meteoros Perseidas.' },
+{ date: '2025-08-13', title: 'Día Internacional de la Zurdera', description: 'Concienciación sobre las personas zurdas.' },
+{ date: '2025-08-13', title: 'Día Internacional del Armadillo', description: 'Concienciación sobre la conservación de los armadillos.' },
+{ date: '2025-08-13', title: 'Fin del pico de la lluvia de meteoros Perseidas', description: 'Finalización del pico de las Perseidas.' },
+{ date: '2025-08-15', title: 'Día de la Asunción de la Virgen María', description: 'Celebración religiosa católica.' },
+{ date: '2025-08-15', title: 'Día Mundial de la Relajación', description: 'Promoción de la relajación y reducción del estrés.' },
+{ date: '2025-08-15', title: 'Día Mundial del Reiki', description: 'Celebración de la terapia de sanación Reiki.' },
+{ date: '2025-08-16', title: 'Día de Contar un Chiste', description: 'Fomento del humor y la risa.' },
+{ date: '2025-08-16', title: 'Día Internacional de la Montaña Rusa', description: 'Celebración de las montañas rusas como atracción.' },
+{ date: '2025-08-16', title: 'Día Internacional del Ron', description: 'Celebración de la bebida alcohólica ron.' },
+{ date: '2025-08-16', title: 'Día Internacional del Geocaching', description: 'Celebración del juego de búsqueda de tesoros al aire libre.' },
+{ date: '2025-08-17', title: 'Día Mundial del Peatón', description: 'Promoción de los derechos y seguridad de los peatones.' },
+{ date: '2025-08-17', title: 'Día Internacional de la Enfermedad de Coats', description: 'Concienciación sobre esta enfermedad ocular rara.' },
+{ date: '2025-08-18', title: 'Día de No Rendirse Nunca', description: 'Fomento de la perseverancia y resiliencia.' },
+{ date: '2025-08-19', title: 'Día Mundial de la Asistencia Humanitaria', description: 'Reconocimiento a los trabajadores humanitarios.' },
+{ date: '2025-08-19', title: 'Día Mundial de la Fotografía', description: 'Celebración del arte fotográfico.' },
+{ date: '2025-08-19', title: 'Día Mundial del Orangután', description: 'Concienciación sobre la conservación de los orangutanes.' },
+{ date: '2025-08-20', title: 'Día Mundial de la Papa Frita', description: 'Celebración de este popular alimento.' },
+{ date: '2025-08-20', title: 'Día Mundial del Mosquito', description: 'Concienciación sobre las enfermedades transmitidas por mosquitos.' },
+{ date: '2025-08-21', title: 'Día Internacional de Conmemoración y Homenaje a las Víctimas del Terrorismo', description: 'Homenaje a las víctimas del terrorismo.' },
+{ date: '2025-08-22', title: 'Día Mundial del Folclore', description: 'Celebración de las tradiciones y cultura popular.' },
+{ date: '2025-08-22', title: 'Día Internacional de Conmemoración de las Víctimas de Actos de Violencia Basados en la Religión o las Creencias', description: 'Homenaje a las víctimas de violencia religiosa.' },
+{ date: '2025-08-23', title: 'Día Internacional del Recuerdo de la Trata de Esclavos y de su Abolición', description: 'Conmemoración de la abolición de la esclavitud.' },
+{ date: '2025-08-23', title: 'Día del Internauta', description: 'Celebración de los usuarios de Internet.' },
+{ date: '2025-08-23', title: 'Día Internacional del Hashtag', description: 'Celebración del uso de hashtags en redes sociales.' },
+{ date: '2025-08-24', title: 'Día Internacional de la Música Extraña', description: 'Celebración de géneros musicales alternativos.' },
+{ date: '2025-08-25', title: 'Día Internacional del Peluquero', description: 'Reconocimiento a los profesionales de la peluquería.' },
+{ date: '2025-08-25', title: 'Inicio de la Semana Mundial del Agua', description: 'Concienciación sobre los recursos hídricos.' },
+{ date: '2025-08-26', title: 'Día Internacional contra el Dengue', description: 'Concienciación sobre la prevención del dengue.' },
+{ date: '2025-08-26', title: 'Día Internacional del Actor', description: 'Reconocimiento a los actores y su arte.' },
+{ date: '2025-08-27', title: 'Día Mundial de los Lagos', description: 'Concienciación sobre la conservación de los lagos.' },
+{ date: '2025-08-28', title: 'Día del Abuelo (México)', description: 'Celebración de los abuelos en México.' },
+{ date: '2025-08-29', title: 'Día Internacional contra los Ensayos Nucleares', description: 'Promoción de la prohibición de pruebas nucleares.' },
+{ date: '2025-08-29', title: 'Día Mundial del Videojuego', description: 'Celebración de la industria de los videojuegos.' },
+{ date: '2025-08-29', title: 'Día Mundial del Gamer', description: 'Celebración de los jugadores de videojuegos.' },
+{ date: '2025-08-29', title: 'Fin de la Semana Mundial del Agua', description: 'Cierre de la semana de concienciación sobre el agua.' },
+{ date: '2025-08-30', title: 'Día Internacional de las Víctimas de Desapariciones Forzadas', description: 'Conmemoración de las víctimas de desapariciones forzadas.' },
+{ date: '2025-08-30', title: 'Día Internacional del Tiburón Ballena', description: 'Concienciación sobre la conservación del tiburón ballena.' },
+{ date: '2025-08-31', title: 'Día Internacional de la Solidaridad', description: 'Promoción de la solidaridad entre personas y naciones.' },
+
+//MES DE SEPTIEMBRE
+{ date: '2025-09-01', title: 'Día Mundial de la Dactiloscopía', description: 'Reconocimiento a la ciencia de la identificación por huellas dactilares.' },
+{ date: '2025-09-01', title: 'Día Internacional de los Primates', description: 'Concienciación sobre la conservación de los primates.' },
+{ date: '2025-09-01', title: 'Día Internacional del Criminalista', description: 'Reconocimiento a los profesionales de la criminalística.' },
+{ date: '2025-09-01', title: 'Día del Tofu', description: 'Celebración de este alimento derivado de la soja.' },
+{ date: '2025-09-01', title: 'Día de la Positividad hacia el Acné', description: 'Concienciación sobre el acné y su impacto psicológico.' },
+{ date: '2025-09-02', title: 'Día de Ceuta', description: 'Celebración de la ciudad autónoma española de Ceuta.' },
+{ date: '2025-09-03', title: 'Día Mundial de la Higiene', description: 'Promoción de prácticas de higiene personal y ambiental.' },
+{ date: '2025-09-04', title: 'Día Mundial de la Salud Sexual', description: 'Promoción de la salud sexual y derechos sexuales.' },
+{ date: '2025-09-04', title: 'Día Internacional del Taekwondo', description: 'Celebración de este arte marcial coreano.' },
+{ date: '2025-09-04', title: 'Día de Comer un Postre Extra', description: 'Celebración del disfrute de postres.' },
+{ date: '2025-09-05', title: 'Día Internacional de la Beneficencia', description: 'Promoción de la caridad y ayuda a los necesitados.' },
+{ date: '2025-09-05', title: 'Día Mundial del Hermano', description: 'Celebración del vínculo fraternal.' },
+{ date: '2025-09-05', title: 'Día Mundial del Periodista Turístico', description: 'Reconocimiento a los periodistas especializados en turismo.' },
+{ date: '2025-09-05', title: 'Día de Llegar Tarde', description: 'Concienciación sobre la puntualidad.' },
+{ date: '2025-09-06', title: 'Día Internacional del Buitre', description: 'Concienciación sobre la conservación de los buitres.' },
+{ date: '2025-09-06', title: 'Día Mundial de la Barba', description: 'Celebración de la barba y su cultura.' },
+{ date: '2025-09-07', title: 'Día Internacional del Aire Limpio por un Cielo Azul', description: 'Promoción de la calidad del aire y reducción de la contaminación.' },
+{ date: '2025-09-07', title: 'Día Mundial de Concienciación de Duchenne', description: 'Concienciación sobre la distrofia muscular de Duchenne.' },
+{ date: '2025-09-07', title: 'Día Mundial del Pelirrojo', description: 'Celebración de las personas pelirrojas.' },
+{ date: '2025-09-08', title: 'Día Internacional de la Alfabetización', description: 'Promoción de la alfabetización como derecho humano.' },
+{ date: '2025-09-08', title: 'Día Internacional del Periodista', description: 'Reconocimiento a los profesionales del periodismo.' },
+{ date: '2025-09-08', title: 'Día Mundial de la Fibrosis Quística', description: 'Concienciación sobre esta enfermedad genética.' },
+{ date: '2025-09-08', title: 'Día Mundial de la Fisioterapia', description: 'Reconocimiento a los profesionales de la fisioterapia.' },
+{ date: '2025-09-08', title: 'Día Europeo de Acción contra la Migraña', description: 'Concienciación sobre la migraña y su impacto.' },
+{ date: '2025-09-09', title: 'Día Internacional para Proteger la Educación de Ataques', description: 'Protección de la educación en situaciones de conflicto.' },
+{ date: '2025-09-10', title: 'Día Mundial para la Prevención del Suicidio', description: 'Concienciación sobre la prevención del suicidio.' },
+{ date: '2025-09-12', title: 'Día de las Naciones Unidas para la Cooperación Sur-Sur', description: 'Promoción de la cooperación entre países del sur global.' },
+{ date: '2025-09-13', title: 'Día Internacional del Chocolate', description: 'Celebración del chocolate y sus derivados.' },
+{ date: '2025-09-13', title: 'Día Mundial de los Primeros Auxilios', description: 'Promoción del conocimiento de primeros auxilios.' },
+{ date: '2025-09-13', title: 'Día Mundial de la Sepsis', description: 'Concienciación sobre la sepsis y su prevención.' },
+{ date: '2025-09-13', title: 'Aniversario de la Batalla de Chapultepec', description: 'Conmemoración de la batalla en México (1847).' },
+{ date: '2025-09-15', title: 'Día Internacional de la Democracia', description: 'Promoción de los valores democráticos.' },
+{ date: '2025-09-15', title: 'Día Mundial del Linfoma', description: 'Concienciación sobre los linfomas y su tratamiento.' },
+{ date: '2025-09-15', title: 'Día Mundial de Concienciación del Linfoma', description: 'Concienciación sobre esta enfermedad del sistema linfático.' },
+{ date: '2025-09-15', title: 'Día de la Independencia de Costa Rica, El Salvador, Guatemala, Honduras y Nicaragua', description: 'Conmemoración de la independencia centroamericana.' },
+{ date: '2025-09-16', title: 'Día de la Independencia de México', description: 'Celebración de la independencia de México.' },
+{ date: '2025-09-16', title: 'Día Internacional de la Preservación de la Capa de Ozono', description: 'Concienciación sobre la protección de la capa de ozono.' },
+{ date: '2025-09-18', title: 'Día Internacional de la Igualdad Salarial', description: 'Promoción de la igualdad salarial entre géneros.' },
+{ date: '2025-09-21', title: 'Día Internacional de la Paz', description: 'Promoción de la paz mundial.' },
+{ date: '2025-09-21', title: 'Día Mundial del Alzheimer', description: 'Concienciación sobre el Alzheimer y otras demencias.' },
+{ date: '2025-09-23', title: 'Día Internacional de las Lenguas de Señas', description: 'Promoción de las lenguas de señas y la cultura sorda.' },
+{ date: '2025-09-26', title: 'Día Internacional para la Eliminación Total de las Armas Nucleares', description: 'Promoción del desarme nuclear.' },
+{ date: '2025-09-27', title: 'Día Mundial del Turismo', description: 'Celebración del turismo y su impacto económico.' },
+{ date: '2025-09-27', title: 'Día Europeo del Donante de Médula Ósea', description: 'Promoción de la donación de médula ósea.' },
+{ date: '2025-09-28', title: 'Día Internacional del Derecho de Acceso Universal a la Información', description: 'Promoción del acceso a la información pública.' },
+{ date: '2025-09-28', title: 'Día Internacional de las Personas Sordas', description: 'Concienciación sobre la comunidad sorda y sus derechos.' },
+{ date: '2025-09-29', title: 'Día Mundial del Corazón', description: 'Concienciación sobre la salud cardiovascular.' },
+{ date: '2025-09-30', title: 'Día Internacional del Pódcast', description: 'Celebración del medio de comunicación en formato pódcast.' },
+
+//MES DE OCTUBRE
+{ date: '2025-10-01', title: 'Día Internacional de las Personas Mayores', description: 'Promoción de los derechos y bienestar de los adultos mayores.' },
+{ date: '2025-10-01', title: 'Día Internacional del Café', description: 'Celebración de la bebida más popular del mundo.' },
+{ date: '2025-10-02', title: 'Día Internacional de la No Violencia', description: 'Conmemoración del aniversario del nacimiento de Mahatma Gandhi.' },
+{ date: '2025-10-04', title: 'Día Mundial de los Animales', description: 'Concienciación sobre los derechos de los animales.' },
+{ date: '2025-10-05', title: 'Día Mundial de los Docentes', description: 'Reconocimiento a la labor de los profesores.' },
+{ date: '2025-10-06', title: 'Día Mundial de la Parálisis Cerebral', description: 'Concienciación sobre esta condición neurológica.' },
+{ date: '2025-10-07', title: 'Día Mundial de la Sonrisa', description: 'Celebración del gesto de sonreír y su impacto positivo.' },
+{ date: '2025-10-09', title: 'Día Mundial del Correo', description: 'Celebración del servicio postal internacional.' },
+{ date: '2025-10-10', title: 'Día Mundial de la Salud Mental', description: 'Concienciación sobre los problemas de salud mental.' },
+{ date: '2025-10-11', title: 'Día Internacional de la Niña', description: 'Promoción de los derechos de las niñas.' },
+{ date: '2025-10-12', title: 'Día de la Hispanidad', description: 'Celebración de la cultura hispana.' },
+{ date: '2025-10-13', title: 'Día Internacional para la Reducción de los Desastres', description: 'Concienciación sobre la gestión de riesgos de desastres.' },
+{ date: '2025-10-14', title: 'Día Mundial de la Visión', description: 'Concienciación sobre la salud visual.' },
+{ date: '2025-10-15', title: 'Día Internacional de las Mujeres Rurales', description: 'Reconocimiento al papel de la mujer en las zonas rurales.' },
+{ date: '2025-10-16', title: 'Día Mundial de la Alimentación', description: 'Concienciación sobre los problemas alimentarios mundiales.' },
+{ date: '2025-10-17', title: 'Día Internacional para la Erradicación de la Pobreza', description: 'Lucha contra la pobreza en el mundo.' },
+{ date: '2025-10-20', title: 'Día Mundial de la Osteoporosis', description: 'Concienciación sobre esta enfermedad ósea.' },
+{ date: '2025-10-21', title: 'Día Mundial del Ahorro de Energía', description: 'Promoción del uso eficiente de la energía.' },
+{ date: '2025-10-24', title: 'Día de las Naciones Unidas', description: 'Aniversario de la fundación de la ONU.' },
+{ date: '2025-10-24', title: 'Día Mundial de la Información sobre el Desarrollo', description: 'Difusión de información sobre desarrollo global.' },
+{ date: '2025-10-27', title: 'Día Mundial del Patrimonio Audiovisual', description: 'Preservación del patrimonio audiovisual mundial.' },
+{ date: '2025-10-28', title: 'Día Mundial de la Animación', description: 'Celebración del arte de la animación.' },
+{ date: '2025-10-29', title: 'Día Mundial del Ictus', description: 'Concienciación sobre los accidentes cerebrovasculares.' },
+{ date: '2025-10-31', title: 'Día Mundial de las Ciudades', description: 'Promoción del desarrollo urbano sostenible.' },
+{ date: '2025-10-31', title: 'Halloween', description: 'Celebración popular de origen celta.' },
+
+//MES DE NOVIEMBRE
+{ date: '2025-11-01', title: 'Día de Todos los Santos', description: 'Celebración religiosa en honor a los santos.' },
+{ date: '2025-11-02', title: 'Día de los Fieles Difuntos', description: 'Conmemoración de los difuntos en la tradición católica.' },
+{ date: '2025-11-05', title: 'Día Mundial del Idioma Romaní', description: 'Promoción de la lengua y cultura romaní.' },
+{ date: '2025-11-06', title: 'Día Internacional para la Prevención de la Explotación del Medio Ambiente en la Guerra y los Conflictos Armados', description: 'Concienciación sobre el impacto ambiental de los conflictos.' },
+{ date: '2025-11-08', title: 'Día Mundial del Urbanismo', description: 'Promoción de la planificación urbana sostenible.' },
+{ date: '2025-11-10', title: 'Día Mundial de la Ciencia para la Paz y el Desarrollo', description: 'Promoción del uso de la ciencia para el bien común.' },
+{ date: '2025-11-12', title: 'Día Mundial contra la Neumonía', description: 'Concienciación sobre esta enfermedad respiratoria.' },
+{ date: '2025-11-13', title: 'Día Mundial de la Bondad', description: 'Promoción de actos de bondad y generosidad.' },
+{ date: '2025-11-14', title: 'Día Mundial de la Diabetes', description: 'Concienciación sobre esta enfermedad metabólica.' },
+{ date: '2025-11-16', title: 'Día Internacional para la Tolerancia', description: 'Promoción de la tolerancia entre culturas y pueblos.' },
+{ date: '2025-11-17', title: 'Día Mundial del Niño Prematuro', description: 'Concienciación sobre los nacimientos prematuros.' },
+{ date: '2025-11-19', title: 'Día Mundial del Retrete', description: 'Concienciación sobre el acceso a saneamiento básico.' },
+{ date: '2025-11-20', title: 'Día Universal del Niño', description: 'Promoción de los derechos de la infancia.' },
+{ date: '2025-11-21', title: 'Día Mundial de la Televisión', description: 'Reconocimiento al impacto de la televisión.' },
+{ date: '2025-11-25', title: 'Día Internacional para la Eliminación de la Violencia contra la Mujer', description: 'Lucha contra la violencia de género.' },
+{ date: '2025-11-29', title: 'Día Internacional de Solidaridad con el Pueblo Palestino', description: 'Apoyo a la causa palestina.' },
+
+//MES DE DICIEMBRE
+{ date: '2025-12-01', title: 'Día Mundial de la Lucha contra el SIDA', description: 'Concienciación sobre el VIH/SIDA.' },
+{ date: '2025-12-02', title: 'Día Internacional para la Abolición de la Esclavitud', description: 'Lucha contra todas las formas de esclavitud moderna.' },
+{ date: '2025-12-03', title: 'Día Internacional de las Personas con Discapacidad', description: 'Promoción de los derechos de las personas con discapacidad.' },
+{ date: '2025-12-05', title: 'Día Internacional de los Voluntarios', description: 'Reconocimiento al trabajo voluntario.' },
+{ date: '2025-12-07', title: 'Día Internacional de la Aviación Civil', description: 'Celebración de la aviación civil internacional.' },
+{ date: '2025-12-09', title: 'Día Internacional contra la Corrupción', description: 'Lucha contra la corrupción en el mundo.' },
+{ date: '2025-12-10', title: 'Día de los Derechos Humanos', description: 'Conmemoración de la Declaración Universal de Derechos Humanos.' },
+{ date: '2025-12-11', title: 'Día Internacional de las Montañas', description: 'Concienciación sobre la importancia de las montañas.' },
+{ date: '2025-12-12', title: 'Día de la Virgen de Guadalupe (México)', description: 'Celebración religiosa en honor a la Virgen de Guadalupe.' },
+{ date: '2025-12-18', title: 'Día Internacional del Migrante', description: 'Promoción de los derechos de los migrantes.' },
+{ date: '2025-12-20', title: 'Día Internacional de la Solidaridad Humana', description: 'Celebración de la unidad y diversidad humana.' },
+{ date: '2025-12-25', title: 'Navidad', description: 'Celebración del nacimiento de Jesucristo.' },
+{ date: '2025-12-28', title: 'Día de los Santos Inocentes', description: 'Tradición de hacer bromas inocentes.' },
+{ date: '2025-12-31', title: 'Nochevieja', description: 'Celebración del último día del año.' }
+];
+        
+        const daysContainer = document.getElementById('days-container');
+        const monthYearElement = document.getElementById('month-year');
+        const prevMonthBtn = document.getElementById('prev-month');
+        const nextMonthBtn = document.getElementById('next-month');
+        const eventsModal = document.getElementById('events-modal');
+        const closeModal = document.getElementById('close-modal');
+        const modalDateTitle = document.getElementById('modal-date-title');
+        const eventListContainer = document.getElementById('event-list-container');
+        const eventCountElement = document.getElementById('event-count');
+        
+        let currentDate = new Date();
+        let currentMonth = currentDate.getMonth();
+        let currentYear = 2025;
+        
+        const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+        
+        renderCalendar();
+        
+        prevMonthBtn.addEventListener('click', () => {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            updateNavButtons();
+            renderCalendar();
+        });
+        
+        nextMonthBtn.addEventListener('click', () => {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            updateNavButtons();
+            renderCalendar();
+        });
+        
+        function updateNavButtons() {
+            prevMonthBtn.disabled = (currentYear === 2025 && currentMonth === 0);
+            
+            nextMonthBtn.disabled = (currentYear === 2025 && currentMonth === 11);
+        }
+        
+        daysContainer.addEventListener('dblclick', (e) => {
+            const dayCell = e.target.closest('.day');
+            if (dayCell && !dayCell.classList.contains('other-month')) {
+                const dayNumber = dayCell.querySelector('.day-number').textContent;
+                const date = new Date(currentYear, currentMonth, dayNumber);
+                showEventsForDate(date);
+            }
+        });
+        
+        closeModal.addEventListener('click', () => {
+            eventsModal.style.display = 'none';
+        });
+        
+        window.addEventListener('click', (e) => {
+            if (e.target === eventsModal) {
+                eventsModal.style.display = 'none';
+            }
+        });
+        
+        function showEventsForDate(date) {
+            const formattedDate = formatDate(date);
+            const dayEvents = events.filter(event => event.date === formattedDate);
+            
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDisplayDate = date.toLocaleDateString('es-ES', options);
+            modalDateTitle.textContent = `Eventos del ${formattedDisplayDate}`;
+            
+            eventListContainer.innerHTML = '';
+            
+            if (dayEvents.length === 0) {
+                const noEventsElement = document.createElement('div');
+                noEventsElement.classList.add('no-events');
+                noEventsElement.textContent = 'No hay eventos programados para este día.';
+                eventListContainer.appendChild(noEventsElement);
+            } else {
+                dayEvents.forEach(event => {
+                    const eventItem = document.createElement('div');
+                    eventItem.classList.add('event-item');
+                    
+                    const eventTitle = document.createElement('div');
+                    eventTitle.classList.add('event-title');
+                    eventTitle.textContent = event.title;
+                    
+                    const eventDescription = document.createElement('div');
+                    eventDescription.classList.add('event-description');
+                    eventDescription.textContent = event.description;
+                    
+                    eventItem.appendChild(eventTitle);
+                    eventItem.appendChild(eventDescription);
+                    eventListContainer.appendChild(eventItem);
+                });
+            }
+            
+            eventsModal.style.display = 'block';
+        }
+        
+        function renderCalendar() {
+            monthYearElement.textContent = `${months[currentMonth]} ${currentYear}`;
+            const eventsThisMonth = events.filter(event => {
+                const eventDate = new Date(event.date);
+                return eventDate.getFullYear() === currentYear && eventDate.getMonth() === currentMonth;
+            });
+
+            eventCountElement.textContent = `(${eventsThisMonth.length} eventos)`;
+            updateNavButtons();
+            daysContainer.innerHTML = '';
+            const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+            let firstDayIndex = firstDayOfMonth.getDay() - 1;
+            if (firstDayIndex < 0) firstDayIndex = 6;
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const prevLastDay = new Date(currentYear, currentMonth, 0).getDate();
+            const totalCells = (firstDayIndex + daysInMonth > 35) ? 42 : 35;
+            for (let i = 0; i < totalCells; i++) {
+                const dayCell = document.createElement('div');
+                dayCell.classList.add('day');
+                const dayNumber = document.createElement('div');
+                dayNumber.classList.add('day-number');
+                
+                if (i < firstDayIndex) {
+                    dayNumber.textContent = prevLastDay - firstDayIndex + i + 1;
+                    dayCell.classList.add('other-month');
+                }
+                else if (i >= firstDayIndex + daysInMonth) {
+                    dayNumber.textContent = i - firstDayIndex - daysInMonth + 1;
+                    dayCell.classList.add('other-month');
+                }
+                else {
+                    const day = i - firstDayIndex + 1;
+                    dayNumber.textContent = day;
+                    
+                    if (day === new Date().getDate() && currentMonth === new Date().getMonth() && currentYear === new Date().getFullYear()) {
+                        dayCell.classList.add('today');
+                    }
+                    
+                    const dayDate = new Date(currentYear, currentMonth, day);
+                    const formattedDate = formatDate(dayDate);
+                    const dayEvents = events.filter(event => event.date === formattedDate);
+                    
+                    dayEvents.forEach(event => {
+                        const eventElement = document.createElement('div');
+                        eventElement.classList.add('event');
+                        eventElement.textContent = event.title;
+                        eventElement.title = event.description;
+                        dayCell.appendChild(eventElement);
+                    });
+                }
+                
+                dayCell.appendChild(dayNumber);
+                daysContainer.appendChild(dayCell);
+            }
+        }
+        
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+        
+        updateNavButtons();
+    </script>
+</body>
+</html>

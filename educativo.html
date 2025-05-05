@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EC - Educativo</title>
+    <link rel="icon" type="image/png" href="img/EC.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles/style_standard.css">
+    <style>
+        .main-content {
+            max-width: 1200px;
+            padding: 30px 40px; 
+        }
+
+        .tools-container {
+            width: 100%;
+            margin: 40px 0; 
+        }
+
+        .tools-wrapper {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .tool-card {
+            background-color: white;
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
+            border-left: 5px solid #1a73e8; 
+            transition: transform 0.3s, box-shadow 0.3s;
+            min-height: 280px; 
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px); 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .tool-card h3 {
+            color: #1a73e8;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .tool-card p {
+            color: #5f6368;
+            margin-bottom: 25px; 
+            line-height: 1.7; 
+            font-size: 1.05rem; 
+            flex-grow: 1; 
+        }
+
+        .tool-link {
+            display: inline-block;
+            padding: 14px 25px;
+            background-color: #1a73e8;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            font-size: 1.05rem; 
+            text-align: center;
+            align-self: flex-start; 
+        }
+
+        .tool-link:hover {
+            background-color: #0d5bba;
+        }
+
+        .intro-text {
+            text-align: center;
+            color: #5f6368;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        @media (min-width: 768px) {
+            .tools-wrapper {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .tool-card {
+                min-height: 320px; 
+            }
+        }
+
+        @media (min-width: 992px) {
+            .tools-wrapper {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 35px; 
+            }
+            
+            .tool-card {
+                min-height: 340px;
+            }
+        }
+    </style>
+
+    <!--
+    Copyright © 2025 Grupo EmilioColor®. 
+    Todos los derechos reservados. 
+    Esta plantilla y todo su contenido son propiedad exclusiva de Grupo EmilioColor® y están protegidos por las leyes de derechos de autor.
+    Queda prohibida la reproducción total o parcial sin la autorización expresa del titular de los derechos.
+    -->
+  
+</head>
+<body>
+    <!-- Encabezado Estandarizado -->
+    <div class="header">
+        <img src="img/EmilioColor.jpg" alt="Logo" class="header-logo">
+        <div class="header-options">
+            <a href="https://grupoemiliocolor.github.io/mx/">Inicio</a>
+        </div>
+    </div>
+    
+    <div class="subheader">
+        <h2>Herramientas Educativas</h2>
+    </div>
+    
+    <!-- Contenido principal -->
+    <div class="main-content">
+        <p class="intro-text">
+            Explora nuestra colección de herramientas educativas diseñadas para facilitar tus tareas académicas y profesionales. 
+            Todas nuestras utilidades son gratuitas y accesibles desde cualquier dispositivo.
+        </p>
+        
+        <!-- Sección de herramientas -->
+        <div class="tools-container">
+            <div class="tools-wrapper">
+
+                <!-- PLATAFORMA HORAS -->
+                <div class="tool-card">
+                    <h3>PLATAFORMA HORAS 2025-2</h3>
+                    <p>El objetivo de esta página es facilitar a los estudiantes, maestros y personal administrativo del CECyT 9 "Juan de Dios Bátiz" el acceso a los horarios de asesorías de la unidad académica de manera rápida y organizada. Con esta herramienta, se busca mejorar la comunicación y optimizar el tiempo de todos los miembros de la comunidad educativa.
+                    </p>
+                    <a href="https://grupoemiliocolor.github.io/plataforma_horas-asesorias_cecyt9/" class="tool-link">Acceder a la plataforma</a>
+                </div>
+
+                <!-- Manual -->
+                <div class="tool-card">
+                    <h3>Manual de Redes de Género</h3>
+                    <p>Documento institucional completo para las Redes de Género del IPN. Contiene protocolos actualizados para prevenir y atender la violencia de género, promoviendo una cultura de igualdad, sensibilización y acompañamiento integral en el ámbito educativo.</p>
+                    <a href="#" class="tool-link">Ver Manual</a>
+                </div>
+                
+                <!-- Espacio para futura herramienta -->
+                <div class="tool-card">
+                    <h3>Más herramientas en desarrollo</h3>
+                    <p>Estamos trabajando constantemente para ampliar nuestra colección de herramientas útiles. Visítanos periódicamente para descubrir nuevas utilidades diseñadas para simplificar tu trabajo y estudios.</p>
+                    <a href="mailto:emiliocolor@gmail.com" class="tool-link">Sugerir herramienta</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer Estandarizado -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a href="https://grupoemiliocolor.github.io/mx/" target="_blank">
+                    <img src="img/EC.png" alt="EmilioColor Logo" class="footer-logo">
+                </a>
+                <p class="footer-description">Soluciones integrales en papelería, desarrollo web y capacitación para mentes que transformen el mundo.
+                </p>
+                <div class="social-links">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <div class="link-group">
+                    <h4>Productos</h4>
+                    <a href="#">EmilioColor® Inkspire</a>
+                    <a href="#">EmilioColor® Education</a>
+                    <a href="#">Material Didáctico</a>
+                </div>
+                
+                <div class="link-group">
+                    <h4>Recursos</h4>
+                    <a href="#">Blog Educativo</a>
+                    <a href="#">Documentación Técnica</a>
+                    <a href="#">Herramientas digitales</a>
+                </div>
+                
+                <div class="link-group">
+                    <h4>Empresa</h4>
+                    <a href="#">Acerca de</a>
+                    <a href="#">Contacto</a>
+                    <a href="#">Términos de servicio</a>
+                    <a href="#">Política de privacidad</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; <span id="current-year"></span> EmilioColor®. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

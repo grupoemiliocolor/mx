@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EC - Calculadora de código de colores de resistencias</title>
+    <link rel="icon" type="image/png" href="img/EC.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+
+    /* 
+    Copyright © 2025 Grupo EmilioColor®. 
+    Todos los derechos reservados. 
+    Esta plantilla y todo su contenido son propiedad exclusiva de Grupo EmilioColor® y están protegidos por las leyes de derechos de autor.
+    Queda prohibida la reproducción total o parcial sin la autorización expresa del titular de los derechos. 
+    */
+
+body {
+    font-family: 'Candara', Calibri, 'Trebuchet MS', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-areas:
+        "header"
+        "subheader"
+        "main"
+        "footer";
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+h1, h2, h3, h4, .sidebar a {
+    font-family: 'Candara', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+}
+
+.header {
+    grid-area: header;
+    background-color: #ffffff;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.header-logo {
+    height: 40px;
+    width: auto;
+    max-height: 100%;
+}
+
+.header-options {
+    position: absolute;
+    right: 20px;
+}
+
+.header-options a {
+    color: #1a73e8;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.header-options a:hover {
+    background-color: rgba(26, 115, 232, 0.1);
+}
+
+.subheader {
+    grid-area: subheader;
+    background-color: #e8f0fe;
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #dadce0;
+}
+
+.main-content {
+    grid-area: main;
+    padding: 25px;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.calculator {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #1a73e8;
+    margin-bottom: 25px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.config-selector {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #dadce0;
+}
+
+.conversion-type {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.conversion-type label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-size: 15px;
+}
+
+input, select {
+    padding: 12px;
+    width: 100%;
+    border: 1px solid #dadce0;
+    border-radius: 6px;
+    background-color: #ffffff;
+    color: #333;
+    font-size: 16px;
+    transition: border 0.3s;
+    box-sizing: border-box;
+}
+
+input:focus, select:focus {
+    border-color: #1a73e8;
+    outline: none;
+}
+
+button {
+    background: linear-gradient(to bottom, #1a73e8, #2f51ff);
+    color: #ffffff;
+    border: none;
+    padding: 14px;
+    width: 100%;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 18px;
+    margin-top: 20px;
+    font-weight: bold;
+    transition: all 0.3s;
+    letter-spacing: 1px;
+}
+
+button:hover {
+    background: #1a73e8;
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+.result {
+    margin-top: 25px;
+    padding: 20px;
+    background-color: #f1f3f4;
+    border-radius: 8px;
+    display: none;
+    border-left: 4px solid #1a73e8;
+}
+
+.error {
+    color: #c62828;
+    margin-top: 20px;
+    padding: 12px;
+    background-color: #ffcdd2;
+    border-radius: 6px;
+    display: none;
+    font-size: 15px;
+}
+
+.conversion-value {
+    font-size: 22px;
+    color: #1a73e8;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+hr {
+    border: 0;
+    height: 2px;
+    background: linear-gradient(to right, transparent, #1a73e8, transparent);
+    margin: 18px 0;
+}
+
+/* Estilos para la calculadora */
+.band-config {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.band-config label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.band-selector {
+    margin-bottom: 20px;
+    display: none;
+}
+
+.band-selector.active {
+    display: block;
+}
+
+.color-code {
+    font-weight: bold;
+    color: #1a73e8;
+}
+
+.tolerance-value {
+    font-weight: bold;
+    color: #1a73e8;
+}
+
+#resistencia {
+    font-size: 22px;
+    color: #1a73e8;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+#formula {
+    font-family: 'Courier New', monospace;
+    background-color: #f1f3f4;
+    padding: 8px 12px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+/* Footer Estandarizado */
+.site-footer {
+    grid-area: footer;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    padding: 40px 0 0;
+    margin-top: 50px;
+    text-align: left;
+}
+
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-brand {
+    flex: 1;
+    min-width: 250px;
+    margin-bottom: 30px;
+    padding-right: 20px;
+}
+
+.footer-logo {
+    height: 70px;
+    margin-bottom: 12px;
+}
+
+.footer-description {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 2;
+}
+
+.link-group {
+    flex: 1;
+    min-width: 150px;
+    margin-bottom: 30px;
+    padding: 0 15px;
+    text-align: left;
+}
+
+.link-group h4 {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.link-group h4:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 40px;
+    height: 2px;
+    background: #3498db;
+}
+
+.link-group a {
+    display: block;
+    color: #bdc3c7;
+    text-decoration: none;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.link-group a:hover {
+    color: #3498db;
+    padding-left: 5px;
+}
+
+.footer-bottom {
+    background-color: #1a252f;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.footer-bottom p {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.social-icon {
+    color: #fff;
+    background: rgba(255,255,255,0.1);
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.social-icon:hover {
+    background: #3498db;
+    transform: translateY(-3px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+        text-align: center;
+    }
+
+    .header-options {
+        position: static;
+        margin-top: 10px;
+    }
+
+    .main-content {
+        padding: 15px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+    }
+
+    .footer-brand {
+        text-align: center;
+        padding-right: 0;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+
+    .link-group {
+        text-align: center;
+    }
+
+    .link-group h4:after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .footer-bottom {
+        text-align: center;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Encabezado Estandarizado -->
+    <div class="header">
+        <img src="img/EmilioColor.jpg" alt="Logo" class="header-logo">
+        <div class="header-options">
+            <a href="https://grupoemiliocolor.github.io/mx/">Inicio</a>
+        </div>
+    </div>
+    
+    <div class="subheader">
+        <h2>Calculadora de código de colores de resistencias</h2>
+    </div>
+    
+    <!-- Contenido principal -->
+    <div class="main-content">        
+        <div class="calculator">
+            <div class="config-selector">
+                <label>Seleccione el tipo de resistencia:</label>
+                <div class="band-config">
+                    <label>
+                        <input type="radio" name="band-type" value="4" checked> 4 Bandas
+                    </label>
+                    <label>
+                        <input type="radio" name="band-type" value="5"> 5 Bandas
+                    </label>
+                    <label>
+                        <input type="radio" name="band-type" value="6"> 6 Bandas
+                    </label>
+                </div>
+            </div>
+            
+            <div class="band-selector active" id="band1-container">
+                <label for="band1">Banda 1 (Primer dígito):</label>
+                <select id="band1">
+                    <option value="n">Negro (0)</option>
+                    <option value="c">Café (1)</option>
+                    <option value="r">Rojo (2)</option>
+                    <option value="o">Naranja (3)</option>
+                    <option value="am">Amarillo (4)</option>
+                    <option value="v">Verde (5)</option>
+                    <option value="az">Azul (6)</option>
+                    <option value="m">Morado (7)</option>
+                    <option value="g">Gris (8)</option>
+                    <option value="b">Blanco (9)</option>
+                </select>
+            </div>
+            
+            <div class="band-selector active" id="band2-container">
+                <label for="band2">Banda 2 (Segundo dígito):</label>
+                <select id="band2">
+                    <option value="n">Negro (0)</option>
+                    <option value="c">Café (1)</option>
+                    <option value="r">Rojo (2)</option>
+                    <option value="o">Naranja (3)</option>
+                    <option value="am">Amarillo (4)</option>
+                    <option value="v">Verde (5)</option>
+                    <option value="az">Azul (6)</option>
+                    <option value="m">Morado (7)</option>
+                    <option value="g">Gris (8)</option>
+                    <option value="b">Blanco (9)</option>
+                </select>
+            </div>
+            
+            <div class="band-selector" id="band3-container">
+                <label for="band3">Banda 3 (Tercer dígito):</label>
+                <select id="band3">
+                    <option value="n">Negro (0)</option>
+                    <option value="c">Café (1)</option>
+                    <option value="r">Rojo (2)</option>
+                    <option value="o">Naranja (3)</option>
+                    <option value="am">Amarillo (4)</option>
+                    <option value="v">Verde (5)</option>
+                    <option value="az">Azul (6)</option>
+                    <option value="m">Morado (7)</option>
+                    <option value="g">Gris (8)</option>
+                    <option value="b">Blanco (9)</option>
+                </select>
+            </div>
+            
+            <div class="band-selector active" id="multiplier-container">
+                <label for="multiplier">Multiplicador:</label>
+                <select id="multiplier">
+                    <option value="n">Negro (×1)</option>
+                    <option value="c">Café (×10)</option>
+                    <option value="r">Rojo (×100)</option>
+                    <option value="o">Naranja (×1K)</option>
+                    <option value="am">Amarillo (×10K)</option>
+                    <option value="v">Verde (×100K)</option>
+                    <option value="az">Azul (×1M)</option>
+                    <option value="m">Morado (×10M)</option>
+                    <option value="g">Gris (×100M)</option>
+                    <option value="b">Blanco (×1G)</option>
+                    <option value="dor">Dorado (×0.1)</option>
+                    <option value="pla">Plateado (×0.01)</option>
+                </select>
+            </div>
+            
+            <div class="band-selector active" id="tolerance-container">
+                <label for="tolerance">Tolerancia:</label>
+                <select id="tolerance">
+                    <option value="c">Café (±1%)</option>
+                    <option value="r">Rojo (±2%)</option>
+                    <option value="dor">Dorado (±5%)</option>
+                    <option value="pla">Plateado (±10%)</option>
+                    <option value="n">Negro (±20%)</option>
+                    <option value="v">Verde (±0.5%)</option>
+                    <option value="az">Azul (±0.25%)</option>
+                    <option value="m">Morado (±0.1%)</option>
+                    <option value="g">Gris (±0.05%)</option>
+                </select>
+            </div>
+            
+            <div class="band-selector" id="tempco-container">
+                <label for="tempco">Coeficiente de temperatura:</label>
+                <select id="tempco">
+                    <option value="n">Negro (250 ppm/°C)</option>
+                    <option value="c">Café (100 ppm/°C)</option>
+                    <option value="r">Rojo (50 ppm/°C)</option>
+                    <option value="o">Naranja (15 ppm/°C)</option>
+                    <option value="am">Amarillo (25 ppm/°C)</option>
+                    <option value="v">Verde (20 ppm/°C)</option>
+                    <option value="az">Azul (10 ppm/°C)</option>
+                    <option value="m">Morado (5 ppm/°C)</option>
+                    <option value="g">Gris (1 ppm/°C)</option>
+                </select>
+            </div>
+            
+            <button id="calculate-btn">Calcular Resistencia</button>
+            
+            <div class="error" id="error"></div>
+            
+            <div class="result" id="result">
+                <h2>RESULTADO:</h2>
+                <hr>
+                <p>Banda 1 (<span class="color-code" id="band1-color"></span>): <span id="band1-value"></span></p>
+                <p>Banda 2 (<span class="color-code" id="band2-color"></span>): <span id="band2-value"></span></p>
+                <p id="band3-result" style="display:none">Banda 3 (<span class="color-code" id="band3-color"></span>): <span id="band3-value"></span></p>
+                <p>Multiplicador (<span class="color-code" id="multiplier-color"></span>): <span id="multiplier-value"></span></p>
+                <p>Tolerancia (<span class="color-code" id="tolerance-color"></span>): <span id="tolerance-value"></span></p>
+                <p id="tempco-result" style="display:none">Coef. Temp. (<span class="color-code" id="tempco-color"></span>): <span id="tempco-value"></span></p>
+                <p><strong>Valor de la resistencia:</strong> <span id="resistencia"></span> ohmios</p>
+                <p>Tolerancia: ±<span class="tolerance-value" id="tolerance-percent"></span></p>
+                <p><span id="formula"></span> Ω</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer Estandarizado -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a href="https://grupoemiliocolor.github.io/mx/" target="_blank">
+                    <img src="img/EC.png" alt="EmilioColor Logo" class="footer-logo">
+                </a>
+                <p class="footer-description">Soluciones integrales en papelería, desarrollo web y capacitación para mentes que transformen el mundo.
+                </p>
+                <div class="social-links">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <div class="link-group">
+                    <h4>Productos</h4>
+                    <a href="#">EmilioColor® Inkspire</a>
+                </div>
+                
+                <div class="link-group">
+                    <h4>Recursos</h4>
+                    <a href="#">Blog</a>
+                    <a href="#">Documentación</a>
+                    <a href="#">Herramientas digitales</a>
+                </div>
+                
+                <div class="link-group">
+                    <h4>Empresa</h4>
+                    <a href="#">Acerca de</a>
+                    <a href="#">Contacto</a>
+                    <a href="#">Términos</a>
+                    <a href="#">Privacidad</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; <span id="current-year"></span> EmilioColor®. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Corregí los valores duplicados (n para negro y naranja)
+        const colorValues = {
+            "n": {value: 0, name: "Negro"},
+            "c": {value: 1, name: "Café"},
+            "r": {value: 2, name: "Rojo"},
+            "o": {value: 3, name: "Naranja"},
+            "am": {value: 4, name: "Amarillo"},
+            "v": {value: 5, name: "Verde"},
+            "az": {value: 6, name: "Azul"},
+            "m": {value: 7, name: "Morado"},
+            "g": {value: 8, name: "Gris"},
+            "b": {value: 9, name: "Blanco"},
+            "dor": {value: -1, name: "Dorado"},
+            "pla": {value: -2, name: "Plateado"}
+        };
+
+        const multiplierValues = {
+            "n": {value: 0, name: "×1"},
+            "c": {value: 1, name: "×10"},
+            "r": {value: 2, name: "×100"},
+            "o": {value: 3, name: "×1K"},
+            "am": {value: 4, name: "×10K"},
+            "v": {value: 5, name: "×100K"},
+            "az": {value: 6, name: "×1M"},
+            "m": {value: 7, name: "×10M"},
+            "g": {value: 8, name: "×100M"},
+            "b": {value: 9, name: "×1G"},
+            "dor": {value: -1, name: "×0.1"},
+            "pla": {value: -2, name: "×0.01"}
+        };
+
+        const toleranceValues = {
+            "c": {value: 1, name: "±1%"},
+            "r": {value: 2, name: "±2%"},
+            "dor": {value: 5, name: "±5%"},
+            "pla": {value: 10, name: "±10%"},
+            "n": {value: 20, name: "±20%"},
+            "v": {value: 0.5, name: "±0.5%"},
+            "az": {value: 0.25, name: "±0.25%"},
+            "m": {value: 0.1, name: "±0.1%"},
+            "g": {value: 0.05, name: "±0.05%"}
+        };
+
+        const tempcoValues = {
+            "n": {value: 250, name: "250 ppm/°C"},
+            "c": {value: 100, name: "100 ppm/°C"},
+            "r": {value: 50, name: "50 ppm/°C"},
+            "o": {value: 15, name: "15 ppm/°C"},
+            "am": {value: 25, name: "25 ppm/°C"},
+            "v": {value: 20, name: "20 ppm/°C"},
+            "az": {value: 10, name: "10 ppm/°C"},
+            "m": {value: 5, name: "5 ppm/°C"},
+            "g": {value: 1, name: "1 ppm/°C"}
+        };
+
+        // Configurar eventos para los radio buttons
+        document.querySelectorAll('input[name="band-type"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                updateBandVisibility(this.value);
+            });
+        });
+
+        // Configurar evento para el botón de cálculo
+        document.getElementById('calculate-btn').addEventListener('click', calcularResistencia);
+
+        function updateBandVisibility(bandType) {
+            // Ocultar todas las bandas primero
+            document.getElementById('band3-container').classList.remove('active');
+            document.getElementById('tempco-container').classList.remove('active');
+            
+            // Mostrar las bandas según el tipo seleccionado
+            if (bandType === '5') {
+                document.getElementById('band3-container').classList.add('active');
+            } else if (bandType === '6') {
+                document.getElementById('band3-container').classList.add('active');
+                document.getElementById('tempco-container').classList.add('active');
+            }
+        }
+
+        function calcularResistencia() {
+            const bandType = document.querySelector('input[name="band-type"]:checked').value;
+            const band1 = document.getElementById("band1").value;
+            const band2 = document.getElementById("band2").value;
+            const band3 = bandType !== '4' ? document.getElementById("band3").value : null;
+            const multiplier = document.getElementById("multiplier").value;
+            const tolerance = document.getElementById("tolerance").value;
+            const tempco = bandType === '6' ? document.getElementById("tempco").value : null;
+            
+            const errorElement = document.getElementById("error");
+            const resultElement = document.getElementById("result");
+            
+            errorElement.style.display = "none";
+            resultElement.style.display = "none";
+            
+            // Verificar que los colores sean válidos
+            if (!(band1 in colorValues) || !(band2 in colorValues) || 
+             (band3 && !(band3 in colorValues))) {
+             errorElement.textContent = "ERROR: Uno o más colores no son válidos.";
+             errorElement.style.display = "block";
+             return;
+            }
+            
+            const valor1 = colorValues[band1].value;
+            const valor2 = colorValues[band2].value;
+            const valor3 = band3 ? colorValues[band3].value : null;
+            const multiplicador = multiplierValues[multiplier].value;
+            const tolerancia = toleranceValues[tolerance].value;
+            const tempCoef = tempco ? tempcoValues[tempco].value : null;
+            
+            // Calcular resistencia
+            let resistencia;
+            if (bandType === '4') {
+                resistencia = (valor1 * 10 + valor2) * Math.pow(10, multiplicador);
+            } else if (bandType === '5') {
+                resistencia = (valor1 * 100 + valor2 * 10 + valor3) * Math.pow(10, multiplicador);
+            } else { // 6 bandas
+                resistencia = (valor1 * 100 + valor2 * 10 + valor3) * Math.pow(10, multiplicador);
+            }
+            
+            // Mostrar resultados
+            document.getElementById("band1-color").textContent = colorValues[band1].name;
+            document.getElementById("band2-color").textContent = colorValues[band2].name;
+            
+            if (bandType !== '4') {
+                document.getElementById("band3-color").textContent = colorValues[band3].name;
+                document.getElementById("band3-value").textContent = valor3;
+                document.getElementById("band3-result").style.display = "block";
+            } else {
+                document.getElementById("band3-result").style.display = "none";
+            }
+            
+            document.getElementById("multiplier-color").textContent = multiplierValues[multiplier].name;
+            document.getElementById("multiplier-value").textContent = `10^${multiplicador}`;
+            
+            document.getElementById("tolerance-color").textContent = toleranceValues[tolerance].name;
+            document.getElementById("tolerance-value").textContent = toleranceValues[tolerance].name;
+            document.getElementById("tolerance-percent").textContent = tolerancia + "%";
+            
+            if (bandType === '6') {
+                document.getElementById("tempco-color").textContent = tempcoValues[tempco].name;
+                document.getElementById("tempco-value").textContent = tempcoValues[tempco].name;
+                document.getElementById("tempco-result").style.display = "block";
+            } else {
+                document.getElementById("tempco-result").style.display = "none";
+            }
+            
+            document.getElementById("resistencia").textContent = formatResistance(resistencia);
+            
+            let formula;
+            if (bandType === '4') {
+                formula = `${valor1}${valor2} × 10^${multiplicador}`;
+            } else if (bandType === '5') {
+                formula = `${valor1}${valor2}${valor3} × 10^${multiplicador}`;
+            } else {
+                formula = `${valor1}${valor2}${valor3} × 10^${multiplicador}`;
+            }
+            
+            document.getElementById("formula").textContent = `${formula} = ${formatResistance(resistencia)}`;
+            
+            resultElement.style.display = "block";
+        }
+        
+        function formatResistance(ohms) {
+            if (ohms >= 1000000000) {
+                return (ohms / 1000000000).toFixed(2) + " GΩ";
+            } else if (ohms >= 1000000) {
+                return (ohms / 1000000).toFixed(2) + " MΩ";
+            } else if (ohms >= 1000) {
+                return (ohms / 1000).toFixed(2) + " KΩ";
+            } else if (ohms < 1 && ohms > 0) {
+                return ohms.toFixed(2) + " Ω";
+            } else {
+                return ohms + " Ω";
+            }
+        }
+        
+        // Estilo dinámico al texto del select
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', function () {
+                this.style.color = '#1a73e8';
+            });
+        });
+    </script>
+</body>
+</html>
