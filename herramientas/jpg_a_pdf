@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EC - Convertidor JPG a PDF Online | Imágenes a PDF Gratis | EmilioColor®</title>
+    <meta name="description" content="Herramienta gratuita para convertir imágenes JPG a PDF en línea. Combina múltiples imágenes en un solo documento PDF. Sin registros, sin marcas de agua.">
+    <meta name="keywords" content="jpg a pdf, convertir jpg a pdf, imágenes a pdf, jpeg a pdf, crear pdf desde imágenes, herramienta pdf gratis">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="EmilioColor®">
+    
+    <!--
+    Copyright © 2025 Grupo EmilioColor®. 
+    Todos los derechos reservados. 
+    Esta plantilla y todo su contenido son propiedad exclusiva de Grupo EmilioColor® y están protegidos por las leyes de derechos de autor.
+    Queda prohibida la reproducción total o parcial sin la autorización expresa del titular de los derechos. 
+    -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="icon" type="image/png" href="img/EC.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Candara', Calibri, 'Trebuchet MS', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 100%;
+            grid-template-areas:
+                "header"
+                "subheader"
+                "main"
+                "footer";
+            background-color: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Candara', Calibri, 'Trebuchet MS', sans-serif;
+            font-weight: 600;
+        }
+
+        h2 {
+            color: #1a73e8;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        /* Header */
+        .header {
+            grid-area: header;
+            background-color: #ffffff;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-logo {
+            height: 40px;
+            width: auto;
+            max-height: 100%;
+        }
+        
+        .header-options {
+            position: absolute;
+            right: 20px;
+        }
+        
+        .header-options a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        .header-options a:hover {
+            background-color: rgba(26, 115, 232, 0.1);
+        }
+        
+        /* Subheader */
+        .subheader {
+            grid-area: subheader;
+            background-color: #e8f0fe;
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #dadce0;
+        }
+        
+        /* Main content */
+        .main-content {
+            grid-area: main;
+            padding: 25px;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        /* Drop area */
+        #drop-area {
+            border: 2px dashed #1a73e8;
+            padding: 30px;
+            margin: 20px 0;
+            cursor: pointer;
+            border-radius: 10px;
+            background-color: white;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        #drop-area:hover {
+            background-color: #e8f0fe;
+        }
+        
+        #drop-area p {
+            color: #5f6368;
+            font-size: 1.1em;
+        }
+        
+        /* Preview area */
+        #preview {
+            margin-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .image-container {
+            position: relative;
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            width: 220px;
+        }
+        
+        .image-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .image-container img {
+            max-width: 100%;
+            max-height: 160px;
+            border-radius: 5px;
+            display: block;
+            margin: 0 auto;
+            object-fit: contain;
+        }
+        
+        .image-number {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            background: #1a73e8;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1em;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .image-controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            gap: 8px;
+        }
+        
+        .image-controls button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 12px;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+        
+        .image-controls button:hover {
+            background-color: #0d62c9;
+        }
+        
+        .image-controls button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        /* Action buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .action-buttons button {
+            background: linear-gradient(to bottom, #1a73e8, #2f51ff);
+            color: #ffffff;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+            flex: 1;
+        }
+        
+        .action-buttons button:hover {
+            background-color: #0d62c9;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .action-buttons button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        
+        button.secondary {
+            background: linear-gradient(to bottom, #f1f3f4, #e8f0fe);
+            color: #5f6368;
+        }
+        
+        button.secondary:hover {
+            background: #e8f0fe;
+        }
+        
+        /* File input */
+        #file-input {
+            display: none;
+        }
+        
+        /* SEO Content */
+        .seo-content {
+            margin-top: 40px;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .seo-content h2, .seo-content h3, .seo-content h4 {
+            color: #1a73e8;
+            margin-top: 25px;
+        }
+        
+        .seo-content ul, .seo-content ol {
+            padding-left: 20px;
+            margin: 15px 0;
+        }
+        
+        .seo-content li {
+            margin-bottom: 8px;
+        }
+        
+        .faq-item {
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .breadcrumb {
+            font-size: 0.9em;
+            color: #5f6368;
+            margin-bottom: 20px;
+        }
+        
+        .breadcrumb a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* Footer */
+        .site-footer {
+            grid-area: footer;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 40px 0 0;
+            margin-top: 50px;
+        }
+        
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-brand {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 30px;
+            padding-right: 20px;
+        }
+        
+        .footer-logo {
+            height: 70px;
+            margin-bottom: 12px;
+        }
+        
+        .footer-description {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            flex: 2;
+        }
+        
+        .link-group {
+            flex: 1;
+            min-width: 150px;
+            margin-bottom: 30px;
+            padding: 0 15px;
+        }
+        
+        .link-group h4 {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .link-group h4:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background: #3498db;
+        }
+        
+        .link-group a {
+            display: block;
+            color: #bdc3c7;
+            text-decoration: none;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .link-group a:hover {
+            color: #3498db;
+            padding-left: 5px;
+        }
+        
+        .footer-bottom {
+            background-color: #1a252f;
+            padding: 20px 0;
+            text-align: center;
+        }
+        
+        .footer-bottom p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icon {
+            color: #fff;
+            background: rgba(255,255,255,0.1);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .social-icon:hover {
+            background: #3498db;
+            transform: translateY(-3px);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+                text-align: center;
+            }
+            
+            .header-options {
+                position: static;
+                margin-top: 10px;
+            }
+            
+            .main-content {
+                padding: 15px;
+            }
+            
+            .image-container {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .action-buttons button {
+                width: 100%;
+            }
+            
+            .footer-container {
+                flex-direction: column;
+            }
+            
+            .footer-brand {
+                text-align: center;
+                padding-right: 0;
+            }
+            
+            .social-links {
+                justify-content: center;
+            }
+            
+            .link-group {
+                text-align: center;
+            }
+            
+            .link-group h4:after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header class="header" role="banner">
+        <a href="https://grupoemiliocolor.github.io/mx/" target="_blank" aria-label="Ir a la página principal de EmilioColor">
+            <img src="img/EmilioColor.jpg" alt="Logo EmilioColor" class="header-logo" width="150" height="40">
+        </a>
+        <nav class="header-options" role="navigation" aria-label="Menú principal">
+            <a href="https://grupoemiliocolor.github.io/mx/herramientas.html" aria-label="Más herramientas">Más Herramientas</a>
+            <a href="https://grupoemiliocolor.github.io/mx/unir_pdfs.html" aria-label="Unir archivos PDF">Unir PDFs</a>
+        </nav>
+    </header>
+    
+    <div class="subheader" role="region" aria-label="Encabezado secundario">
+        <h1>Convertidor de JPG a PDF en Línea</h1>
+        <p class="visually-hidden">Herramienta gratuita para convertir imágenes JPG a documentos PDF</p>
+    </div>
+    
+    <!-- Contenido principal -->
+    <main class="main-content" role="main">
+        <section aria-labelledby="main-heading">
+            <h2 id="main-heading" style="display: none;">Convertidor JPG a PDF</h2>
+            
+            <div class="breadcrumb" aria-label="Ruta de navegación">
+                <a href="https://grupoemiliocolor.github.io/mx/">Inicio</a> > 
+                <a href="#">Herramientas</a> > 
+                <span aria-current="page">JPG a PDF</span>
+            </div>
+            
+            <p style="text-align: center; color: #5f6368; margin-bottom: 20px;">
+                Sube tus imágenes JPG y conviértelas en un documento PDF profesional. 
+                <strong>Totalmente gratuito, seguro y fácil de usar</strong>. No requiere registro.
+            </p>
+            
+            <div id="drop-area" onclick="document.getElementById('file-input').click()" role="button" aria-label="Área para subir imágenes JPG" tabindex="0">
+                <p><i class="fas fa-cloud-upload-alt" aria-hidden="true"></i> Arrastra y suelta imágenes JPG aquí o haz clic para seleccionar</p>
+                <input type="file" id="file-input" accept="image/jpeg,image/png" multiple aria-label="Seleccionar imágenes JPG">
+            </div>
+            
+            <div id="preview" aria-live="polite"></div>
+            
+            <div class="action-buttons">
+                <button id="convert-btn" aria-label="Convertir las imágenes seleccionadas a PDF">Convertir a PDF</button>
+                <button id="clear-btn" class="secondary" aria-label="Limpiar todas las imágenes seleccionadas">Limpiar todo</button>
+            </div>
+            
+            <section class="seo-content">
+                <h2>¿Cómo convertir JPG a PDF en línea?</h2>
+                <p>Nuestra herramienta para <strong>convertir JPG a PDF</strong> te permite transformar tus imágenes en documentos PDF de manera rápida y sencilla:</p>
+                
+                <ol>
+                    <li><strong>Sube tus imágenes JPG</strong> arrastrándolas al área indicada o haciendo clic para seleccionarlas desde tu dispositivo.</li>
+                    <li><strong>Reorganiza las imágenes</strong> en el orden que prefieras usando los botones "Subir" y "Bajar".</li>
+                    <li><strong>Elimina imágenes</strong> individuales si es necesario con el botón "Eliminar".</li>
+                    <li><strong>Haz clic en "Convertir a PDF"</strong> para crear un documento PDF con todas tus imágenes.</li>
+                    <li><strong>Descarga tu nuevo PDF</strong> con las imágenes convertidas.</li>
+                </ol>
+                
+                <h3>¿Por qué usar nuestro convertidor de JPG a PDF?</h3>
+                <ul>
+                    <li><strong>100% gratuito</strong> - Sin costos ocultos ni limitaciones</li>
+                    <li><strong>Procesamiento seguro</strong> - Tus imágenes no se almacenan en nuestros servidores</li>
+                    <li><strong>Sin marcas de agua</strong> - PDFs limpios sin publicidad</li>
+                    <li><strong>No requiere registro</strong> - Usa la herramienta inmediatamente</li>
+                    <li><strong>Compatible con todos los dispositivos</strong> - Funciona en computadoras, tablets y móviles</li>
+                    <li><strong>Múltiples formatos</strong> - Soporta JPG, JPEG y PNG</li>
+                </ul>
+                
+                <h3>Preguntas frecuentes sobre JPG a PDF</h3>
+                <div class="faq-item">
+                    <h4>¿Es seguro convertir imágenes con esta herramienta?</h4>
+                    <p>Sí, todas las imágenes se procesan en tu navegador. Nunca se suben a nuestros servidores, garantizando máxima privacidad y seguridad.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>¿Hay límite en el número de imágenes que puedo convertir?</h4>
+                    <p>Puedes convertir tantas imágenes como necesites, aunque recomendamos no exceder las 20 imágenes o 50MB en total para un mejor rendimiento.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>¿Qué formatos de imagen son compatibles?</h4>
+                    <p>Nuestra herramienta soporta los formatos JPG, JPEG y PNG.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>¿Puedo ajustar la calidad del PDF resultante?</h4>
+                    <p>El PDF generado mantiene la calidad original de tus imágenes. Si necesitas reducir el tamaño, puedes comprimir las imágenes antes de convertirlas.</p>
+                </div>
+            </section>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="site-footer" role="contentinfo">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a href="https://grupoemiliocolor.github.io/mx/" target="_blank">
+                    <img src="img/EC.png" alt="EmilioColor Logo" class="footer-logo" width="70" height="70">
+                </a>
+                <p class="footer-description">Soluciones integrales en papelería, desarrollo web y capacitación para mentes que transformen el mundo.
+                </p>
+                <div class="social-links">
+                    <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <div class="link-group">
+                    <h4>Productos</h4>
+                    <a href="https://grupoemiliocolor.github.io/mx/ECinkspire.html">EmilioColor® Inkspire</a>
+                </div>
+                
+                <div class="link-group">
+                    <h4>Recursos</h4>
+                    <a href="https://grupoemiliocolor.github.io/mx/blog.html">Blog</a>
+                    <a href="https://grupoemiliocolor.github.io/mx/documentacion.html">Documentación</a>
+                    <a href="https://grupoemiliocolor.github.io/mx/herramientas.html">Herramientas</a>
+                    <a href="https://grupoemiliocolor.github.io/mx/educativo.html">Educativo</a>
+                </div>
+                
+                <div class="link-group">
+                    <h4>Empresa</h4>
+                    <a href="https://grupoemiliocolor.github.io/mx/index.html">Acerca de</a>
+                    <a href="https://grupoemiliocolor.github.io/mx/index.html">Contacto</a>
+                    <a href="https://grupoemiliocolor.github.io/mx/terminos_y_condiciones.html">Términos</a>
+                    <a href="https://grupoemiliocolor.github.io/mx/privacidad.html">Privacidad</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; <span id="current-year"></span> EmilioColor®. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Actualizar el año automáticamente
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        const { jsPDF } = window.jspdf;
+        const dropArea = document.getElementById('drop-area');
+        const fileInput = document.getElementById('file-input');
+        const preview = document.getElementById('preview');
+        const convertBtn = document.getElementById('convert-btn');
+        const clearBtn = document.getElementById('clear-btn');
+        let images = [];
+
+        // Manejar selección de archivos
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        // Manejar arrastrar y soltar
+        dropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropArea.style.backgroundColor = '#e8f0fe';
+            dropArea.style.borderColor = '#0d62c9';
+        });
+
+        dropArea.addEventListener('dragleave', () => {
+            dropArea.style.backgroundColor = 'white';
+            dropArea.style.borderColor = '#1a73e8';
+        });
+
+        dropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropArea.style.backgroundColor = 'white';
+            dropArea.style.borderColor = '#1a73e8';
+            handleFiles(e.dataTransfer.files);
+        });
+
+        // Procesar imágenes
+        function handleFiles(files) {
+            const newImages = [];
+            const validFiles = Array.from(files).filter(file => 
+                file.type.match('image/jpeg') || 
+                file.type.match('image/png') || 
+                file.name.toLowerCase().endsWith('.jpg') || 
+                file.name.toLowerCase().endsWith('.jpeg') || 
+                file.name.toLowerCase().endsWith('.png')
+            );
+            
+            if (validFiles.length === 0) {
+                alert('Por favor, sube solo archivos JPG, JPEG o PNG.');
+                return;
+            }
+            
+            let processed = 0;
+            
+            validFiles.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    newImages.push({
+                        src: e.target.result,
+                        name: file.name,
+                        file: file
+                    });
+                    
+                    processed++;
+                    
+                    if (processed === validFiles.length) {
+                        images = images.concat(newImages);
+                        updatePreview();
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Actualizar la vista previa
+        function updatePreview() {
+            preview.innerHTML = '';
+            
+            images.forEach((image, index) => {
+                const container = document.createElement('div');
+                container.className = 'image-container';
+                
+                const number = document.createElement('div');
+                number.className = 'image-number';
+                number.textContent = index + 1;
+                
+                const img = document.createElement('img');
+                img.src = image.src;
+                img.alt = `Imagen ${index + 1}: ${image.name}`;
+                
+                const controls = document.createElement('div');
+                controls.className = 'image-controls';
+                
+                const upBtn = document.createElement('button');
+                upBtn.textContent = '↑ Subir';
+                upBtn.onclick = () => moveImageUp(index);
+                upBtn.disabled = index === 0;
+                
+                const downBtn = document.createElement('button');
+                downBtn.textContent = '↓ Bajar';
+                downBtn.onclick = () => moveImageDown(index);
+                downBtn.disabled = index === images.length - 1;
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.textContent = '× Eliminar';
+                removeBtn.onclick = () => removeImage(index);
+                
+                controls.appendChild(upBtn);
+                controls.appendChild(downBtn);
+                controls.appendChild(removeBtn);
+                
+                container.appendChild(number);
+                container.appendChild(img);
+                container.appendChild(controls);
+                
+                preview.appendChild(container);
+            });
+            
+            convertBtn.disabled = images.length === 0;
+            clearBtn.disabled = images.length === 0;
+        }
+
+        // Mover imagen hacia arriba
+        function moveImageUp(index) {
+            if (index > 0) {
+                [images[index], images[index - 1]] = [images[index - 1], images[index]];
+                updatePreview();
+            }
+        }
+
+        // Mover imagen hacia abajo
+        function moveImageDown(index) {
+            if (index < images.length - 1) {
+                [images[index], images[index + 1]] = [images[index + 1], images[index]];
+                updatePreview();
+            }
+        }
+
+        // Eliminar imagen
+        function removeImage(index) {
+            images.splice(index, 1);
+            updatePreview();
+        }
+
+        // Convertir a PDF
+        convertBtn.addEventListener('click', async () => {
+            if (images.length === 0) {
+                alert('Por favor, sube al menos una imagen.');
+                return;
+            }
+
+            try {
+                convertBtn.disabled = true;
+                convertBtn.textContent = 'Convirtiendo...';
+                
+                const pdf = new jsPDF();
+                const margin = 10;
+                
+                for (let i = 0; i < images.length; i++) {
+                    if (i > 0) {
+                        pdf.addPage();
+                    }
+                    
+                    const img = new Image();
+                    img.src = images[i].src;
+                    
+                    // Esperar a que la imagen se cargue
+                    await new Promise((resolve) => {
+                        img.onload = resolve;
+                    });
+                    
+                    const pageWidth = pdf.internal.pageSize.getWidth();
+                    const pageHeight = pdf.internal.pageSize.getHeight();
+                    const maxWidth = pageWidth - 2 * margin;
+                    const maxHeight = pageHeight - 2 * margin;
+                    
+                    let width = img.width;
+                    let height = img.height;
+                    
+                    // Ajustar tamaño manteniendo proporciones
+                    if (width > maxWidth || height > maxHeight) {
+                        const ratio = Math.min(maxWidth / width, maxHeight / height);
+                        width = width * ratio;
+                        height = height * ratio;
+                    }
+                    
+                    const x = (pageWidth - width) / 2;
+                    const y = (pageHeight - height) / 2;
+                    
+                    pdf.addImage(img.src, 'JPEG', x, y, width, height);
+                }
+
+                pdf.save('emiliocolor_imagenes.pdf');
+                
+            } catch (error) {
+                console.error('Error al convertir imágenes:', error);
+                alert('Ocurrió un error al convertir las imágenes. Por favor, inténtalo de nuevo.');
+            } finally {
+                convertBtn.disabled = false;
+                convertBtn.textContent = 'Convertir a PDF';
+            }
+        });
+
+        // Limpiar todo
+        clearBtn.addEventListener('click', () => {
+            images = [];
+            updatePreview();
+        });
+    </script>
+</body>
+</html>
