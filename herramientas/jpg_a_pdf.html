@@ -3,19 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EC - Convertidor JPG a PDF Online | Imágenes a PDF Gratis | EmilioColor®</title>
-    <meta name="description" content="Herramienta gratuita para convertir imágenes JPG a PDF en línea. Combina múltiples imágenes en un solo documento PDF. Sin registros, sin marcas de agua.">
-    <meta name="keywords" content="jpg a pdf, convertir jpg a pdf, imágenes a pdf, jpeg a pdf, crear pdf desde imágenes, herramienta pdf gratis">
+    <title>EC - Convertir JPG a PDF Online</title>
+    <meta name="description" content="Convierte imágenes JPG a PDF online gratis. Combina múltiples fotos en un solo documento PDF. Sin registros, sin marcas de agua. Herramienta segura y fácil de usar.">
+    <meta name="keywords" content="convertir jpg a pdf, jpg a pdf online, imágenes a pdf gratis, combinar fotos en pdf, crear pdf desde fotos, herramienta pdf online, jpeg a pdf, rotar imágenes en pdf">
     <meta name="robots" content="index, follow">
     <meta name="author" content="EmilioColor®">
+    <meta name="theme-color" content="#1a73e8">
+    <link rel="canonical" href="https://grupoemiliocolor.github.io/mx/jpg_a_pdf.html">
     
-    <!--
-    Copyright © 2025 Grupo EmilioColor®. 
-    Todos los derechos reservados. 
-    Esta plantilla y todo su contenido son propiedad exclusiva de Grupo EmilioColor® y están protegidos por las leyes de derechos de autor.
-    Queda prohibida la reproducción total o parcial sin la autorización expresa del titular de los derechos. 
-    -->
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="icon" type="image/png" href="img/EC.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -57,6 +52,10 @@
             align-items: center;
             position: relative;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            box-sizing: border-box;
         }
         
         .header-logo {
@@ -77,6 +76,7 @@
             transition: all 0.3s;
             padding: 5px 10px;
             border-radius: 4px;
+            margin-left: 10px;
         }
         
         .header-options a:hover {
@@ -89,6 +89,10 @@
             padding: 12px;
             text-align: center;
             border-bottom: 1px solid #dadce0;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            box-sizing: border-box;
         }
         
         .main-content {
@@ -97,6 +101,7 @@
             max-width: 800px;
             margin: 0 auto;
             width: 100%;
+            box-sizing: border-box;
         }
         
         #drop-area {
@@ -149,6 +154,7 @@
             display: block;
             margin: 0 auto;
             object-fit: contain;
+            transition: transform 0.3s;
         }
         
         .image-number {
@@ -173,6 +179,7 @@
             justify-content: center;
             margin-top: 15px;
             gap: 8px;
+            flex-wrap: wrap;
         }
         
         .image-controls button {
@@ -184,6 +191,8 @@
             font-size: 12px;
             border-radius: 6px;
             transition: all 0.3s;
+            flex: 1;
+            min-width: 60px;
         }
         
         .image-controls button:hover {
@@ -301,6 +310,11 @@
             color: #ecf0f1;
             padding: 40px 0 0;
             margin-top: 50px;
+            width: 100%;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            box-sizing: border-box;
         }
         
         .footer-container {
@@ -310,6 +324,8 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+            width: 100%;
+            box-sizing: border-box;
         }
         
         .footer-brand {
@@ -379,6 +395,7 @@
             background-color: #1a252f;
             padding: 20px 0;
             text-align: center;
+            width: 100%;
         }
         
         .footer-bottom p {
@@ -416,15 +433,33 @@
                 gap: 15px;
                 padding: 15px;
                 text-align: center;
+                position: relative;
+                max-width: 100%;
             }
             
             .header-options {
                 position: static;
                 margin-top: 10px;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+                width: 100%;
+            }
+            
+            .header-options a {
+                margin-left: 0;
+                padding: 8px 12px;
+            }
+            
+            .subheader {
+                padding: 15px;
+                max-width: 100%;
             }
             
             .main-content {
                 padding: 15px;
+                max-width: 100%;
             }
             
             .image-container {
@@ -443,11 +478,13 @@
             
             .footer-container {
                 flex-direction: column;
+                padding: 0 15px;
             }
             
             .footer-brand {
                 text-align: center;
                 padding-right: 0;
+                width: 100%;
             }
             
             .social-links {
@@ -456,17 +493,41 @@
             
             .link-group {
                 text-align: center;
+                width: 100%;
+                padding: 0;
             }
             
             .link-group h4:after {
                 left: 50%;
                 transform: translateX(-50%);
             }
+            
+            .site-footer {
+                padding-left: 15px;
+                padding-right: 15px;
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .image-controls button {
+                font-size: 11px;
+                padding: 4px 8px;
+            }
+            
+            .action-buttons button {
+                font-size: 16px;
+                padding: 12px;
+            }
+            
+            .header, .subheader, .site-footer {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Encabezado Estandarizado -->
     <header class="header" role="banner">
         <a href="https://grupoemiliocolor.github.io/mx/" target="_blank" aria-label="Ir a la página principal de EmilioColor">
             <img src="../img/EmilioColor.jpg" alt="Logo EmilioColor" class="header-logo" width="150" height="40">
@@ -510,49 +571,47 @@
             </div>
             
             <section class="seo-content">
-                <h2>¿Cómo convertir JPG a PDF en línea?</h2>
-                <p>Nuestra herramienta para <strong>convertir JPG a PDF</strong> te permite transformar tus imágenes en documentos PDF de manera rápida y sencilla:</p>
+                <h2>Convertidor JPG a PDF Online - Guía Completa</h2>
+                <p>Nuestra herramienta para <strong>convertir JPG a PDF</strong> te permite transformar tus imágenes en documentos PDF profesionales de manera rápida, segura y sin necesidad de registro.</p>
                 
+                <h3>¿Cómo convertir imágenes a PDF en 3 pasos?</h3>
                 <ol>
-                    <li><strong>Sube tus imágenes JPG</strong> arrastrándolas al área indicada o haciendo clic para seleccionarlas desde tu dispositivo.</li>
-                    <li><strong>Reorganiza las imágenes</strong> en el orden que prefieras usando los botones "Subir" y "Bajar".</li>
-                    <li><strong>Elimina imágenes</strong> individuales si es necesario con el botón "Eliminar".</li>
-                    <li><strong>Haz clic en "Convertir a PDF"</strong> para crear un documento PDF con todas tus imágenes.</li>
-                    <li><strong>Descarga tu nuevo PDF</strong> con las imágenes convertidas.</li>
+                    <li><strong>Sube tus imágenes</strong> arrastrándolas al área indicada o haciendo clic para seleccionarlas desde tu dispositivo.</li>
+                    <li><strong>Organiza y edita</strong> las imágenes: cambia el orden, rota o elimina las que no necesites.</li>
+                    <li><strong>Descarga tu PDF</strong> con un solo clic en el botón "Convertir a PDF".</li>
                 </ol>
                 
-                <h3>¿Por qué usar nuestro convertidor de JPG a PDF?</h3>
+                <h3>Beneficios de nuestro conversor JPG a PDF</h3>
                 <ul>
-                    <li><strong>100% gratuito</strong> - Sin costos ocultos ni limitaciones</li>
-                    <li><strong>Procesamiento seguro</strong> - Tus imágenes no se almacenan en nuestros servidores</li>
-                    <li><strong>Sin marcas de agua</strong> - PDFs limpios sin publicidad</li>
-                    <li><strong>No requiere registro</strong> - Usa la herramienta inmediatamente</li>
-                    <li><strong>Compatible con todos los dispositivos</strong> - Funciona en computadoras, tablets y móviles</li>
-                    <li><strong>Múltiples formatos</strong> - Soporta JPG, JPEG y PNG</li>
+                    <li><strong>Gratis y sin límites</strong> - Convierte todas las imágenes que necesites sin costo</li>
+                    <li><strong>Procesamiento seguro</strong> - Todo se realiza en tu navegador, sin subir archivos a servidores</li>
+                    <li><strong>Sin marcas de agua</strong> - PDFs profesionales sin publicidad ni logos</li>
+                    <li><strong>Multiplataforma</strong> - Funciona en Windows, Mac, Android e iOS</li>
+                    <li><strong>Mantiene la calidad</strong> - Preserva la resolución original de tus imágenes</li>
+                    <li><strong>Herramienta completa</strong> - Rotación, reordenamiento y edición básica</li>
                 </ul>
                 
-                <h3>Preguntas frecuentes sobre JPG a PDF</h3>
+                <h3>Preguntas frecuentes</h3>
                 <div class="faq-item">
-                    <h4>¿Es seguro convertir imágenes con esta herramienta?</h4>
-                    <p>Sí, todas las imágenes se procesan en tu navegador. Nunca se suben a nuestros servidores, garantizando máxima privacidad y seguridad.</p>
+                    <h4>¿Es seguro usar este convertidor de JPG a PDF?</h4>
+                    <p>Absolutamente. Todas las imágenes se procesan localmente en tu navegador. Nunca se envían a nuestros servidores, garantizando máxima privacidad.</p>
                 </div>
                 <div class="faq-item">
-                    <h4>¿Hay límite en el número de imágenes que puedo convertir?</h4>
-                    <p>Puedes convertir tantas imágenes como necesites, aunque recomendamos no exceder las 20 imágenes o 50MB en total para un mejor rendimiento.</p>
+                    <h4>¿Puedo rotar las imágenes antes de convertirlas?</h4>
+                    <p>Sí, nuestra herramienta incluye opciones para rotar las imágenes 90° en cualquier dirección antes de crear el PDF.</p>
                 </div>
                 <div class="faq-item">
                     <h4>¿Qué formatos de imagen son compatibles?</h4>
-                    <p>Nuestra herramienta soporta los formatos JPG, JPEG y PNG.</p>
+                    <p>Aceptamos los formatos más comunes: JPG, JPEG y PNG. La herramienta detecta automáticamente el tipo de archivo.</p>
                 </div>
                 <div class="faq-item">
-                    <h4>¿Puedo ajustar la calidad del PDF resultante?</h4>
-                    <p>El PDF generado mantiene la calidad original de tus imágenes. Si necesitas reducir el tamaño, puedes comprimir las imágenes antes de convertirlas.</p>
+                    <h4>¿Hay límite de tamaño o cantidad de imágenes?</h4>
+                    <p>Puedes convertir múltiples imágenes a la vez. Para mejor rendimiento, recomendamos no exceder 20 imágenes o 50MB en total.</p>
                 </div>
             </section>
         </section>
     </main>
     
-    <!-- Footer Estandarizado -->
     <footer class="site-footer" role="contentinfo">
         <div class="footer-container">
             <div class="footer-brand">
@@ -654,7 +713,8 @@
                     newImages.push({
                         src: e.target.result,
                         name: file.name,
-                        file: file
+                        file: file,
+                        rotation: 0
                     });
                     
                     processed++;
@@ -682,6 +742,7 @@
                 const img = document.createElement('img');
                 img.src = image.src;
                 img.alt = `Imagen ${index + 1}: ${image.name}`;
+                img.style.transform = `rotate(${image.rotation}deg)`;
                 
                 const controls = document.createElement('div');
                 controls.className = 'image-controls';
@@ -696,12 +757,22 @@
                 downBtn.onclick = () => moveImageDown(index);
                 downBtn.disabled = index === images.length - 1;
                 
+                const rotateLeftBtn = document.createElement('button');
+                rotateLeftBtn.textContent = '↶ 90°';
+                rotateLeftBtn.onclick = () => rotateImage(index, -90);
+                
+                const rotateRightBtn = document.createElement('button');
+                rotateRightBtn.textContent = '↷ 90°';
+                rotateRightBtn.onclick = () => rotateImage(index, 90);
+                
                 const removeBtn = document.createElement('button');
                 removeBtn.textContent = '× Eliminar';
                 removeBtn.onclick = () => removeImage(index);
                 
                 controls.appendChild(upBtn);
                 controls.appendChild(downBtn);
+                controls.appendChild(rotateLeftBtn);
+                controls.appendChild(rotateRightBtn);
                 controls.appendChild(removeBtn);
                 
                 container.appendChild(number);
@@ -727,6 +798,11 @@
                 [images[index], images[index + 1]] = [images[index + 1], images[index]];
                 updatePreview();
             }
+        }
+
+        function rotateImage(index, degrees) {
+            images[index].rotation = (images[index].rotation + degrees) % 360;
+            updatePreview();
         }
 
         function removeImage(index) {
@@ -759,13 +835,33 @@
                         img.onload = resolve;
                     });
                     
+                    // Create canvas to handle rotation
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Adjust canvas size based on rotation
+                    if (images[i].rotation % 180 === 0) {
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                    } else {
+                        canvas.width = img.height;
+                        canvas.height = img.width;
+                    }
+                    
+                    // Rotate and draw image
+                    ctx.save();
+                    ctx.translate(canvas.width / 2, canvas.height / 2);
+                    ctx.rotate(images[i].rotation * Math.PI / 180);
+                    ctx.drawImage(img, -img.width / 2, -img.height / 2, img.width, img.height);
+                    ctx.restore();
+                    
                     const pageWidth = pdf.internal.pageSize.getWidth();
                     const pageHeight = pdf.internal.pageSize.getHeight();
                     const maxWidth = pageWidth - 2 * margin;
                     const maxHeight = pageHeight - 2 * margin;
                     
-                    let width = img.width;
-                    let height = img.height;
+                    let width = canvas.width;
+                    let height = canvas.height;
                     
                     if (width > maxWidth || height > maxHeight) {
                         const ratio = Math.min(maxWidth / width, maxHeight / height);
@@ -776,7 +872,7 @@
                     const x = (pageWidth - width) / 2;
                     const y = (pageHeight - height) / 2;
                     
-                    pdf.addImage(img.src, 'JPEG', x, y, width, height);
+                    pdf.addImage(canvas.toDataURL('image/jpeg'), 'JPEG', x, y, width, height);
                 }
 
                 pdf.save('emiliocolor_imagenes.pdf');
