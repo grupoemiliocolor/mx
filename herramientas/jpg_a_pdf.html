@@ -20,7 +20,6 @@
     <link rel="icon" type="image/png" href="img/EC.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Estilos generales */
         body {
             font-family: 'Candara', Calibri, 'Trebuchet MS', sans-serif;
             margin: 0;
@@ -48,7 +47,6 @@
             text-align: center;
         }
         
-        /* Header */
         .header {
             grid-area: header;
             background-color: #ffffff;
@@ -85,7 +83,6 @@
             background-color: rgba(26, 115, 232, 0.1);
         }
         
-        /* Subheader */
         .subheader {
             grid-area: subheader;
             background-color: #e8f0fe;
@@ -94,7 +91,6 @@
             border-bottom: 1px solid #dadce0;
         }
         
-        /* Main content */
         .main-content {
             grid-area: main;
             padding: 25px;
@@ -103,7 +99,6 @@
             width: 100%;
         }
         
-        /* Drop area */
         #drop-area {
             border: 2px dashed #1a73e8;
             padding: 30px;
@@ -124,7 +119,6 @@
             font-size: 1.1em;
         }
         
-        /* Preview area */
         #preview {
             margin-top: 30px;
             display: flex;
@@ -201,7 +195,6 @@
             cursor: not-allowed;
         }
         
-        /* Action buttons */
         .action-buttons {
             display: flex;
             justify-content: center;
@@ -244,12 +237,10 @@
             background: #e8f0fe;
         }
         
-        /* File input */
         #file-input {
             display: none;
         }
         
-        /* SEO Content */
         .seo-content {
             margin-top: 40px;
             line-height: 1.6;
@@ -304,7 +295,6 @@
             border: 0;
         }
         
-        /* Footer */
         .site-footer {
             grid-area: footer;
             background-color: #2c3e50;
@@ -420,7 +410,6 @@
             transform: translateY(-3px);
         }
         
-        /* Responsive */
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
@@ -477,10 +466,10 @@
     </style>
 </head>
 <body>
-    <!-- Encabezado -->
+    <!-- Encabezado Estandarizado -->
     <header class="header" role="banner">
         <a href="https://grupoemiliocolor.github.io/mx/" target="_blank" aria-label="Ir a la página principal de EmilioColor">
-            <img src="img/EmilioColor.jpg" alt="Logo EmilioColor" class="header-logo" width="150" height="40">
+            <img src="../img/EmilioColor.jpg" alt="Logo EmilioColor" class="header-logo" width="150" height="40">
         </a>
         <nav class="header-options" role="navigation" aria-label="Menú principal">
             <a href="https://grupoemiliocolor.github.io/mx/herramientas.html" aria-label="Más herramientas">Más Herramientas</a>
@@ -493,7 +482,6 @@
         <p class="visually-hidden">Herramienta gratuita para convertir imágenes JPG a documentos PDF</p>
     </div>
     
-    <!-- Contenido principal -->
     <main class="main-content" role="main">
         <section aria-labelledby="main-heading">
             <h2 id="main-heading" style="display: none;">Convertidor JPG a PDF</h2>
@@ -564,12 +552,12 @@
         </section>
     </main>
     
-    <!-- Footer -->
+    <!-- Footer Estandarizado -->
     <footer class="site-footer" role="contentinfo">
         <div class="footer-container">
             <div class="footer-brand">
                 <a href="https://grupoemiliocolor.github.io/mx/" target="_blank">
-                    <img src="img/EC.png" alt="EmilioColor Logo" class="footer-logo" width="70" height="70">
+                    <img src="../img/EC.png" alt="EmilioColor Logo" class="footer-logo" width="70" height="70">
                 </a>
                 <p class="footer-description">Soluciones integrales en papelería, desarrollo web y capacitación para mentes que transformen el mundo.
                 </p>
@@ -611,7 +599,6 @@
     </footer>
     
     <script>
-        // Actualizar el año automáticamente
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
         const { jsPDF } = window.jspdf;
@@ -622,12 +609,10 @@
         const clearBtn = document.getElementById('clear-btn');
         let images = [];
 
-        // Manejar selección de archivos
         fileInput.addEventListener('change', (e) => {
             handleFiles(e.target.files);
         });
 
-        // Manejar arrastrar y soltar
         dropArea.addEventListener('dragover', (e) => {
             e.preventDefault();
             dropArea.style.backgroundColor = '#e8f0fe';
@@ -646,7 +631,6 @@
             handleFiles(e.dataTransfer.files);
         });
 
-        // Procesar imágenes
         function handleFiles(files) {
             const newImages = [];
             const validFiles = Array.from(files).filter(file => 
@@ -684,7 +668,6 @@
             });
         }
 
-        // Actualizar la vista previa
         function updatePreview() {
             preview.innerHTML = '';
             
@@ -732,7 +715,6 @@
             clearBtn.disabled = images.length === 0;
         }
 
-        // Mover imagen hacia arriba
         function moveImageUp(index) {
             if (index > 0) {
                 [images[index], images[index - 1]] = [images[index - 1], images[index]];
@@ -740,7 +722,6 @@
             }
         }
 
-        // Mover imagen hacia abajo
         function moveImageDown(index) {
             if (index < images.length - 1) {
                 [images[index], images[index + 1]] = [images[index + 1], images[index]];
@@ -748,13 +729,11 @@
             }
         }
 
-        // Eliminar imagen
         function removeImage(index) {
             images.splice(index, 1);
             updatePreview();
         }
 
-        // Convertir a PDF
         convertBtn.addEventListener('click', async () => {
             if (images.length === 0) {
                 alert('Por favor, sube al menos una imagen.');
@@ -776,7 +755,6 @@
                     const img = new Image();
                     img.src = images[i].src;
                     
-                    // Esperar a que la imagen se cargue
                     await new Promise((resolve) => {
                         img.onload = resolve;
                     });
@@ -789,7 +767,6 @@
                     let width = img.width;
                     let height = img.height;
                     
-                    // Ajustar tamaño manteniendo proporciones
                     if (width > maxWidth || height > maxHeight) {
                         const ratio = Math.min(maxWidth / width, maxHeight / height);
                         width = width * ratio;
@@ -813,7 +790,6 @@
             }
         });
 
-        // Limpiar todo
         clearBtn.addEventListener('click', () => {
             images = [];
             updatePreview();
